@@ -45,6 +45,7 @@
     "prettier": "^3.9.4",
     "prettier-plugin-tailwindcss": "^0.8.0",
     "tailwindcss": "^4",
+    "tsx": "^4.23.0",
     "typescript": "^5"
   },
   "allowScripts": {
@@ -52,6 +53,9 @@
     "unrs-resolver@1.12.2": true,
     "@prisma/engines@6.19.3": true,
     "prisma@6.19.3": true
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "overrides": {
     "postcss": "^8.5.10"

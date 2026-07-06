@@ -1,4 +1,5 @@
-export type Role = "OWNER" | "ADMIN" | "WAREHOUSE" | "PURCHASING";
+export type Role =
+  "READ_ONLY" | "SELLER" | "OWNER" | "ADMIN" | "WAREHOUSE" | "PURCHASING";
 
 export type Permission =
   // Products
@@ -20,6 +21,21 @@ export type Permission =
   | "purchases.create"
   | "purchases.receive"
   | "purchases.cancel"
+  // Customers
+  | "customers.view"
+  | "customers.create"
+  | "customers.edit"
+  | "customers.delete"
+  // Quotes
+  | "quotes.view"
+  | "quotes.create"
+  | "quotes.edit"
+  | "quotes.send"
+  | "quotes.accept"
+  | "quotes.reject"
+  | "quotes.convert"
+  // Billing
+  | "billing.manage"
   // Settings
   | "settings.view"
   | "settings.edit"

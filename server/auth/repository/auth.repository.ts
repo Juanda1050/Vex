@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type { UserRole } from "@prisma/client";
 
 export const authRepository = {
   async findMemberByUserId(userId: string) {
@@ -55,6 +56,16 @@ export const authRepository = {
           take: 1,
         },
       },
+    });
+  },
+
+  async listRolePermissions(tenantId: string, role: UserRole) {
+    return prisma.tenantRolePermission.findMany({
+      where: {
+        tenantId,
+        role,
+      },
+      orderBy: [{ permission: "asc" }],
     });
   },
 };

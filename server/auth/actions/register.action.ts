@@ -2,7 +2,7 @@
 
 import { getLocale } from "next-intl/server";
 import { sessionManager } from "../session/session.manager";
-import { TenantService } from "@/server/services/tenant.service";
+import { TenantService } from "@/server/tenant";
 import {
   buildLocalizedAbsoluteUrl,
   getAppUrl,

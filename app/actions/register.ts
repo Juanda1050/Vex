@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase";
-import { TenantService } from "@/server/services/tenant.service";
+import { TenantService } from "@/server/tenant";
 import { HTTP_STATUS, type HttpStatusCode } from "@/server/http-status";
 import { getErrorTranslator } from "@/server/error-translator";
 

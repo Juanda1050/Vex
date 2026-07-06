@@ -13,10 +13,18 @@ datasource db {
 // ==========================================
 
 enum UserRole {
+  READ_ONLY
+  SELLER
   OWNER
   ADMIN
   WAREHOUSE
   PURCHASING
+}
+
+enum DocumentType {
+  QUOTE
+  SALE
+  PURCHASE
 }
 
 enum MovementType {
@@ -101,6 +109,11 @@ model Tenant {
   legalName String?
   industry  String?
   countryCode String?
+  logoUrl   String?
+  brandPrimary String?
+  brandSecondary String?
+  address   String?
+  phone     String?
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -123,8 +136,43 @@ model Tenant {
   purchases  Purchase[]
   transfers  InventoryTransfer[]
   subscriptions TenantSubscription[]
+  rolePermissions TenantRolePermission[]
+  documentCounters DocumentCounter[]
 
   @@map("tenants")
+}
+
+model TenantRolePermission {
+  id         String   @id @default(uuid()) @db.Uuid
+  tenantId   String   @db.Uuid
+  role       UserRole
+  permission String
+  isAllowed  Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, role, permission])
+  @@index([tenantId, role])
+  @@index([tenantId, permission])
+  @@map("tenant_role_permissions")
+}
+
+model DocumentCounter {
+  id         String       @id @default(uuid()) @db.Uuid
+  tenantId   String       @db.Uuid
+  type       DocumentType
+  prefix     String
+  nextNumber Int          @default(1)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, type])
+  @@index([tenantId])
+  @@map("document_counters")
 }
 
 model SubscriptionPlan {

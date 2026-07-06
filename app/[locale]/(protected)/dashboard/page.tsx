@@ -61,7 +61,7 @@ export default async function DashboardModulePage({
   ] as const;
 
   return (
-    <Card className="border-primary/25 bg-linear-to-br from-card via-card to-primary/10">
+    <Card className="glass-panel glass-glow border-primary/25 bg-linear-to-br from-card/80 via-card/70 to-primary/12">
       <CardHeader>
         <Badge variant="info" className="w-fit gap-1">
           <Activity className="size-3.5" />
@@ -75,7 +75,7 @@ export default async function DashboardModulePage({
           {dashboardModules.map((item) => (
             <div
               key={item.title}
-              className="rounded-xl border border-border/70 bg-background px-3 py-3 text-sm"
+              className="glass-soft rounded-xl px-3 py-3 text-sm"
             >
               <div className="flex items-start gap-2">
                 <Boxes className="mt-0.5 size-3.5 text-primary" />

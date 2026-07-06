@@ -32,19 +32,17 @@ function applyTheme(isDark: boolean) {
 }
 
 function ThemeToggle() {
-  const [isDark, setIsDark] = React.useState(false);
-  const [mounted, setMounted] = React.useState(false);
+  const [isDark, setIsDark] = React.useState(getPreferredTheme);
 
   React.useEffect(() => {
-    const nextIsDark = getPreferredTheme();
-    applyTheme(nextIsDark);
-    setIsDark(nextIsDark);
-    setMounted(true);
+    applyTheme(isDark);
+  }, [isDark]);
+
+  React.useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleSystemThemeChange = (event: MediaQueryListEvent) => {
       const storedTheme = window.localStorage.getItem(STORAGE_KEY);
       if (!storedTheme) {
-        applyTheme(event.matches);
         setIsDark(event.matches);
       }
     };
@@ -69,18 +67,10 @@ function ThemeToggle() {
       size="icon-sm"
       className="shrink-0 border-sidebar-border bg-background/80 text-foreground shadow-sm backdrop-blur-sm hover:bg-accent hover:text-accent-foreground"
       onClick={toggleTheme}
-      aria-label={
-        mounted
-          ? `Switch to ${isDark ? "light" : "dark"} theme`
-          : "Toggle theme"
-      }
-      title={
-        mounted
-          ? `Switch to ${isDark ? "light" : "dark"} theme`
-          : "Toggle theme"
-      }
+      aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
+      title={`Switch to ${isDark ? "light" : "dark"} theme`}
     >
-      {mounted && isDark ? <SunIcon /> : <MoonIcon />}
+      {isDark ? <SunIcon /> : <MoonIcon />}
     </Button>
   );
 }

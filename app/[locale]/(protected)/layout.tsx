@@ -19,6 +19,7 @@ export default async function ProtectedLayout({
     <AppShell
       title={t("title")}
       description={t("description")}
+      locale={locale}
       sidebar={
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{locale.toUpperCase()}</Badge>

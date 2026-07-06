@@ -13,13 +13,13 @@ const themeScript = `(() => {
 })();`;
 
 const robotoSans = Roboto({
-  variable: "--font-geist-sans",
+  variable: "--font-roboto",
   weight: ["300", "400", "500", "700", "900"],
   subsets: ["latin"],
 });
 
 const robotoMono = Roboto_Mono({
-  variable: "--font-geist-mono",
+  variable: "--font-roboto-mono",
   subsets: ["latin"],
 });
 

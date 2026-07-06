@@ -1,0 +1,76 @@
+"use client";
+
+import * as React from "react";
+import { MoonIcon, SunIcon } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+
+const STORAGE_KEY = "cotify-theme";
+
+function getPreferredTheme() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const storedTheme = window.localStorage.getItem(STORAGE_KEY);
+
+  if (storedTheme === "dark") {
+    return true;
+  }
+
+  if (storedTheme === "light") {
+    return false;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
+function applyTheme(isDark: boolean) {
+  document.documentElement.classList.toggle("dark", isDark);
+  document.documentElement.style.colorScheme = isDark ? "dark" : "light";
+  window.localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
+}
+
+function ThemeToggle() {
+  const [isDark, setIsDark] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    const nextIsDark = getPreferredTheme();
+    applyTheme(nextIsDark);
+    setIsDark(nextIsDark);
+    setMounted(true);
+  }, []);
+
+  const toggleTheme = React.useCallback(() => {
+    setIsDark((currentValue) => {
+      const nextValue = !currentValue;
+      applyTheme(nextValue);
+      return nextValue;
+    });
+  }, []);
+
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      size="icon-sm"
+      className="shrink-0"
+      onClick={toggleTheme}
+      aria-label={
+        mounted
+          ? `Switch to ${isDark ? "light" : "dark"} theme`
+          : "Toggle theme"
+      }
+      title={
+        mounted
+          ? `Switch to ${isDark ? "light" : "dark"} theme`
+          : "Toggle theme"
+      }
+    >
+      {mounted && isDark ? <SunIcon /> : <MoonIcon />}
+    </Button>
+  );
+}
+
+export { ThemeToggle };

@@ -2,13 +2,19 @@ import { prisma } from "@/lib/prisma";
 
 export const authRepository = {
   async findMemberByUserId(userId: string) {
-    return prisma.tenantUser.findFirst({
+    return prisma.tenantMember.findFirst({
       where: { userId },
       include: {
         tenant: {
           include: {
             branches: {
               where: { isDefault: true },
+              include: {
+                warehouses: {
+                  where: { isDefault: true },
+                  take: 1,
+                },
+              },
               take: 1,
             },
           },

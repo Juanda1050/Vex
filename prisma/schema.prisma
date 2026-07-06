@@ -15,8 +15,8 @@ datasource db {
 enum UserRole {
   OWNER
   ADMIN
-  MANAGER
-  STAFF
+  WAREHOUSE
+  PURCHASING
 }
 
 enum MovementType {
@@ -70,6 +70,9 @@ model Tenant {
   id        String   @id @default(uuid()) @db.Uuid
   name      String
   slug      String   @unique
+  legalName String?
+  industry  String?
+  countryCode String?
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -99,25 +102,32 @@ model TenantMember {
   id       String   @id @default(uuid()) @db.Uuid
   tenantId String   @db.Uuid
   userId   String   @db.Uuid // UID de auth.users de Supabase
-  role     UserRole @default(STAFF)
+  branchId String?  @db.Uuid
+  role     UserRole @default(WAREHOUSE)
   isActive Boolean  @default(true)
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  branch Branch? @relation(fields: [branchId], references: [id], onDelete: SetNull)
 
   @@unique([tenantId, userId])
+  @@index([tenantId, branchId])
   @@map("tenant_members")
 }
 
 model TenantSettings {
   id             String  @id @default(uuid()) @db.Uuid
   tenantId       String  @unique @db.Uuid
-  currency       String  @default("MXN")
-  taxRate        Decimal @default(16) @db.Decimal(5, 2)
-  taxName        String  @default("IVA")
-  quotePrefix    String  @default("COT-")
-  salePrefix     String  @default("VTA-")
-  purchasePrefix String  @default("OC-")
-  timezone       String  @default("America/Mexico_City")
+  currency       String  @default("USD")
+  taxRate        Decimal @default(0) @db.Decimal(5, 2)
+  taxName        String  @default("Tax")
+  quotePrefix    String  @default("QTE-")
+  salePrefix     String  @default("SAL-")
+  purchasePrefix String  @default("PO-")
+  quoteLabel     String  @default("Quote")
+  saleLabel      String  @default("Sale")
+  purchaseLabel  String  @default("Purchase")
+  defaultLocale  String  @default("en")
+  timezone       String  @default("UTC")
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
@@ -138,6 +148,7 @@ model Branch {
 
   tenant     Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   warehouses Warehouse[]
+  members    TenantMember[]
   quotes     Quote[]
   sales      Sale[]
 
@@ -317,8 +328,10 @@ model Customer {
   id          String  @id @default(uuid()) @db.Uuid
   tenantId    String  @db.Uuid
   name        String
+  legalName   String?
   email       String?
   phone       String?
+  taxId       String?
   rfc         String?
   address     String?
   creditLimit Decimal @default(0) @db.Decimal(12, 2)
@@ -338,8 +351,10 @@ model Supplier {
   id           String  @id @default(uuid()) @db.Uuid
   tenantId     String  @db.Uuid
   name         String
+  legalName    String?
   email        String?
   phone        String?
+  taxId        String?
   rfc          String?
   address      String?
   paymentTerms String?

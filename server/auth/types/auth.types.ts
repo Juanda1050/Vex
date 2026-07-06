@@ -1,15 +1,17 @@
+import type { Permission, Role } from "./permissions.types";
+
 export interface TenantContext {
   userId: string;
   email: string;
   tenantId: string;
   branchId: string;
   warehouseId: string;
-  role: string;
+  role: Role;
   tenantName: string;
 }
 
 export interface AuthContext extends TenantContext {
-  permissions: string[];
+  permissions: Permission[];
   locale: string;
 }
 

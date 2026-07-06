@@ -8,7 +8,11 @@ export const authService = {
   },
 
   resolveWarehouseId(member: TenantMember): string | null {
-    return member.branch?.warehouses[0]?.id ?? null;
+    return (
+      member.branch?.warehouses[0]?.id ??
+      member.tenant.branches[0]?.warehouses[0]?.id ??
+      null
+    );
   },
 
   buildTenantContext(
@@ -29,17 +33,17 @@ export const authService = {
     };
   },
 
-  hasRole(userRole: string, requiredRole: Role): boolean {
-    const userIndex = ROLE_HIERARCHY.indexOf(userRole as Role);
+  hasRole(userRole: Role, requiredRole: Role): boolean {
+    const userIndex = ROLE_HIERARCHY.indexOf(userRole);
     const requiredIndex = ROLE_HIERARCHY.indexOf(requiredRole);
     return userIndex >= requiredIndex;
   },
 
-  getPermissions(role: string): Permission[] {
-    return ROLE_PERMISSIONS[role as Role] ?? [];
+  getPermissions(role: Role): Permission[] {
+    return ROLE_PERMISSIONS[role] ?? [];
   },
 
-  hasPermission(role: string, permission: Permission): boolean {
+  hasPermission(role: Role, permission: Permission): boolean {
     const permissions = this.getPermissions(role);
     return permissions.includes(permission);
   },

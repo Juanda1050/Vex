@@ -2,23 +2,23 @@ import { authService } from "../service/auth.service";
 import type { Permission, Role } from "../types";
 
 export const permissionChecker = {
-  can(role: string, permission: Permission): boolean {
+  can(role: Role, permission: Permission): boolean {
     return authService.hasPermission(role, permission);
   },
 
-  canAll(role: string, permissions: Permission[]): boolean {
+  canAll(role: Role, permissions: Permission[]): boolean {
     return permissions.every((p) => authService.hasPermission(role, p));
   },
 
-  canAny(role: string, permissions: Permission[]): boolean {
+  canAny(role: Role, permissions: Permission[]): boolean {
     return permissions.some((p) => authService.hasPermission(role, p));
   },
 
-  isAtLeast(userRole: string, requiredRole: Role): boolean {
+  isAtLeast(userRole: Role, requiredRole: Role): boolean {
     return authService.hasRole(userRole, requiredRole);
   },
 
-  getAll(role: string): Permission[] {
+  getAll(role: Role): Permission[] {
     return authService.getPermissions(role);
   },
 };

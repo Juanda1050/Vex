@@ -1,5 +1,4 @@
-export type Role =
-  "OWNER" | "ADMIN" | "SUPERVISOR" | "CASHIER" | "WAREHOUSE" | "PURCHASING";
+export type Role = "OWNER" | "ADMIN" | "WAREHOUSE" | "PURCHASING";
 
 export type Permission =
   // Products

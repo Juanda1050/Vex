@@ -8,5 +8,12 @@ export interface TenantContext {
   tenantName: string;
 }
 
-export type Role =
-  "OWNER" | "ADMIN" | "SUPEVISOR" | "CASHIER" | "WAREHOUSE" | "PURCHASING";
+export interface AuthContext extends TenantContext {
+  permissions: string[];
+  locale: string;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+}

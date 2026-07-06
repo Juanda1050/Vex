@@ -16,13 +16,18 @@ export class ProductService {
     return product;
   }
 
-  async listProducts(tenantId: string, filters: ProductFilters = {}) {
+  async listProducts(tenantId: string, filters: ProductFilters) {
     return productRepository.list(tenantId, filters);
   }
 
   async updateProduct(input: UpdateProductInput) {
     await this.getProduct(input.tenantId, input.id);
     return productRepository.update(input);
+  }
+
+  async deleteProduct(tenantId: string, productId: string) {
+    await this.getProduct(tenantId, productId);
+    await productRepository.softDelete(tenantId, productId);
   }
 }
 

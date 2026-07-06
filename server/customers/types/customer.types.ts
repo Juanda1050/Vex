@@ -1,4 +1,6 @@
 export interface CustomerFilters {
+  page: number;
+  pageSize: number;
   search?: string;
   isActive?: boolean;
 }

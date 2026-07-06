@@ -1,0 +1,24 @@
+{
+  "title": "Cotizaciones",
+  "errors": {
+    "generic": "No se pudo procesar la solicitud de cotizaciones.",
+    "invalidPayload": "El payload enviado es invalido.",
+    "invalidQuoteId": "El quoteId enviado no es valido.",
+    "quoteNotFound": "Cotizacion no encontrada.",
+    "quoteCreateFailed": "No se pudo crear la cotizacion.",
+    "quoteFetchFailed": "No se pudo obtener la cotizacion.",
+    "quoteListFailed": "No se pudieron listar las cotizaciones.",
+    "quoteDeleteFailed": "No se pudo eliminar la cotizacion.",
+    "quoteDeleteNotAllowed": "Solo se pueden eliminar cotizaciones en borrador.",
+    "quoteConvertFailed": "No se pudo convertir la cotizacion.",
+    "quoteAlreadyConverted": "La cotizacion ya fue convertida.",
+    "quoteNotAccepted": "Solo las cotizaciones aceptadas pueden convertirse.",
+    "insufficientStock": "Stock insuficiente para convertir la cotizacion.",
+    "warehouseNotFound": "Almacen no encontrado.",
+    "customerNotFound": "Cliente no encontrado.",
+    "branchNotFound": "Sucursal no encontrada.",
+    "productNotFound": "Producto no encontrado.",
+    "variantNotFound": "Variante no encontrada.",
+    "crossTenantResource": "Se detecto un recurso que pertenece a otro tenant."
+  }
+}

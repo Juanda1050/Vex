@@ -1,0 +1,24 @@
+{
+  "title": "Quotes",
+  "errors": {
+    "generic": "Could not process quotes request.",
+    "invalidPayload": "The payload is invalid.",
+    "invalidQuoteId": "The provided quoteId is invalid.",
+    "quoteNotFound": "Quote not found.",
+    "quoteCreateFailed": "Could not create quote.",
+    "quoteFetchFailed": "Could not fetch quote.",
+    "quoteListFailed": "Could not list quotes.",
+    "quoteDeleteFailed": "Could not delete quote.",
+    "quoteDeleteNotAllowed": "Only draft quotes can be deleted.",
+    "quoteConvertFailed": "Could not convert quote.",
+    "quoteAlreadyConverted": "Quote has already been converted.",
+    "quoteNotAccepted": "Only accepted quotes can be converted.",
+    "insufficientStock": "Insufficient stock to convert quote.",
+    "warehouseNotFound": "Warehouse not found.",
+    "customerNotFound": "Customer not found.",
+    "branchNotFound": "Branch not found.",
+    "productNotFound": "Product not found.",
+    "variantNotFound": "Variant not found.",
+    "crossTenantResource": "A cross-tenant resource was detected."
+  }
+}

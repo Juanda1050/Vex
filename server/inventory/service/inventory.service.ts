@@ -5,7 +5,7 @@ import type {
 } from "../types/inventory.types";
 
 export class InventoryService {
-  async listInventory(tenantId: string, filters: InventoryFilters = {}) {
+  async listInventory(tenantId: string, filters: InventoryFilters) {
     return inventoryRepository.listInventory(tenantId, filters);
   }
 

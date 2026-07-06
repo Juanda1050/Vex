@@ -6,9 +6,11 @@ export {
 export {
   createQuoteSchema,
   convertQuoteToSaleSchema,
+  quoteFiltersSchema,
 } from "./validations/quote.schema";
 export type {
   CreateQuoteInput,
   QuoteItemInput,
   ConvertQuoteToSaleInput,
+  QuoteFilters,
 } from "./types/quote.types";

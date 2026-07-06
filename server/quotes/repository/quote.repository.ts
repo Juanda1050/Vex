@@ -1,8 +1,10 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { createPaginationMeta } from "@/server/pagination";
 import type {
   ConvertQuoteToSaleInput,
   CreateQuoteInput,
+  QuoteFilters,
   QuoteItemInput,
 } from "../types/quote.types";
 
@@ -33,6 +35,81 @@ function quoteItemAmounts(item: QuoteItemInput) {
 }
 
 export class QuoteRepository {
+  private async ensureBranchBelongsToTenant(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    branchId: string,
+  ) {
+    const branch = await tx.branch.findFirst({
+      where: { id: branchId, tenantId },
+      select: { id: true },
+    });
+
+    if (!branch) {
+      throw new Error("Sucursal no encontrada para el tenant actual.");
+    }
+  }
+
+  private async ensureCustomerBelongsToTenant(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    customerId: string,
+  ) {
+    const customer = await tx.customer.findFirst({
+      where: { id: customerId, tenantId },
+      select: { id: true },
+    });
+
+    if (!customer) {
+      throw new Error("Cliente no encontrado para el tenant actual.");
+    }
+  }
+
+  private async ensureWarehouseBelongsToTenant(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    warehouseId: string,
+  ) {
+    const warehouse = await tx.warehouse.findFirst({
+      where: { id: warehouseId, tenantId },
+      select: { id: true },
+    });
+
+    if (!warehouse) {
+      throw new Error("Almacen no encontrado para el tenant actual.");
+    }
+  }
+
+  private async ensureItemResourcesBelongToTenant(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    items: QuoteItemInput[],
+  ) {
+    for (const item of items) {
+      if (item.productId) {
+        const product = await tx.product.findFirst({
+          where: { id: item.productId, tenantId },
+          select: { id: true },
+        });
+
+        if (!product) {
+          throw new Error("Producto no encontrado para el tenant actual.");
+        }
+      }
+
+      if (item.variantId) {
+        const variant = await tx.productVariant.findFirst({
+          where: { id: item.variantId, tenantId },
+          select: { id: true },
+        });
+
+        if (!variant) {
+          throw new Error("Variante no encontrada para el tenant actual.");
+        }
+      }
+    }
+  }
+
   private async nextDocumentNumberTx(
     tx: Prisma.TransactionClient,
     tenantId: string,
@@ -43,7 +120,15 @@ export class QuoteRepository {
         ? { prefix: "QTE-", nextNumber: 1 }
         : { prefix: "SAL-", nextNumber: 1 };
 
-    const counter = await tx.documentCounter.upsert({
+    const txModels = tx as unknown as Record<string, unknown>;
+    const documentCounter = txModels["documentCounter"] as {
+      upsert: (
+        args: unknown,
+      ) => Promise<{ nextNumber: number; prefix: string }>;
+      update: (args: unknown) => Promise<unknown>;
+    };
+
+    const counter = await documentCounter.upsert({
       where: {
         tenantId_type: {
           tenantId,
@@ -61,7 +146,7 @@ export class QuoteRepository {
 
     const current = counter.nextNumber;
 
-    await tx.documentCounter.update({
+    await documentCounter.update({
       where: {
         tenantId_type: {
           tenantId,
@@ -79,6 +164,26 @@ export class QuoteRepository {
 
   async createQuote(input: CreateQuoteInput) {
     return prisma.$transaction(async (tx) => {
+      await this.ensureBranchBelongsToTenant(
+        tx,
+        input.tenantId,
+        input.branchId,
+      );
+
+      if (input.customerId) {
+        await this.ensureCustomerBelongsToTenant(
+          tx,
+          input.tenantId,
+          input.customerId,
+        );
+      }
+
+      await this.ensureItemResourcesBelongToTenant(
+        tx,
+        input.tenantId,
+        input.items,
+      );
+
       const number = await this.nextDocumentNumberTx(
         tx,
         input.tenantId,
@@ -153,8 +258,105 @@ export class QuoteRepository {
     });
   }
 
+  async listQuotes(tenantId: string, filters: QuoteFilters) {
+    const where = {
+      tenantId,
+      status: filters.status,
+      customerId: filters.customerId,
+      branchId: filters.branchId,
+      OR: filters.search
+        ? [
+            {
+              number: {
+                contains: filters.search,
+                mode: "insensitive" as const,
+              },
+            },
+            {
+              notes: { contains: filters.search, mode: "insensitive" as const },
+            },
+            {
+              customer: {
+                name: {
+                  contains: filters.search,
+                  mode: "insensitive" as const,
+                },
+              },
+            },
+          ]
+        : undefined,
+    };
+
+    const skip = (filters.page - 1) * filters.pageSize;
+
+    const [total, items] = await prisma.$transaction([
+      prisma.quote.count({ where }),
+      prisma.quote.findMany({
+        where,
+        include: {
+          customer: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          branch: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          _count: {
+            select: {
+              items: true,
+            },
+          },
+        },
+        orderBy: [{ createdAt: "desc" }],
+        skip,
+        take: filters.pageSize,
+      }),
+    ]);
+
+    return {
+      items,
+      pagination: createPaginationMeta(filters.page, filters.pageSize, total),
+    };
+  }
+
+  async deleteQuote(tenantId: string, quoteId: string) {
+    const quote = await prisma.quote.findFirst({
+      where: {
+        id: quoteId,
+        tenantId,
+      },
+      select: {
+        id: true,
+        status: true,
+      },
+    });
+
+    if (!quote) {
+      throw new Error("Cotizacion no encontrada.");
+    }
+
+    if (quote.status !== "DRAFT") {
+      throw new Error("Solo se pueden eliminar cotizaciones en borrador.");
+    }
+
+    await prisma.quote.delete({
+      where: { id: quote.id },
+    });
+  }
+
   async convertToSale(input: ConvertQuoteToSaleInput) {
     return prisma.$transaction(async (tx) => {
+      await this.ensureWarehouseBelongsToTenant(
+        tx,
+        input.tenantId,
+        input.warehouseId,
+      );
+
       const quote = await tx.quote.findFirst({
         where: {
           id: input.quoteId,
@@ -172,6 +374,20 @@ export class QuoteRepository {
       if (quote.status !== "ACCEPTED") {
         throw new Error("Solo las cotizaciones aceptadas pueden convertirse.");
       }
+
+      if (quote.customerId) {
+        await this.ensureCustomerBelongsToTenant(
+          tx,
+          input.tenantId,
+          quote.customerId,
+        );
+      }
+
+      await this.ensureBranchBelongsToTenant(
+        tx,
+        input.tenantId,
+        quote.branchId,
+      );
 
       const saleNumber = await this.nextDocumentNumberTx(
         tx,
@@ -213,6 +429,28 @@ export class QuoteRepository {
 
       for (const item of quote.items) {
         if (!item.productId && !item.variantId) continue;
+
+        if (item.productId) {
+          const product = await tx.product.findFirst({
+            where: { id: item.productId, tenantId: input.tenantId },
+            select: { id: true },
+          });
+
+          if (!product) {
+            throw new Error("Producto no encontrado para el tenant actual.");
+          }
+        }
+
+        if (item.variantId) {
+          const variant = await tx.productVariant.findFirst({
+            where: { id: item.variantId, tenantId: input.tenantId },
+            select: { id: true },
+          });
+
+          if (!variant) {
+            throw new Error("Variante no encontrada para el tenant actual.");
+          }
+        }
 
         const whereUnique = item.productId
           ? {

@@ -1,4 +1,6 @@
 export interface ProductFilters {
+  page: number;
+  pageSize: number;
   search?: string;
   categoryId?: string;
   brandId?: string;

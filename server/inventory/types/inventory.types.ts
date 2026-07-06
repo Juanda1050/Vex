@@ -1,4 +1,6 @@
 export interface InventoryFilters {
+  page: number;
+  pageSize: number;
   warehouseId?: string;
   productId?: string;
   variantId?: string;

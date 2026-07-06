@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paginationSchema } from "@/server/pagination";
 
 const movementTypeEnum = z.enum([
   "PURCHASE_IN",
@@ -28,7 +29,7 @@ export const registerStockMovementSchema = z
     path: ["productId"],
   });
 
-export const inventoryFiltersSchema = z.object({
+export const inventoryFiltersSchema = paginationSchema.extend({
   warehouseId: z.string().uuid("invalidWarehouseId").optional(),
   productId: z.string().uuid("invalidProductId").optional(),
   variantId: z.string().uuid("invalidVariantId").optional(),

@@ -18,6 +18,15 @@ export interface CreateQuoteInput {
   items: QuoteItemInput[];
 }
 
+export interface QuoteFilters {
+  page: number;
+  pageSize: number;
+  search?: string;
+  status?: "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED" | "EXPIRED" | "CONVERTED";
+  customerId?: string;
+  branchId?: string;
+}
+
 export interface ConvertQuoteToSaleInput {
   tenantId: string;
   quoteId: string;

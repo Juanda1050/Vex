@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { createPaginationMeta } from "@/server/pagination";
 import type {
   CreateProductInput,
   ProductFilters,
@@ -36,29 +37,45 @@ export class ProductRepository {
     });
   }
 
-  async list(tenantId: string, filters: ProductFilters = {}) {
-    return prisma.product.findMany({
-      where: {
-        tenantId,
-        categoryId: filters.categoryId,
-        brandId: filters.brandId,
-        unitId: filters.unitId,
-        isActive: filters.isActive,
-        OR: filters.search
-          ? [
-              { name: { contains: filters.search, mode: "insensitive" } },
-              {
-                internalCode: {
-                  contains: filters.search,
-                  mode: "insensitive",
-                },
+  async list(tenantId: string, filters: ProductFilters) {
+    const where = {
+      tenantId,
+      categoryId: filters.categoryId,
+      brandId: filters.brandId,
+      unitId: filters.unitId,
+      isActive: filters.isActive,
+      OR: filters.search
+        ? [
+            {
+              name: { contains: filters.search, mode: "insensitive" as const },
+            },
+            {
+              internalCode: {
+                contains: filters.search,
+                mode: "insensitive" as const,
               },
-              { sku: { contains: filters.search, mode: "insensitive" } },
-            ]
-          : undefined,
-      },
-      orderBy: [{ createdAt: "desc" }],
-    });
+            },
+            { sku: { contains: filters.search, mode: "insensitive" as const } },
+          ]
+        : undefined,
+    };
+
+    const skip = (filters.page - 1) * filters.pageSize;
+
+    const [total, items] = await prisma.$transaction([
+      prisma.product.count({ where }),
+      prisma.product.findMany({
+        where,
+        orderBy: [{ createdAt: "desc" }],
+        skip,
+        take: filters.pageSize,
+      }),
+    ]);
+
+    return {
+      items,
+      pagination: createPaginationMeta(filters.page, filters.pageSize, total),
+    };
   }
 
   async update(input: UpdateProductInput) {
@@ -75,6 +92,13 @@ export class ProductRepository {
         baseCost: input.baseCost,
         isActive: input.isActive,
       },
+    });
+  }
+
+  async softDelete(tenantId: string, id: string) {
+    return prisma.product.updateMany({
+      where: { id, tenantId },
+      data: { isActive: false },
     });
   }
 }

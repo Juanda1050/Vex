@@ -320,6 +320,7 @@ model Branch {
   quotes     Quote[]
   sales      Sale[]
 
+  @@unique([tenantId, id])
   @@map("branches")
 }
 
@@ -341,6 +342,7 @@ model Warehouse {
   transfersFrom InventoryTransfer[] @relation("FromWarehouse")
   transfersTo   InventoryTransfer[] @relation("ToWarehouse")
 
+  @@unique([tenantId, id])
   @@map("warehouses")
 }
 
@@ -413,6 +415,7 @@ model Product {
   inventory Inventory[]
 
   @@unique([tenantId, internalCode])
+  @@unique([tenantId, id])
   @@index([tenantId, isActive])
   @@index([tenantId, sku])
   @@map("products")
@@ -436,6 +439,7 @@ model ProductVariant {
   inventory Inventory[]
 
   @@unique([tenantId, internalCode])
+  @@unique([tenantId, id])
   @@index([tenantId, sku])
   @@map("product_variants")
 }
@@ -462,6 +466,7 @@ model Inventory {
 
   @@unique([warehouseId, productId])
   @@unique([warehouseId, variantId])
+  @@unique([tenantId, id])
   @@index([tenantId, warehouseId])
   @@map("inventory")
 }
@@ -511,6 +516,7 @@ model Customer {
   quotes Quote[]
   sales  Sale[]
 
+  @@unique([tenantId, id])
   @@index([tenantId, isActive])
   @@map("customers")
 }
@@ -533,6 +539,7 @@ model Supplier {
   tenant    Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   purchases Purchase[]
 
+  @@unique([tenantId, id])
   @@index([tenantId, isActive])
   @@map("suppliers")
 }
@@ -564,6 +571,7 @@ model Quote {
   items    QuoteItem[]
 
   @@unique([tenantId, number])
+  @@unique([tenantId, id])
   @@index([tenantId, status])
   @@map("quotes")
 }
@@ -616,6 +624,7 @@ model Sale {
   items     SaleItem[]
 
   @@unique([tenantId, number])
+  @@unique([tenantId, id])
   @@index([tenantId, status])
   @@index([tenantId, saleDate])
   @@map("sales")
@@ -666,6 +675,7 @@ model Purchase {
   items     PurchaseItem[]
 
   @@unique([tenantId, number])
+  @@unique([tenantId, id])
   @@index([tenantId, status])
   @@map("purchases")
 }

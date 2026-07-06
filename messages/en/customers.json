@@ -1,0 +1,14 @@
+{
+  "title": "Customers",
+  "errors": {
+    "generic": "Could not process customers request.",
+    "invalidPayload": "The payload is invalid.",
+    "invalidCustomerId": "The provided customerId is invalid.",
+    "customerNotFound": "Customer not found.",
+    "customerCreateFailed": "Could not create customer.",
+    "customerUpdateFailed": "Could not update customer.",
+    "customerDeleteFailed": "Could not delete customer.",
+    "customerFetchFailed": "Could not fetch customer.",
+    "customerListFailed": "Could not list customers."
+  }
+}

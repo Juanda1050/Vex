@@ -19,6 +19,15 @@
     "status": "Estado"
   },
   "errors": {
+    "generic": "No se pudo procesar la solicitud de productos.",
+    "invalidPayload": "El payload enviado es invalido.",
+    "invalidProductId": "El productId enviado no es valido.",
+    "productNotFound": "Producto no encontrado.",
+    "productCreateFailed": "No se pudo crear el producto.",
+    "productUpdateFailed": "No se pudo actualizar el producto.",
+    "productDeleteFailed": "No se pudo eliminar el producto.",
+    "productFetchFailed": "No se pudo obtener el producto.",
+    "productListFailed": "No se pudieron listar los productos.",
     "nameRequired": "El nombre es requerido",
     "priceInvalid": "El precio debe ser mayor a 0",
     "skuExists": "El SKU ya existe",

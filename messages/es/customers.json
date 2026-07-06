@@ -1,0 +1,14 @@
+{
+  "title": "Clientes",
+  "errors": {
+    "generic": "No se pudo procesar la solicitud de clientes.",
+    "invalidPayload": "El payload enviado es invalido.",
+    "invalidCustomerId": "El customerId enviado no es valido.",
+    "customerNotFound": "Cliente no encontrado.",
+    "customerCreateFailed": "No se pudo crear el cliente.",
+    "customerUpdateFailed": "No se pudo actualizar el cliente.",
+    "customerDeleteFailed": "No se pudo eliminar el cliente.",
+    "customerFetchFailed": "No se pudo obtener el cliente.",
+    "customerListFailed": "No se pudieron listar los clientes."
+  }
+}

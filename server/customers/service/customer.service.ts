@@ -16,13 +16,18 @@ export class CustomerService {
     return customer;
   }
 
-  async listCustomers(tenantId: string, filters: CustomerFilters = {}) {
+  async listCustomers(tenantId: string, filters: CustomerFilters) {
     return customerRepository.list(tenantId, filters);
   }
 
   async updateCustomer(input: UpdateCustomerInput) {
     await this.getCustomer(input.tenantId, input.id);
     return customerRepository.update(input);
+  }
+
+  async deleteCustomer(tenantId: string, customerId: string) {
+    await this.getCustomer(tenantId, customerId);
+    await customerRepository.softDelete(tenantId, customerId);
   }
 }
 

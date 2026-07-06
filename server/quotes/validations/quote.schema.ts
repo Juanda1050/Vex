@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paginationSchema } from "@/server/pagination";
 
 const quoteItemSchema = z
   .object({
@@ -32,5 +33,15 @@ export const convertQuoteToSaleSchema = z.object({
   createdBy: z.string().uuid("invalidUserId").nullable().optional(),
 });
 
+export const quoteFiltersSchema = paginationSchema.extend({
+  search: z.string().trim().max(120).optional(),
+  status: z
+    .enum(["DRAFT", "SENT", "ACCEPTED", "REJECTED", "EXPIRED", "CONVERTED"])
+    .optional(),
+  customerId: z.string().uuid("invalidCustomerId").optional(),
+  branchId: z.string().uuid("invalidBranchId").optional(),
+});
+
 export type CreateQuoteSchema = z.infer<typeof createQuoteSchema>;
 export type ConvertQuoteToSaleSchema = z.infer<typeof convertQuoteToSaleSchema>;
+export type QuoteFiltersSchema = z.infer<typeof quoteFiltersSchema>;

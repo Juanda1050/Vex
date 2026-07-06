@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { createPaginationMeta } from "@/server/pagination";
 import type {
   InventoryFilters,
   RegisterStockMovementInput,
@@ -13,7 +14,7 @@ const OUTGOING_TYPES = new Set([
 ]);
 
 export class InventoryRepository {
-  async listInventory(tenantId: string, filters: InventoryFilters = {}) {
+  async listInventory(tenantId: string, filters: InventoryFilters) {
     const rows = await prisma.inventory.findMany({
       where: {
         tenantId,
@@ -29,9 +30,21 @@ export class InventoryRepository {
       orderBy: [{ updatedAt: "desc" }],
     });
 
-    if (!filters.lowStockOnly) return rows;
+    const filteredRows = filters.lowStockOnly
+      ? rows.filter((row) => row.quantityOnHand.lte(row.minStock))
+      : rows;
 
-    return rows.filter((row) => row.quantityOnHand.lte(row.minStock));
+    const skip = (filters.page - 1) * filters.pageSize;
+    const items = filteredRows.slice(skip, skip + filters.pageSize);
+
+    return {
+      items,
+      pagination: createPaginationMeta(
+        filters.page,
+        filters.pageSize,
+        filteredRows.length,
+      ),
+    };
   }
 
   async registerMovement(input: RegisterStockMovementInput) {
@@ -41,6 +54,37 @@ export class InventoryRepository {
       : quantity;
 
     return prisma.$transaction(async (tx) => {
+      const warehouse = await tx.warehouse.findFirst({
+        where: { id: input.warehouseId, tenantId: input.tenantId },
+        select: { id: true },
+      });
+
+      if (!warehouse) {
+        throw new Error("Almacen no encontrado para el tenant actual.");
+      }
+
+      if (input.productId) {
+        const product = await tx.product.findFirst({
+          where: { id: input.productId, tenantId: input.tenantId },
+          select: { id: true },
+        });
+
+        if (!product) {
+          throw new Error("Producto no encontrado para el tenant actual.");
+        }
+      }
+
+      if (input.variantId) {
+        const variant = await tx.productVariant.findFirst({
+          where: { id: input.variantId, tenantId: input.tenantId },
+          select: { id: true },
+        });
+
+        if (!variant) {
+          throw new Error("Variante no encontrada para el tenant actual.");
+        }
+      }
+
       const whereUnique = input.productId
         ? {
             warehouseId_productId: {

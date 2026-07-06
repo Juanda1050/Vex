@@ -19,6 +19,15 @@
     "status": "Status"
   },
   "errors": {
+    "generic": "Could not process products request.",
+    "invalidPayload": "The payload is invalid.",
+    "invalidProductId": "The provided productId is invalid.",
+    "productNotFound": "Product not found.",
+    "productCreateFailed": "Could not create product.",
+    "productUpdateFailed": "Could not update product.",
+    "productDeleteFailed": "Could not delete product.",
+    "productFetchFailed": "Could not fetch product.",
+    "productListFailed": "Could not list products.",
     "nameRequired": "Name is required",
     "priceInvalid": "Price must be greater than 0",
     "skuExists": "SKU already exists",

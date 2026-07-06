@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { paginationSchema } from "@/server/pagination";
 
 export const createProductSchema = z.object({
   tenantId: z.string().uuid("invalidTenantId"),
@@ -29,7 +30,7 @@ export const updateProductSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
-export const productFiltersSchema = z.object({
+export const productFiltersSchema = paginationSchema.extend({
   search: z.string().trim().max(120).optional(),
   categoryId: z.string().uuid("invalidCategoryId").optional(),
   brandId: z.string().uuid("invalidBrandId").optional(),

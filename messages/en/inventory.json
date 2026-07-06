@@ -18,7 +18,16 @@
     "reference": "Reference"
   },
   "errors": {
+    "generic": "Could not process inventory request.",
+    "invalidPayload": "The payload is invalid.",
+    "inventoryListFailed": "Could not list inventory.",
+    "inventoryMovementFailed": "Could not register stock movement.",
+    "inventoryKardexFailed": "Could not fetch kardex.",
     "insufficientStock": "Insufficient stock",
+    "warehouseNotFound": "Warehouse not found.",
+    "productNotFound": "Product not found.",
+    "variantNotFound": "Variant not found.",
+    "crossTenantResource": "A cross-tenant resource was detected.",
     "warehouseRequired": "Warehouse is required",
     "quantityInvalid": "Quantity must be greater than 0"
   },

@@ -28,12 +28,16 @@
   },
   "login": {
     "badge": "Módulo de autenticación",
-    "description": "Inicia sesión usando la acción del servidor y redirección segura por locale.",
+    "description": "Gestiona ventas, inventario y clientes en minutos, sin complicaciones.",
+    "appTypeTitle": "Tu centro de control para crecer",
+    "heroDescription": "Haz crecer tu negocio con decisiones mas rapidas, procesos mas simples y resultados visibles desde el primer dia.",
     "back": "Volver al hub"
   },
   "register": {
     "badge": "Módulo de onboarding",
-    "description": "Registro conectado al servidor para crear usuario y organización inicial.",
+    "description": "Empieza hoy y ordena tu operacion para vender mas con menos esfuerzo.",
+    "appTypeTitle": "Crea tu espacio y despega",
+    "heroDescription": "Activa tu cuenta y empieza a trabajar con todo en un solo lugar: rapido, claro y pensado para tu equipo.",
     "backToLogin": "Ir a login"
   },
   "onboarding": {

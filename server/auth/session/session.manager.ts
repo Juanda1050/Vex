@@ -1,5 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
-import type { EmailOtpType } from "@supabase/supabase-js";
+import type { EmailOtpType, Provider } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import type { AuthUser } from "../types";
 
@@ -46,6 +46,14 @@ export const sessionManager = {
   async signInWithPassword(email: string, password: string) {
     const supabase = await getSupabaseClient();
     return supabase.auth.signInWithPassword({ email, password });
+  },
+
+  async signInWithOAuth(provider: Provider, redirectTo?: string) {
+    const supabase = await getSupabaseClient();
+    return supabase.auth.signInWithOAuth({
+      provider,
+      options: redirectTo ? { redirectTo } : undefined,
+    });
   },
 
   async signUp(email: string, password: string, emailRedirectTo?: string) {

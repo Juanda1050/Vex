@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
+import { Building2, LockKeyhole, Mail } from "lucide-react";
 
 import {
   registerAction,
@@ -30,70 +31,89 @@ export function RegisterForm({ locale }: RegisterFormProps) {
   );
 
   return (
-    <form action={formAction} className="grid gap-4">
+    <form action={formAction} className="grid gap-3 sm:gap-4">
       <div className="grid gap-1.5">
         <label
           htmlFor="orgName"
-          className="text-sm font-medium text-foreground"
+          className="text-xs font-medium text-foreground sm:text-sm"
         >
           {t("register.orgName")}
         </label>
-        <Input
-          id="orgName"
-          name="orgName"
-          type="text"
-          required
-          minLength={3}
-          placeholder={t("register.orgNamePlaceholder")}
-        />
+        <div className="relative">
+          <Building2 className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
+          <Input
+            id="orgName"
+            name="orgName"
+            type="text"
+            required
+            minLength={3}
+            placeholder={t("register.orgNamePlaceholder")}
+            className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11"
+          />
+        </div>
       </div>
 
       <div className="grid gap-1.5">
-        <label htmlFor="email" className="text-sm font-medium text-foreground">
+        <label
+          htmlFor="email"
+          className="text-xs font-medium text-foreground sm:text-sm"
+        >
           {t("login.email")}
         </label>
-        <Input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          placeholder={t("register.emailPlaceholder")}
-        />
+        <div className="relative">
+          <Mail className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder={t("register.emailPlaceholder")}
+            className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11"
+          />
+        </div>
       </div>
 
       <div className="grid gap-1.5">
         <label
           htmlFor="password"
-          className="text-sm font-medium text-foreground"
+          className="text-xs font-medium text-foreground sm:text-sm"
         >
           {t("login.password")}
         </label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          required
-          minLength={8}
-          autoComplete="new-password"
-        />
+        <div className="relative">
+          <LockKeyhole className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            required
+            minLength={8}
+            autoComplete="new-password"
+            className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11"
+          />
+        </div>
       </div>
 
       <div className="grid gap-1.5">
         <label
           htmlFor="confirmPassword"
-          className="text-sm font-medium text-foreground"
+          className="text-xs font-medium text-foreground sm:text-sm"
         >
           {t("register.confirmPassword")}
         </label>
-        <Input
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          required
-          minLength={8}
-          autoComplete="new-password"
-        />
+        <div className="relative">
+          <LockKeyhole className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
+          <Input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            required
+            minLength={8}
+            autoComplete="new-password"
+            className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11"
+          />
+        </div>
       </div>
 
       {state.error ? (
@@ -108,7 +128,11 @@ export function RegisterForm({ locale }: RegisterFormProps) {
         </p>
       ) : null}
 
-      <Button type="submit" disabled={pending} className="w-full">
+      <Button
+        type="submit"
+        disabled={pending}
+        className="h-10 w-full rounded-2xl text-sm sm:h-11 sm:text-[0.95rem]"
+      >
         {pending ? t("register.loading") : t("register.submit")}
       </Button>
 

@@ -28,12 +28,16 @@
   },
   "login": {
     "badge": "Authentication module",
-    "description": "Sign in using the server action and locale-safe redirect.",
+    "description": "Manage sales, inventory, and customers in minutes with zero hassle.",
+    "appTypeTitle": "Your growth command center",
+    "heroDescription": "Grow your business with faster decisions, simpler workflows, and visible results from day one.",
     "back": "Back to hub"
   },
   "register": {
     "badge": "Onboarding module",
-    "description": "Server-connected registration to create the user and initial organization.",
+    "description": "Get started today and run your operation with less effort and more control.",
+    "appTypeTitle": "Create your space and launch",
+    "heroDescription": "Activate your account and run everything in one place: fast, clear, and built for your team.",
     "backToLogin": "Go to login"
   },
   "onboarding": {

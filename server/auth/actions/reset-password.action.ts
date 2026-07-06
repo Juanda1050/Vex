@@ -10,6 +10,7 @@ import {
   type AuthActionState,
 } from "./action-helpers";
 import { resetPasswordSchema } from "../validations/reset-password.schema";
+import { HTTP_STATUS } from "@/server/http-status";
 
 export type ResetPasswordState = AuthActionState;
 
@@ -30,12 +31,20 @@ export async function resetPasswordAction(
     return {
       error: errors.fromKey(key),
       success: false,
+      errorKey: key,
+      status: HTTP_STATUS.BAD_REQUEST,
     };
   }
 
   const { error } = await sessionManager.updatePassword(parsed.data.password);
 
-  if (error) return { error: errors.generic(), success: false };
+  if (error)
+    return {
+      error: errors.generic(),
+      success: false,
+      errorKey: "generic",
+      status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+    };
 
   redirect(AUTH_REDIRECTS.login(locale));
 }

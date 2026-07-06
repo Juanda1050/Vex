@@ -6,6 +6,10 @@ import { seedWarehouse } from "./seeds/warehouse.seed";
 import { seedUnits } from "./seeds/unit.seed";
 import { seedCategories } from "./seeds/category.seed";
 import { seedBrands } from "./seeds/brand.seed";
+import {
+  seedSubscriptionCatalog,
+  seedTenantSubscription,
+} from "./seeds/subscription.seed";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +17,8 @@ async function main() {
   console.log("\nIniciando seed...\n");
 
   await seedTenant(prisma);
+  await seedSubscriptionCatalog(prisma);
+  await seedTenantSubscription(prisma);
   await seedSettings(prisma);
   await seedBranch(prisma);
   await seedWarehouse(prisma);

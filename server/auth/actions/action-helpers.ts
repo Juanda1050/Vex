@@ -1,37 +1,23 @@
-import { getTranslations } from "next-intl/server";
 import type { ZodError } from "zod";
+import type { HttpStatusCode } from "@/server/http-status";
+import { getErrorTranslator } from "@/server/error-translator";
 
 export interface AuthActionState {
   error: string | null;
   success: boolean;
+  errorKey?: string | null;
+  status?: HttpStatusCode;
 }
 
 export function getFirstValidationKey(error: ZodError): string {
   return error.issues[0]?.message ?? "generic";
 }
 
-export function translateWithFallback(
-  t: (key: string) => string,
-  fallback: (key: string) => string,
-  key: string,
-): string {
-  try {
-    return t(key);
-  } catch {
-    return fallback("generic");
-  }
-}
-
 export async function getAuthErrorTranslator() {
-  const tAuth = await getTranslations("auth.errors");
-  const tCommon = await getTranslations("common.errors");
-
-  return {
-    tAuth,
-    tCommon,
-    fromKey: (key: string) => translateWithFallback(tAuth, tCommon, key),
-    generic: () => tCommon("generic"),
-  };
+  return getErrorTranslator({
+    namespace: "auth.errors",
+    fallbackNamespace: "common.errors",
+  });
 }
 
 export function sanitizeNextPath(

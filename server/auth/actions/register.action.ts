@@ -11,6 +11,7 @@ import {
   type AuthActionState,
 } from "./action-helpers";
 import { registerSchema } from "../validations/register.schema";
+import { HTTP_STATUS } from "@/server/http-status";
 
 export type RegisterState = AuthActionState;
 
@@ -35,13 +36,21 @@ export async function registerAction(
     return {
       error: errors.fromKey(key),
       success: false,
+      errorKey: key,
+      status: HTTP_STATUS.BAD_REQUEST,
     };
   }
 
   const { orgName, email, password } = parsed.data;
 
   const appUrl = getAppUrl();
-  if (!appUrl) return { error: errors.generic(), success: false };
+  if (!appUrl)
+    return {
+      error: errors.generic(),
+      success: false,
+      errorKey: "generic",
+      status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+    };
 
   const callbackUrl = buildLocalizedAbsoluteUrl(
     appUrl,
@@ -55,15 +64,30 @@ export async function registerAction(
   );
 
   if (error)
-    return { error: error.message ?? errors.generic(), success: false };
+    return {
+      error: error.message ?? errors.generic(),
+      success: false,
+      errorKey: "generic",
+      status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+    };
   if (!data.user)
-    return { error: errors.fromKey("userNotCreated"), success: false };
+    return {
+      error: errors.fromKey("userNotCreated"),
+      success: false,
+      errorKey: "userNotCreated",
+      status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+    };
 
   try {
     await tenantService.registerNewCompany(orgName, data.user.id);
   } catch {
-    return { error: errors.fromKey("tenantError"), success: false };
+    return {
+      error: errors.fromKey("tenantError"),
+      success: false,
+      errorKey: "tenantError",
+      status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+    };
   }
 
-  return { error: null, success: true };
+  return { error: null, success: true, errorKey: null, status: HTTP_STATUS.OK };
 }

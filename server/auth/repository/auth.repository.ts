@@ -8,12 +8,27 @@ export const authRepository = {
         tenant: {
           include: {
             branches: {
-              where: { isDefault: true },
+              where: { isActive: true },
               include: {
                 warehouses: {
                   where: { isDefault: true },
                   take: 1,
                 },
+              },
+              take: 1,
+            },
+            subscriptions: {
+              where: { isCurrent: true },
+              include: {
+                plan: {
+                  select: {
+                    code: true,
+                    tier: true,
+                  },
+                },
+              },
+              orderBy: {
+                startedAt: "desc",
               },
               take: 1,
             },

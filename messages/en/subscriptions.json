@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "generic": "The subscription request could not be processed.",
+    "plansFetchFailed": "Plans could not be retrieved.",
+    "currentFetchFailed": "Current subscription could not be retrieved.",
+    "changeFailed": "Subscription could not be changed.",
+    "cancelFailed": "Subscription could not be canceled.",
+    "reactivateFailed": "Subscription could not be reactivated.",
+    "invalidPayload": "The change plan payload is invalid.",
+    "planCodeRequired": "You must provide a plan code.",
+    "invalidPriceId": "The provided priceId is invalid.",
+    "billingAccessDenied": "You do not have permission to manage subscriptions.",
+    "planNotAvailable": "The selected plan is not available.",
+    "invalidPlanPrice": "The selected price does not belong to the selected plan.",
+    "noActiveSubscriptionToCancel": "There is no active subscription to cancel.",
+    "noActiveSubscriptionToReactivate": "There is no active subscription to reactivate."
+  }
+}

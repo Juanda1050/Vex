@@ -6,6 +6,7 @@ import inventory from "./inventory.json";
 import sales from "./sales.json";
 import purchases from "./purchases.json";
 import settings from "./settings.json";
+import subscriptions from "./subscriptions.json";
 
 const messages = {
   common,
@@ -16,6 +17,7 @@ const messages = {
   sales,
   purchases,
   settings,
+  subscriptions,
 };
 
 export default messages;

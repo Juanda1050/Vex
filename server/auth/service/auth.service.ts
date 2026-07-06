@@ -1,6 +1,7 @@
 import { ROLE_HIERARCHY, ROLE_PERMISSIONS } from "../constants";
 import type { TenantMember } from "../repository/auth.repository";
 import type { Role, Permission, TenantContext } from "../types";
+import { FREE_PLAN_CODE } from "@/server/subscriptions";
 
 export const authService = {
   resolveBranchId(member: TenantMember): string | null {
@@ -22,6 +23,9 @@ export const authService = {
     branchId: string,
     warehouseId: string,
   ): TenantContext {
+    const currentSubscription = member.tenant.subscriptions[0] ?? null;
+    const planTier = currentSubscription?.plan.tier ?? "FREE";
+
     return {
       userId,
       email,
@@ -30,6 +34,14 @@ export const authService = {
       warehouseId,
       role: member.role,
       tenantName: member.tenant.name,
+      subscriptionPlanCode: currentSubscription?.plan.code ?? FREE_PLAN_CODE,
+      subscriptionPlanTier: planTier,
+      subscriptionStatus: currentSubscription?.status ?? "ACTIVE",
+      isPremium:
+        (planTier === "PREMIUM" || planTier === "ENTERPRISE") &&
+        (currentSubscription?.status === "TRIALING" ||
+          currentSubscription?.status === "ACTIVE" ||
+          currentSubscription?.status === "PAST_DUE"),
     };
   },
 

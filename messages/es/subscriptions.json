@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "generic": "No se pudo procesar la solicitud de suscripción.",
+    "plansFetchFailed": "No se pudieron obtener los planes.",
+    "currentFetchFailed": "No se pudo obtener la suscripción actual.",
+    "changeFailed": "No se pudo cambiar la suscripción.",
+    "cancelFailed": "No se pudo cancelar la suscripción.",
+    "reactivateFailed": "No se pudo reactivar la suscripción.",
+    "invalidPayload": "El payload para cambiar plan es inválido.",
+    "planCodeRequired": "Debes enviar un código de plan.",
+    "invalidPriceId": "El priceId enviado no es válido.",
+    "billingAccessDenied": "No tienes permisos para administrar la suscripción.",
+    "planNotAvailable": "El plan seleccionado no está disponible.",
+    "invalidPlanPrice": "El precio seleccionado no pertenece al plan indicado.",
+    "noActiveSubscriptionToCancel": "No existe una suscripción activa para cancelar.",
+    "noActiveSubscriptionToReactivate": "No existe una suscripción activa para reactivar."
+  }
+}

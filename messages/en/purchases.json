@@ -1,0 +1,25 @@
+{
+  "title": "Purchases",
+  "new": "New purchase",
+  "fields": {
+    "supplier": "Supplier",
+    "date": "Date",
+    "total": "Total",
+    "status": "Status",
+    "notes": "Notes",
+    "reference": "Reference"
+  },
+  "status": {
+    "pending": "Pending",
+    "received": "Received",
+    "cancelled": "Cancelled"
+  },
+  "errors": {
+    "supplierRequired": "Supplier is required",
+    "noItems": "Add at least one product"
+  },
+  "messages": {
+    "created": "Purchase registered successfully",
+    "received": "Purchase marked as received"
+  }
+}

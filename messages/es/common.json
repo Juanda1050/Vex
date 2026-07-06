@@ -1,0 +1,29 @@
+{
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "delete": "Eliminar",
+  "edit": "Editar",
+  "create": "Crear",
+  "search": "Buscar",
+  "loading": "Cargando...",
+  "noResults": "Sin resultados",
+  "confirm": "Confirmar",
+  "back": "Regresar",
+  "actions": "Acciones",
+  "status": {
+    "active": "Activo",
+    "inactive": "Inactivo"
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "of": "de"
+  },
+  "errors": {
+    "generic": "Ocurrió un error inesperado",
+    "notFound": "No encontrado",
+    "unauthorized": "No autorizado",
+    "forbidden": "Acceso denegado",
+    "serverError": "Error del servidor"
+  }
+}

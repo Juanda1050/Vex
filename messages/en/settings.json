@@ -1,0 +1,19 @@
+{
+  "title": "Configuración",
+  "sections": {
+    "general": "General",
+    "branches": "Sucursales",
+    "warehouses": "Almacenes",
+    "users": "Usuarios",
+    "billing": "Facturación"
+  },
+  "fields": {
+    "orgName": "Nombre de la organización",
+    "timezone": "Zona horaria",
+    "currency": "Moneda",
+    "language": "Idioma"
+  },
+  "messages": {
+    "saved": "Configuración guardada"
+  }
+}

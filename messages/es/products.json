@@ -1,0 +1,32 @@
+{
+  "title": "Productos",
+  "new": "Nuevo producto",
+  "edit": "Editar producto",
+  "delete": "Eliminar producto",
+  "deleteConfirm": "¿Estás seguro de eliminar este producto?",
+  "fields": {
+    "name": "Nombre",
+    "sku": "SKU",
+    "price": "Precio",
+    "cost": "Costo",
+    "stock": "Stock",
+    "minStock": "Stock mínimo",
+    "category": "Categoría",
+    "brand": "Marca",
+    "unit": "Unidad",
+    "description": "Descripción",
+    "barcode": "Código de barras",
+    "status": "Estado"
+  },
+  "errors": {
+    "nameRequired": "El nombre es requerido",
+    "priceInvalid": "El precio debe ser mayor a 0",
+    "skuExists": "El SKU ya existe",
+    "notFound": "Producto no encontrado"
+  },
+  "messages": {
+    "created": "Producto creado correctamente",
+    "updated": "Producto actualizado correctamente",
+    "deleted": "Producto eliminado correctamente"
+  }
+}

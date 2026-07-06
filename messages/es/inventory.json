@@ -1,0 +1,29 @@
+{
+  "title": "Inventario",
+  "movements": "Movimientos",
+  "adjustment": "Ajuste",
+  "transfer": "Transferencia",
+  "types": {
+    "entry": "Entrada",
+    "exit": "Salida",
+    "adjustment": "Ajuste",
+    "transfer": "Transferencia"
+  },
+  "fields": {
+    "product": "Producto",
+    "quantity": "Cantidad",
+    "warehouse": "Almacén",
+    "reason": "Motivo",
+    "date": "Fecha",
+    "reference": "Referencia"
+  },
+  "errors": {
+    "insufficientStock": "Stock insuficiente",
+    "warehouseRequired": "El almacén es requerido",
+    "quantityInvalid": "La cantidad debe ser mayor a 0"
+  },
+  "messages": {
+    "adjustmentSaved": "Ajuste guardado correctamente",
+    "transferCompleted": "Transferencia completada"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "edit": "Edit",
+  "create": "Create",
+  "search": "Search",
+  "loading": "Loading...",
+  "noResults": "No results",
+  "confirm": "Confirm",
+  "back": "Back",
+  "actions": "Actions",
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "of": "of"
+  },
+  "errors": {
+    "generic": "An unexpected error occurred",
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Access denied",
+    "serverError": "Server error"
+  }
+}

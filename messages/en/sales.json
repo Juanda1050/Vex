@@ -1,0 +1,35 @@
+{
+  "title": "Sales",
+  "new": "New sale",
+  "fields": {
+    "customer": "Customer",
+    "date": "Date",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "tax": "Tax",
+    "discount": "Discount",
+    "paymentMethod": "Payment method",
+    "status": "Status",
+    "notes": "Notes"
+  },
+  "status": {
+    "pending": "Pending",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "refunded": "Refunded"
+  },
+  "paymentMethods": {
+    "cash": "Cash",
+    "card": "Card",
+    "transfer": "Transfer"
+  },
+  "errors": {
+    "customerRequired": "Customer is required",
+    "noItems": "Add at least one product",
+    "insufficientStock": "Insufficient stock for {product}"
+  },
+  "messages": {
+    "created": "Sale registered successfully",
+    "cancelled": "Sale cancelled"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "dashboard": "Home",
+  "products": "Products",
+  "inventory": "Inventory",
+  "sales": "Sales",
+  "purchases": "Purchases",
+  "settings": "Settings",
+  "logout": "Sign out"
+}

@@ -1,0 +1,25 @@
+{
+  "title": "Compras",
+  "new": "Nueva compra",
+  "fields": {
+    "supplier": "Proveedor",
+    "date": "Fecha",
+    "total": "Total",
+    "status": "Estado",
+    "notes": "Notas",
+    "reference": "Referencia"
+  },
+  "status": {
+    "pending": "Pendiente",
+    "received": "Recibida",
+    "cancelled": "Cancelada"
+  },
+  "errors": {
+    "supplierRequired": "El proveedor es requerido",
+    "noItems": "Agrega al menos un producto"
+  },
+  "messages": {
+    "created": "Compra registrada correctamente",
+    "received": "Compra marcada como recibida"
+  }
+}

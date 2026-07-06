@@ -1,0 +1,35 @@
+{
+  "title": "Ventas",
+  "new": "Nueva venta",
+  "fields": {
+    "customer": "Cliente",
+    "date": "Fecha",
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "tax": "Impuesto",
+    "discount": "Descuento",
+    "paymentMethod": "Método de pago",
+    "status": "Estado",
+    "notes": "Notas"
+  },
+  "status": {
+    "pending": "Pendiente",
+    "completed": "Completada",
+    "cancelled": "Cancelada",
+    "refunded": "Reembolsada"
+  },
+  "paymentMethods": {
+    "cash": "Efectivo",
+    "card": "Tarjeta",
+    "transfer": "Transferencia"
+  },
+  "errors": {
+    "customerRequired": "El cliente es requerido",
+    "noItems": "Agrega al menos un producto",
+    "insufficientStock": "Stock insuficiente para {product}"
+  },
+  "messages": {
+    "created": "Venta registrada correctamente",
+    "cancelled": "Venta cancelada"
+  }
+}

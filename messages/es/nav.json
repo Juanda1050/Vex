@@ -1,0 +1,9 @@
+{
+  "dashboard": "Inicio",
+  "products": "Productos",
+  "inventory": "Inventario",
+  "sales": "Ventas",
+  "purchases": "Compras",
+  "settings": "Configuración",
+  "logout": "Cerrar sesión"
+}

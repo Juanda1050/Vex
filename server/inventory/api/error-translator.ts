@@ -11,6 +11,7 @@ export type InventoryApiErrorKey =
   | "inventoryListFailed"
   | "inventoryMovementFailed"
   | "inventoryKardexFailed"
+  | "warehousesLimitReached"
   | "insufficientStock"
   | "warehouseNotFound"
   | "productNotFound"
@@ -23,6 +24,7 @@ const INVENTORY_ERROR_STATUS: Record<InventoryApiErrorKey, HttpStatusCode> = {
   inventoryListFailed: HTTP_STATUS.INTERNAL_SERVER_ERROR,
   inventoryMovementFailed: HTTP_STATUS.INTERNAL_SERVER_ERROR,
   inventoryKardexFailed: HTTP_STATUS.INTERNAL_SERVER_ERROR,
+  warehousesLimitReached: HTTP_STATUS.PAYMENT_REQUIRED,
   insufficientStock: HTTP_STATUS.CONFLICT,
   warehouseNotFound: HTTP_STATUS.NOT_FOUND,
   productNotFound: HTTP_STATUS.NOT_FOUND,
@@ -34,6 +36,7 @@ const MESSAGE_KEY_PATTERNS: ReadonlyArray<
   readonly [needle: string, key: InventoryApiErrorKey]
 > = [
   ["stock insuficiente", "insufficientStock"],
+  ["limite del plan alcanzado para warehouseslimit", "warehousesLimitReached"],
   ["almacen no encontrado", "warehouseNotFound"],
   ["producto no encontrado", "productNotFound"],
   ["variante no encontrada", "variantNotFound"],

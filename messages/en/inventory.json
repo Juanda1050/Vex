@@ -23,6 +23,7 @@
     "inventoryListFailed": "Could not list inventory.",
     "inventoryMovementFailed": "Could not register stock movement.",
     "inventoryKardexFailed": "Could not fetch kardex.",
+    "warehousesLimitReached": "Your plan reached the warehouse limit. Upgrade to continue inventory operations.",
     "insufficientStock": "Insufficient stock",
     "warehouseNotFound": "Warehouse not found.",
     "productNotFound": "Product not found.",

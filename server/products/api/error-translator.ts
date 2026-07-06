@@ -9,6 +9,7 @@ export type ProductApiErrorKey =
   | "generic"
   | "invalidPayload"
   | "invalidProductId"
+  | "productsLimitReached"
   | "productNotFound"
   | "productCreateFailed"
   | "productUpdateFailed"
@@ -20,6 +21,7 @@ const PRODUCT_ERROR_STATUS: Record<ProductApiErrorKey, HttpStatusCode> = {
   generic: HTTP_STATUS.INTERNAL_SERVER_ERROR,
   invalidPayload: HTTP_STATUS.BAD_REQUEST,
   invalidProductId: HTTP_STATUS.BAD_REQUEST,
+  productsLimitReached: HTTP_STATUS.PAYMENT_REQUIRED,
   productNotFound: HTTP_STATUS.NOT_FOUND,
   productCreateFailed: HTTP_STATUS.INTERNAL_SERVER_ERROR,
   productUpdateFailed: HTTP_STATUS.INTERNAL_SERVER_ERROR,
@@ -30,7 +32,10 @@ const PRODUCT_ERROR_STATUS: Record<ProductApiErrorKey, HttpStatusCode> = {
 
 const MESSAGE_KEY_PATTERNS: ReadonlyArray<
   readonly [needle: string, key: ProductApiErrorKey]
-> = [["producto no encontrado", "productNotFound"]];
+> = [
+  ["producto no encontrado", "productNotFound"],
+  ["limite del plan alcanzado para productslimit", "productsLimitReached"],
+];
 
 function isSupportedLocale(locale: string): locale is AppLocale {
   return routing.locales.includes(locale as AppLocale);

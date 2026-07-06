@@ -9,6 +9,8 @@ import purchases from "./purchases.json";
 import quotes from "./quotes.json";
 import settings from "./settings.json";
 import subscriptions from "./subscriptions.json";
+import mvp from "./mvp.json";
+import users from "./users.json";
 
 const messages = {
   common,
@@ -22,6 +24,8 @@ const messages = {
   quotes,
   settings,
   subscriptions,
+  mvp,
+  users,
 };
 
 export default messages;

@@ -6,6 +6,10 @@ import {
   registerStockMovementSchema,
 } from "@/server/inventory";
 import {
+  enforceSubscriptionLimit,
+  requireSubscriptionFeature,
+} from "@/server/subscriptions";
+import {
   getInventoryApiErrorTranslator,
   getInventoryErrorStatus,
   mapInventoryErrorToKey,
@@ -18,6 +22,19 @@ export async function GET(request: NextRequest) {
 
   try {
     const ctx = await requirePermission("inventory.view");
+    const { subscription } =
+      await requireSubscriptionFeature("warehousesLimit");
+    const activeWarehouses = await inventoryService.countActiveWarehouses(
+      ctx.tenantId,
+    );
+
+    enforceSubscriptionLimit(
+      subscription,
+      "warehousesLimit",
+      activeWarehouses,
+      "Limite del plan alcanzado para warehousesLimit.",
+    );
+
     const parsed = inventoryFiltersSchema.safeParse({
       page: request.nextUrl.searchParams.get("page") ?? undefined,
       pageSize: request.nextUrl.searchParams.get("pageSize") ?? undefined,
@@ -64,6 +81,19 @@ export async function POST(request: NextRequest) {
 
   try {
     const ctx = await requirePermission("inventory.adjust");
+    const { subscription } =
+      await requireSubscriptionFeature("warehousesLimit");
+    const activeWarehouses = await inventoryService.countActiveWarehouses(
+      ctx.tenantId,
+    );
+
+    enforceSubscriptionLimit(
+      subscription,
+      "warehousesLimit",
+      activeWarehouses,
+      "Limite del plan alcanzado para warehousesLimit.",
+    );
+
     const body = await request.json();
     const parsed = registerStockMovementSchema.safeParse({
       ...body,

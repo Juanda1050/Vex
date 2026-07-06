@@ -14,6 +14,14 @@ export {
   SUBSCRIPTION_EVENT_TYPES,
 } from "./constants/subscription.constants";
 
+export {
+  hasSubscriptionFeature,
+  getSubscriptionLimit,
+  validateSubscriptionLimit,
+  enforceSubscriptionLimit,
+  requireSubscriptionFeature,
+} from "./feature-access";
+
 export { requireBillingAccess, requirePremiumSubscription } from "./guards";
 export { changePlanSchema } from "./validations/subscription.schema";
 

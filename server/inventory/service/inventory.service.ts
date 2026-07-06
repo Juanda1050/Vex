@@ -5,6 +5,10 @@ import type {
 } from "../types/inventory.types";
 
 export class InventoryService {
+  async countActiveWarehouses(tenantId: string) {
+    return inventoryRepository.countActiveWarehousesByTenant(tenantId);
+  }
+
   async listInventory(tenantId: string, filters: InventoryFilters) {
     return inventoryRepository.listInventory(tenantId, filters);
   }

@@ -40,6 +40,18 @@ function ThemeToggle() {
     applyTheme(nextIsDark);
     setIsDark(nextIsDark);
     setMounted(true);
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleSystemThemeChange = (event: MediaQueryListEvent) => {
+      const storedTheme = window.localStorage.getItem(STORAGE_KEY);
+      if (!storedTheme) {
+        applyTheme(event.matches);
+        setIsDark(event.matches);
+      }
+    };
+    mediaQuery.addEventListener("change", handleSystemThemeChange);
+    return () => {
+      mediaQuery.removeEventListener("change", handleSystemThemeChange);
+    };
   }, []);
 
   const toggleTheme = React.useCallback(() => {
@@ -55,7 +67,7 @@ function ThemeToggle() {
       type="button"
       variant="outline"
       size="icon-sm"
-      className="shrink-0"
+      className="shrink-0 border-sidebar-border bg-background/80 text-foreground shadow-sm backdrop-blur-sm hover:bg-accent hover:text-accent-foreground"
       onClick={toggleTheme}
       aria-label={
         mounted

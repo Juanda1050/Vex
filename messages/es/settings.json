@@ -15,5 +15,30 @@
   },
   "messages": {
     "saved": "Configuración guardada"
+  },
+  "subscriptions": {
+    "badge": "Gestión de plan",
+    "title": "Compara planes y ajusta tu suscripción",
+    "description": "Revisa tu uso actual contra los límites de cada plan antes de hacer upgrade o downgrade.",
+    "usageTitle": "Uso actual vs límite del plan",
+    "usageDescription": "Estas métricas se calculan con datos en vivo del tenant.",
+    "metric": "Métrica",
+    "currentUsage": "Uso actual",
+    "currentLimit": "Límite del plan actual",
+    "remaining": "Disponible",
+    "limitReached": "Límite alcanzado",
+    "unlimited": "Ilimitado",
+    "current": "Actual",
+    "selected": "Seleccionado",
+    "changePlan": "Cambiar plan",
+    "customPricing": "Precio personalizado",
+    "wouldExceed": "excedería",
+    "planChanged": "Plan actualizado correctamente.",
+    "billingPermissionRequired": "Tu rol no tiene permisos de facturación para cambiar planes.",
+    "metrics": {
+      "products": "Productos",
+      "warehouses": "Almacenes",
+      "users": "Usuarios"
+    }
   }
 }

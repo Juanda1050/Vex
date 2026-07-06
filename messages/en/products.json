@@ -22,6 +22,7 @@
     "generic": "Could not process products request.",
     "invalidPayload": "The payload is invalid.",
     "invalidProductId": "The provided productId is invalid.",
+    "productsLimitReached": "Your plan reached the product limit. Upgrade to create more products.",
     "productNotFound": "Product not found.",
     "productCreateFailed": "Could not create product.",
     "productUpdateFailed": "Could not update product.",

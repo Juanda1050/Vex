@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { requirePermission } from "@/server/auth";
 import { inventoryService } from "@/server/inventory";
 import {
+  enforceSubscriptionLimit,
+  requireSubscriptionFeature,
+} from "@/server/subscriptions";
+import {
   getInventoryApiErrorTranslator,
   getInventoryErrorStatus,
   mapInventoryErrorToKey,
@@ -13,6 +17,18 @@ export async function GET(request: NextRequest) {
 
   try {
     const ctx = await requirePermission("inventory.view");
+    const { subscription } =
+      await requireSubscriptionFeature("warehousesLimit");
+    const activeWarehouses = await inventoryService.countActiveWarehouses(
+      ctx.tenantId,
+    );
+
+    enforceSubscriptionLimit(
+      subscription,
+      "warehousesLimit",
+      activeWarehouses,
+      "Limite del plan alcanzado para warehousesLimit.",
+    );
 
     const warehouseId =
       request.nextUrl.searchParams.get("warehouseId") ?? undefined;

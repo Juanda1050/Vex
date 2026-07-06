@@ -7,6 +7,15 @@ import type {
 } from "../types/product.types";
 
 export class ProductRepository {
+  async countActiveByTenant(tenantId: string) {
+    return prisma.product.count({
+      where: {
+        tenantId,
+        isActive: true,
+      },
+    });
+  }
+
   async create(input: CreateProductInput) {
     return prisma.product.create({
       data: {

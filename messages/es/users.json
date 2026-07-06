@@ -1,0 +1,14 @@
+{
+  "title": "Usuarios",
+  "errors": {
+    "generic": "No se pudo procesar la solicitud de usuarios.",
+    "invalidPayload": "El payload enviado es invalido.",
+    "invalidUserId": "El userId enviado no es valido.",
+    "invalidBranchId": "El branchId enviado no es valido.",
+    "usersLimitReached": "Tu plan alcanzó el límite de usuarios. Actualiza tu plan para agregar más usuarios.",
+    "userAlreadyMember": "Este usuario ya pertenece al tenant actual.",
+    "branchNotFound": "Sucursal no encontrada para el tenant actual.",
+    "userListFailed": "No se pudieron listar los usuarios.",
+    "userCreateFailed": "No se pudo crear el usuario del tenant."
+  }
+}

@@ -5,14 +5,25 @@ import { routing } from "./i18n/routing";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
+const publicRoutes = ["/login", "/register", "/onboarding", "/auth/callback"];
+
 const protectedRoutes = [
   "/dashboard",
+  "/customers",
   "/products",
   "/inventory",
+  "/quotes",
+  "/subscriptions",
   "/sales",
   "/purchases",
   "/settings",
 ];
+
+function matchesRoute(pathname: string, routes: readonly string[]) {
+  return routes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
+}
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -23,11 +34,10 @@ export async function middleware(request: NextRequest) {
 
   const pathnameWithoutLocale = pathname.replace(/^\/(en|es)/, "") || "/";
 
-  const isProtected = protectedRoutes.some((route) =>
-    pathnameWithoutLocale.startsWith(route),
-  );
+  const isPublic = matchesRoute(pathnameWithoutLocale, publicRoutes);
+  const isProtected = matchesRoute(pathnameWithoutLocale, protectedRoutes);
 
-  if (!isProtected) return intlResponse;
+  if (!isPublic && !isProtected) return intlResponse;
 
   const { supabaseResponse, user } = await createClient(request);
 
@@ -35,7 +45,7 @@ export async function middleware(request: NextRequest) {
     intlResponse.cookies.set(name, value);
   });
 
-  if (!user) {
+  if (isProtected && !user) {
     const loginUrl = new URL(`/${locale}/login`, request.url);
     loginUrl.searchParams.set("redirectTo", pathname);
     return NextResponse.redirect(loginUrl);
@@ -46,6 +56,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

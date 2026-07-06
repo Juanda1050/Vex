@@ -1,0 +1,14 @@
+{
+  "title": "Users",
+  "errors": {
+    "generic": "Could not process users request.",
+    "invalidPayload": "The payload is invalid.",
+    "invalidUserId": "The provided userId is invalid.",
+    "invalidBranchId": "The provided branchId is invalid.",
+    "usersLimitReached": "Your plan reached the user limit. Upgrade to add more users.",
+    "userAlreadyMember": "This user is already a member of the current tenant.",
+    "branchNotFound": "Branch not found for current tenant.",
+    "userListFailed": "Could not list users.",
+    "userCreateFailed": "Could not create tenant user."
+  }
+}

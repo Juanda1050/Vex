@@ -6,6 +6,10 @@ import {
   productFiltersSchema,
 } from "@/server/products";
 import {
+  enforceSubscriptionLimit,
+  requireSubscriptionFeature,
+} from "@/server/subscriptions";
+import {
   getProductApiErrorTranslator,
   getProductErrorStatus,
   mapProductErrorToKey,
@@ -64,6 +68,16 @@ export async function POST(request: NextRequest) {
 
   try {
     const ctx = await requirePermission("products.create");
+    const { subscription } = await requireSubscriptionFeature("productsLimit");
+
+    const usedProducts = await productService.countActiveProducts(ctx.tenantId);
+    enforceSubscriptionLimit(
+      subscription,
+      "productsLimit",
+      usedProducts,
+      "Limite del plan alcanzado para productsLimit.",
+    );
+
     const body = await request.json();
     const parsed = createProductSchema.safeParse({
       ...body,

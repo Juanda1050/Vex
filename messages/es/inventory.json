@@ -23,6 +23,7 @@
     "inventoryListFailed": "No se pudo listar el inventario.",
     "inventoryMovementFailed": "No se pudo registrar el movimiento.",
     "inventoryKardexFailed": "No se pudo obtener el kardex.",
+    "warehousesLimitReached": "Tu plan alcanzó el límite de almacenes. Actualiza tu plan para continuar operando inventario.",
     "insufficientStock": "Stock insuficiente",
     "warehouseNotFound": "Almacen no encontrado.",
     "productNotFound": "Producto no encontrado.",

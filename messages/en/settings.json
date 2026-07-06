@@ -1,19 +1,44 @@
 {
-  "title": "Configuración",
+  "title": "Settings",
   "sections": {
     "general": "General",
-    "branches": "Sucursales",
-    "warehouses": "Almacenes",
-    "users": "Usuarios",
-    "billing": "Facturación"
+    "branches": "Branches",
+    "warehouses": "Warehouses",
+    "users": "Users",
+    "billing": "Billing"
   },
   "fields": {
-    "orgName": "Nombre de la organización",
-    "timezone": "Zona horaria",
-    "currency": "Moneda",
-    "language": "Idioma"
+    "orgName": "Organization name",
+    "timezone": "Timezone",
+    "currency": "Currency",
+    "language": "Language"
   },
   "messages": {
-    "saved": "Configuración guardada"
+    "saved": "Settings saved"
+  },
+  "subscriptions": {
+    "badge": "Plan management",
+    "title": "Compare plans and adjust your subscription",
+    "description": "Review current usage against each plan limit before upgrading or downgrading.",
+    "usageTitle": "Current usage vs plan limit",
+    "usageDescription": "These metrics are calculated with live tenant data.",
+    "metric": "Metric",
+    "currentUsage": "Current usage",
+    "currentLimit": "Current plan limit",
+    "remaining": "Remaining",
+    "limitReached": "Limit reached",
+    "unlimited": "Unlimited",
+    "current": "Current",
+    "selected": "Selected",
+    "changePlan": "Change plan",
+    "customPricing": "Custom pricing",
+    "wouldExceed": "would exceed",
+    "planChanged": "Plan updated successfully.",
+    "billingPermissionRequired": "Your role does not have billing permissions to change plans.",
+    "metrics": {
+      "products": "Products",
+      "warehouses": "Warehouses",
+      "users": "Users"
+    }
   }
 }

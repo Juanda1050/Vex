@@ -14,6 +14,15 @@ const OUTGOING_TYPES = new Set([
 ]);
 
 export class InventoryRepository {
+  async countActiveWarehousesByTenant(tenantId: string) {
+    return prisma.warehouse.count({
+      where: {
+        tenantId,
+        isActive: true,
+      },
+    });
+  }
+
   async listInventory(tenantId: string, filters: InventoryFilters) {
     const rows = await prisma.inventory.findMany({
       where: {

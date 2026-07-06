@@ -6,6 +6,10 @@ import type {
 } from "../types/product.types";
 
 export class ProductService {
+  async countActiveProducts(tenantId: string) {
+    return productRepository.countActiveByTenant(tenantId);
+  }
+
   async createProduct(input: CreateProductInput) {
     return productRepository.create(input);
   }

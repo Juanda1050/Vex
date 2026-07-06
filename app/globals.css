@@ -59,13 +59,42 @@
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(
+        circle at top,
+        color-mix(in srgb, var(--color-primary) 10%, transparent),
+        transparent 32%
+      ),
+      radial-gradient(
+        circle at 85% 10%,
+        color-mix(in srgb, var(--color-info) 11%, transparent),
+        transparent 26%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-background) 94%, var(--color-accent) 6%),
+        var(--color-background)
+      );
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-primary) 28%, transparent);
+    color: var(--color-foreground);
   }
 }

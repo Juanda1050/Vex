@@ -1,0 +1,84 @@
+{
+  "layout": {
+    "title": "Workspace",
+    "description": "Unified interface with semantic theming and responsive layout.",
+    "badge": "Dynamic theme"
+  },
+  "home": {
+    "badge": "MVP Hub",
+    "premium": "Premium UI",
+    "title": "Cotify launch surface",
+    "description": "This screen centralizes the key modules to start the MVP: authentication, registration, and dashboard. You can now connect each flow without rebuilding base layout or navigation.",
+    "openModule": "Open module",
+    "goToLogin": "Go to login",
+    "openDashboard": "Open dashboard",
+    "workspaceFeed": "Workspace feed",
+    "syncedTodos": "Synced todos",
+    "feedDescription": "Connected data source to quickly validate Supabase integration during development.",
+    "emptyTodos": "No todos loaded yet.",
+    "modules": {
+      "loginDescription": "Email access for operators and administrators.",
+      "registerDescription": "Tenant and initial user onboarding setup.",
+      "dashboardDescription": "Operations center with metrics, activity and shortcuts."
+    },
+    "status": {
+      "ready": "ready",
+      "tasksLive": "tasks live"
+    }
+  },
+  "login": {
+    "badge": "Authentication module",
+    "description": "Sign in using the server action and locale-safe redirect.",
+    "back": "Back to hub"
+  },
+  "register": {
+    "badge": "Onboarding module",
+    "description": "Server-connected registration to create the user and initial organization.",
+    "backToLogin": "Go to login"
+  },
+  "onboarding": {
+    "badge": "Initial setup",
+    "title": "Complete your company setup",
+    "description": "Choose your plan and confirm the minimum tenant data to unlock the dashboard and operations modules.",
+    "current": "Current",
+    "selected": "Selected",
+    "choosePlan": "Choose plan",
+    "planUpdated": "Plan updated to {planCode}",
+    "customPricing": "Custom pricing",
+    "noFeatures": "No declared features",
+    "billingPermissionRequired": "Your current role does not have billing permissions to change the plan.",
+    "plans": {
+      "badge": "Subscription",
+      "title": "Choose your subscription type",
+      "description": "Each plan unlocks different capabilities to run your business."
+    },
+    "status": {
+      "tenant": "Tenant",
+      "branch": "Branch",
+      "warehouse": "Warehouse",
+      "ok": "Ready",
+      "pending": "Pending"
+    },
+    "nextSteps": {
+      "badge": "Next step",
+      "title": "What comes next",
+      "description": "After completing onboarding, open the dashboard and start with products, customers, inventory and sales according to your plan."
+    }
+  },
+  "dashboard": {
+    "badge": "Operations core",
+    "description": "Domain modules already present in server, ready to consume from UI or API.",
+    "apiLabel": "API endpoint",
+    "serviceLabel": "Server service",
+    "openApi": "Open API",
+    "backToHub": "Back to hub",
+    "backToLogin": "Back to login"
+  },
+  "modules": {
+    "customersDescription": "Customer management and commercial relationships.",
+    "productsDescription": "Product catalog, pricing and attributes.",
+    "inventoryDescription": "Stock movements and warehouse kardex.",
+    "quotesDescription": "Quotes and opportunity conversion.",
+    "subscriptionsDescription": "Plans, changes and billing status."
+  }
+}

@@ -1,4 +1,5 @@
 export { getAuth, can } from "./get-auth";
+export { getOnboardingState } from "./get-onboarding-state";
 
 export { requireAuth } from "./guards/require-auth";
 export { requireRole } from "./guards/require-role";

@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import type { AuthUser } from "../types";
 
@@ -47,9 +48,13 @@ export const sessionManager = {
     return supabase.auth.signInWithPassword({ email, password });
   },
 
-  async signUp(email: string, password: string) {
+  async signUp(email: string, password: string, emailRedirectTo?: string) {
     const supabase = await getSupabaseClient();
-    return supabase.auth.signUp({ email, password });
+    return supabase.auth.signUp({
+      email,
+      password,
+      options: emailRedirectTo ? { emailRedirectTo } : undefined,
+    });
   },
 
   async resetPasswordForEmail(email: string, redirectTo: string) {
@@ -65,5 +70,15 @@ export const sessionManager = {
   async updateEmail(email: string) {
     const supabase = await getSupabaseClient();
     return supabase.auth.updateUser({ email });
+  },
+
+  async verifyOtp(tokenHash: string, type: EmailOtpType) {
+    const supabase = await getSupabaseClient();
+    return supabase.auth.verifyOtp({ token_hash: tokenHash, type });
+  },
+
+  async exchangeCodeForSession(code: string) {
+    const supabase = await getSupabaseClient();
+    return supabase.auth.exchangeCodeForSession(code);
   },
 };

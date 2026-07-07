@@ -5,8 +5,8 @@ import { MoonIcon, SunIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-const STORAGE_KEY = "cotify-theme";
-const THEME_EVENT = "cotify-theme-change";
+const STORAGE_KEY = "vex-theme";
+const THEME_EVENT = "vex-theme-change";
 
 function getPreferredTheme() {
   if (typeof window === "undefined") {

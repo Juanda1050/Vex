@@ -1,6 +1,6 @@
-# Cotify MVP
+# Vex MVP
 
-Cotify es el MVP de un SaaS multi-tenant para gestionar operaciones comerciales básicas: clientes, productos, inventario, cotizaciones, compras, ventas, suscripciones y configuración del sistema. El objetivo de esta primera versión es cubrir el flujo operativo principal con autenticación, control de acceso por rol y soporte multiidioma.
+Vex es el MVP de un SaaS multi-tenant para gestionar operaciones comerciales básicas: clientes, productos, inventario, cotizaciones, compras, ventas, suscripciones y configuración del sistema. El objetivo de esta primera versión es cubrir el flujo operativo principal con autenticación, control de acceso por rol y soporte multiidioma.
 
 ## Alcance del MVP
 

@@ -38,7 +38,7 @@ export default async function LoginModulePage({
 
           <div className="relative z-10 pt-2">
             <p className="brand-wordmark brand-wordmark-hero brand-wordmark-tech text-[clamp(2.55rem,6.8vw,5.7rem)] leading-[0.84] tracking-[0.24em] sm:tracking-[0.28em]">
-              COTIFY
+              VEX
             </p>
             <p className="mt-2 text-[11px] font-semibold tracking-[0.22em] text-foreground/62 uppercase">
               {tLogin("brandSlogan")}

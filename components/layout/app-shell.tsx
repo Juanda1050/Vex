@@ -47,7 +47,7 @@ function AppShell({
                     </span>
                   </div>
                   <p className="brand-wordmark text-xs tracking-[0.26em] text-sidebar-foreground/80">
-                    Cotify
+                    Vex
                   </p>
                   <h1 className="truncate text-lg font-semibold text-sidebar-foreground">
                     {title ?? "Workspace"}
@@ -81,7 +81,7 @@ function AppShell({
             <div className="glass-soft flex items-center justify-between gap-3 rounded-xl px-4 py-3 lg:hidden">
               <div className="min-w-0">
                 <p className="brand-wordmark text-xs tracking-[0.26em] text-muted-foreground">
-                  Cotify
+                  Vex
                 </p>
                 <p className="truncate text-sm font-medium text-foreground">
                   {title ?? "Workspace"}

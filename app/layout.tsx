@@ -4,7 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 
 const themeScript = `(() => {
-  const storageKey = "cotify-theme";
+  const storageKey = "vex-theme";
   const root = document.documentElement;
   const storedTheme = localStorage.getItem(storageKey);
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -25,8 +25,8 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cotify",
-  description: "Cotify workspace with semantic theming and responsive shell.",
+  title: "Vex",
+  description: "Vex workspace with semantic theming and responsive shell.",
 };
 
 export default function RootLayout({
@@ -41,7 +41,7 @@ export default function RootLayout({
       className={`${robotoSans.variable} ${robotoMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Script id="cotify-theme" strategy="beforeInteractive">
+        <Script id="vex-theme" strategy="beforeInteractive">
           {themeScript}
         </Script>
         {children}

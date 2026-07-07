@@ -7,7 +7,7 @@
   "home": {
     "badge": "MVP Hub",
     "premium": "Premium UI",
-    "title": "Cotify launch surface",
+    "title": "Vex launch surface",
     "description": "This screen centralizes the key modules to start the MVP: authentication, registration, and dashboard. You can now connect each flow without rebuilding base layout or navigation.",
     "openModule": "Open module",
     "goToLogin": "Go to login",
@@ -31,7 +31,7 @@
     "description": "Manage sales, inventory, and customers in minutes with zero hassle.",
     "appTypeTitle": "Your growth command center",
     "brandSlogan": "Your entire business, on one platform.",
-    "heroDescription": "Cotify turns your daily operation into measurable results: quote faster, control inventory in real time, and make clearer decisions to sell better from day one.",
+    "heroDescription": "Vex turns your daily operation into measurable results: quote faster, control inventory in real time, and make clearer decisions to sell better from day one.",
     "back": "Back to hub",
     "charts": {
       "slide1Label": "Quotes funnel",

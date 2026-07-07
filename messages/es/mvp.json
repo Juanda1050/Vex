@@ -7,7 +7,7 @@
   "home": {
     "badge": "MVP Hub",
     "premium": "Premium UI",
-    "title": "Superficie de lanzamiento Cotify",
+    "title": "Superficie de lanzamiento Vex",
     "description": "Esta pantalla centraliza los módulos clave para iniciar el MVP: autenticación, registro y dashboard. Ya puedes conectar cada flujo sin rehacer layout ni navegación base.",
     "openModule": "Abrir módulo",
     "goToLogin": "Ir a login",
@@ -31,7 +31,7 @@
     "description": "Gestiona ventas, inventario y clientes en minutos, sin complicaciones.",
     "appTypeTitle": "Tu centro de control para crecer",
     "brandSlogan": "Todo tu negocio, en una sola plataforma.",
-    "heroDescription": "Cotify convierte tu operacion diaria en resultados medibles: cotiza mas rapido, controla inventario en tiempo real y toma decisiones con claridad para vender mejor desde hoy.",
+    "heroDescription": "Vex convierte tu operacion diaria en resultados medibles: cotiza mas rapido, controla inventario en tiempo real y toma decisiones con claridad para vender mejor desde hoy.",
     "back": "Volver al hub",
     "charts": {
       "slide1Label": "Embudo de cotizaciones",

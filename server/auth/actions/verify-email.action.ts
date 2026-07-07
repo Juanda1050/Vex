@@ -1,9 +1,11 @@
 "use server";
 
 import type { EmailOtpType } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
 import { redirect } from "next/navigation";
 import { AUTH_REDIRECTS } from "../constants";
+import { COOKIE_KEYS } from "../constants/cookies.constants";
 import { authRepository } from "../repository/auth.repository";
 import { sessionManager } from "../session/session.manager";
 import { TenantService } from "@/server/tenant";
@@ -83,20 +85,26 @@ export async function resolveVerifyEmailDestination(
   const { user } = await sessionManager.getUser();
   if (!user) return loginRedirect;
 
+  const cookieStore = await cookies();
+  const oauthOrgName = cookieStore.get(COOKIE_KEYS.oauthOrgName)?.value?.trim();
+
   let member = await authRepository.findMemberByUserId(user.id);
 
   if (!member) {
     try {
       await tenantService.registerNewCompany(
-        getDefaultCompanyNameFromEmail(user.email),
+        oauthOrgName || getDefaultCompanyNameFromEmail(user.email),
         user.id,
       );
       member = await authRepository.findMemberByUserId(user.id);
     } catch {
+      cookieStore.delete(COOKIE_KEYS.oauthOrgName);
       const message = errors.fromKey("tenantError");
       return `${loginRedirect}?error=${encodeURIComponent(message)}`;
     }
   }
+
+  cookieStore.delete(COOKIE_KEYS.oauthOrgName);
 
   const fallbackDestination = member
     ? AUTH_REDIRECTS.dashboard(locale)

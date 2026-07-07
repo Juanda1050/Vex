@@ -35,7 +35,7 @@ export async function forgotPasswordAction(
     };
   }
 
-  const appUrl = getAppUrl();
+  const appUrl = await getAppUrl();
   if (!appUrl)
     return {
       error: errors.generic(),

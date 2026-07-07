@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Roboto, Roboto_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const themeScript = `(() => {
@@ -40,7 +41,9 @@ export default function RootLayout({
       className={`${robotoSans.variable} ${robotoMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <Script id="cotify-theme" strategy="beforeInteractive">
+          {themeScript}
+        </Script>
         {children}
       </body>
     </html>

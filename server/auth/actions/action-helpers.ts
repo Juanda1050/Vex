@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import type { ZodError } from "zod";
 import type { HttpStatusCode } from "@/server/http-status";
 import { getErrorTranslator } from "@/server/error-translator";
@@ -34,10 +35,30 @@ export function sanitizeNextPath(
   return defaultPath;
 }
 
-export function getAppUrl(): string | null {
+function normalizeAppUrl(value: string): string {
+  return value.replace(/\/+$/, "");
+}
+
+export async function getAppUrl(): Promise<string | null> {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL?.trim();
-  if (!appUrl) return null;
-  return appUrl.replace(/\/+$/, "");
+  if (appUrl) return normalizeAppUrl(appUrl);
+
+  const vercelUrl = process.env.VERCEL_URL?.trim();
+  if (vercelUrl) return normalizeAppUrl(`https://${vercelUrl}`);
+
+  const headerStore = await headers();
+  const host =
+    headerStore.get("x-forwarded-host") ?? headerStore.get("host") ?? "";
+
+  if (!host) return null;
+
+  const protocol =
+    headerStore.get("x-forwarded-proto") ??
+    (host.includes("localhost") || host.startsWith("127.0.0.1")
+      ? "http"
+      : "https");
+
+  return normalizeAppUrl(`${protocol}://${host}`);
 }
 
 export function buildLocalizedAbsoluteUrl(

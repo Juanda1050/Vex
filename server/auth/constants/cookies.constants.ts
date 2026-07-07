@@ -4,6 +4,7 @@ export const COOKIE_KEYS = {
   warehouseId: "app_warehouse_id",
   theme: "app_theme",
   rememberSession: "app_remember_session",
+  oauthOrgName: "app_oauth_org_name",
 } as const;
 
 export const COOKIE_OPTIONS = {

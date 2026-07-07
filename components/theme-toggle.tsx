@@ -6,6 +6,7 @@ import { MoonIcon, SunIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const STORAGE_KEY = "cotify-theme";
+const THEME_EVENT = "cotify-theme-change";
 
 function getPreferredTheme() {
   if (typeof window === "undefined") {
@@ -31,30 +32,36 @@ function applyTheme(isDark: boolean) {
   window.localStorage.setItem(STORAGE_KEY, isDark ? "dark" : "light");
 }
 
+function subscribe(onStoreChange: () => void) {
+  if (typeof window === "undefined") {
+    return () => undefined;
+  }
+
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const handleChange = () => onStoreChange();
+
+  mediaQuery.addEventListener("change", handleChange);
+  window.addEventListener("storage", handleChange);
+  window.addEventListener(THEME_EVENT, handleChange);
+
+  return () => {
+    mediaQuery.removeEventListener("change", handleChange);
+    window.removeEventListener("storage", handleChange);
+    window.removeEventListener(THEME_EVENT, handleChange);
+  };
+}
+
 function ThemeToggle() {
-  const [isDark, setIsDark] = React.useState(() => getPreferredTheme());
-
-  React.useEffect(() => {
-    applyTheme(isDark);
-  }, [isDark]);
-
-  React.useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleSystemThemeChange = (event: MediaQueryListEvent) => {
-      const storedTheme = window.localStorage.getItem(STORAGE_KEY);
-      if (!storedTheme) {
-        setIsDark(event.matches);
-      }
-    };
-    mediaQuery.addEventListener("change", handleSystemThemeChange);
-    return () => {
-      mediaQuery.removeEventListener("change", handleSystemThemeChange);
-    };
-  }, []);
+  const isDark = React.useSyncExternalStore(
+    subscribe,
+    getPreferredTheme,
+    () => false,
+  );
 
   const toggleTheme = React.useCallback(() => {
-    setIsDark((currentValue) => !currentValue);
-  }, []);
+    applyTheme(!isDark);
+    window.dispatchEvent(new Event(THEME_EVENT));
+  }, [isDark]);
 
   return (
     <Button

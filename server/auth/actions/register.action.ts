@@ -43,7 +43,7 @@ export async function registerAction(
 
   const { orgName, email, password } = parsed.data;
 
-  const appUrl = getAppUrl();
+  const appUrl = await getAppUrl();
   if (!appUrl)
     return {
       error: errors.generic(),

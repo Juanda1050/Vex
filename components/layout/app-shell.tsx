@@ -46,7 +46,7 @@ function AppShell({
                       Risk telemetry
                     </span>
                   </div>
-                  <p className="text-xs font-semibold tracking-[0.24em] text-sidebar-foreground/70 uppercase">
+                  <p className="brand-wordmark text-xs tracking-[0.26em] text-sidebar-foreground/80">
                     Cotify
                   </p>
                   <h1 className="truncate text-lg font-semibold text-sidebar-foreground">
@@ -80,7 +80,7 @@ function AppShell({
           <div className="flex min-w-0 flex-col gap-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 md:gap-6">
             <div className="glass-soft flex items-center justify-between gap-3 rounded-xl px-4 py-3 lg:hidden">
               <div className="min-w-0">
-                <p className="text-xs font-semibold tracking-[0.24em] text-muted-foreground uppercase">
+                <p className="brand-wordmark text-xs tracking-[0.26em] text-muted-foreground">
                   Cotify
                 </p>
                 <p className="truncate text-sm font-medium text-foreground">

@@ -3,6 +3,7 @@ export const COOKIE_KEYS = {
   branchId: "app_branch_id",
   warehouseId: "app_warehouse_id",
   theme: "app_theme",
+  rememberSession: "app_remember_session",
 } as const;
 
 export const COOKIE_OPTIONS = {

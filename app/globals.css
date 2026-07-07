@@ -139,6 +139,316 @@
 }
 
 @layer utilities {
+  @keyframes hero-chart-cycle {
+    0% {
+      opacity: 0;
+      transform: translateY(10px) scale(0.985);
+    }
+    6% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    30% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    36% {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.992);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.992);
+    }
+  }
+
+  .hero-chart-slide {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+    animation: hero-chart-cycle 15s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    will-change: transform, opacity;
+  }
+
+  .hero-chart-slide-1 {
+    animation-delay: 0s;
+  }
+
+  .hero-chart-slide-2 {
+    animation-delay: 5s;
+  }
+
+  .hero-chart-slide-3 {
+    animation-delay: 10s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-chart-slide {
+      animation: none;
+      opacity: 0;
+      transform: none;
+    }
+
+    .hero-chart-slide-1 {
+      opacity: 1;
+    }
+  }
+
+  .brand-wordmark {
+    font-weight: 800;
+    letter-spacing: 0.115em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-foreground) 94%, transparent);
+    font-feature-settings:
+      "liga" 1,
+      "ss01" 1;
+    text-shadow:
+      0 1px 0 color-mix(in srgb, var(--color-background) 60%, transparent),
+      0 10px 24px color-mix(in srgb, var(--color-foreground) 10%, transparent);
+  }
+
+  .brand-wordmark-hero {
+    color: color-mix(in srgb, var(--color-foreground) 99%, black 1%);
+    position: relative;
+    filter: drop-shadow(
+      0 8px 16px color-mix(in srgb, var(--color-foreground) 12%, transparent)
+    );
+  }
+
+  @keyframes brand-wordmark-glint {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 220% 50%;
+    }
+  }
+
+  .brand-wordmark-tech {
+    color: transparent;
+    background-image: linear-gradient(
+      98deg,
+      color-mix(in srgb, var(--color-foreground) 90%, white 10%) 6%,
+      color-mix(in srgb, var(--color-primary) 74%, white 26%) 40%,
+      color-mix(in srgb, var(--color-info) 76%, white 24%) 68%,
+      color-mix(in srgb, var(--color-foreground) 92%, white 8%) 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow:
+      0 0 1px color-mix(in srgb, var(--color-foreground) 24%, transparent),
+      0 8px 22px color-mix(in srgb, var(--color-primary) 28%, transparent),
+      0 14px 32px color-mix(in srgb, var(--color-info) 16%, transparent);
+    animation: brand-wordmark-glint 8s linear infinite;
+  }
+
+  .brand-wordmark-hero::after {
+    content: none;
+  }
+
+  .dark .brand-wordmark {
+    color: color-mix(in srgb, var(--color-foreground) 97%, transparent);
+    text-shadow:
+      0 1px 0 color-mix(in srgb, var(--color-primary) 5%, transparent),
+      0 12px 28px color-mix(in srgb, black 64%, transparent);
+  }
+
+  .dark .brand-wordmark-hero {
+    color: color-mix(in srgb, var(--color-foreground) 94%, black 6%);
+    filter: drop-shadow(0 10px 22px color-mix(in srgb, black 68%, transparent));
+  }
+
+  .dark .brand-wordmark-tech {
+    background-image: linear-gradient(
+      98deg,
+      color-mix(in srgb, var(--color-foreground) 95%, white 5%) 10%,
+      color-mix(in srgb, var(--color-primary) 52%, var(--color-foreground) 48%)
+        44%,
+      color-mix(in srgb, var(--color-info) 50%, var(--color-foreground) 50%) 72%,
+      color-mix(in srgb, var(--color-foreground) 96%, white 4%) 100%
+    );
+    text-shadow:
+      0 0 1px color-mix(in srgb, white 12%, transparent),
+      0 8px 18px color-mix(in srgb, var(--color-primary) 18%, transparent),
+      0 14px 26px color-mix(in srgb, var(--color-info) 12%, transparent);
+  }
+
+  .dark .brand-wordmark-hero::after {
+    content: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-wordmark-tech {
+      animation: none;
+      background-position: 35% 50%;
+    }
+  }
+
+  .premium-brand-panel {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, var(--color-card) 94%, var(--color-primary) 6%) 0%,
+        color-mix(in srgb, var(--color-card) 90%, var(--color-info) 10%) 50%,
+        color-mix(in srgb, var(--color-card) 95%, var(--color-background) 5%)
+          100%
+      ),
+      radial-gradient(
+        circle at 16% 12%,
+        color-mix(in srgb, var(--color-primary) 12%, transparent),
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 84% 20%,
+        color-mix(in srgb, var(--color-info) 11%, transparent),
+        transparent 36%
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 72%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--color-border) 54%, transparent),
+      0 26px 44px color-mix(in srgb, var(--color-foreground) 18%, transparent);
+    backdrop-filter: blur(14px) saturate(118%);
+    -webkit-backdrop-filter: blur(14px) saturate(118%);
+  }
+
+  .premium-brand-panel::before {
+    content: none;
+  }
+
+  .premium-brand-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        130deg,
+        color-mix(in srgb, white 34%, transparent),
+        transparent 42%
+      ),
+      linear-gradient(
+        315deg,
+        color-mix(in srgb, var(--color-primary) 8%, transparent),
+        transparent 46%
+      );
+    opacity: 0.24;
+  }
+
+  .premium-emblem {
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--color-border) 54%, white 20%);
+    background:
+      radial-gradient(
+        circle at 32% 28%,
+        color-mix(in srgb, white 34%, transparent),
+        transparent 38%
+      ),
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, var(--color-primary) 32%, var(--color-card) 68%),
+        color-mix(in srgb, var(--color-info) 30%, var(--color-card) 70%)
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 72%, transparent),
+      inset 0 -8px 24px color-mix(in srgb, black 22%, transparent),
+      0 16px 30px color-mix(in srgb, var(--color-foreground) 18%, transparent);
+  }
+
+  .premium-emblem::before {
+    content: "";
+    width: 62%;
+    aspect-ratio: 1;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, white 58%, transparent);
+    background: radial-gradient(
+      circle at 30% 24%,
+      color-mix(in srgb, white 68%, transparent),
+      color-mix(in srgb, var(--color-card) 66%, transparent) 66%
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 72%, transparent),
+      0 5px 14px color-mix(in srgb, black 22%, transparent);
+  }
+
+  .premium-emblem::after {
+    content: "";
+    position: absolute;
+    inset: 8%;
+    border-radius: 9999px;
+    border: 1px solid color-mix(in srgb, var(--color-border) 44%, white 18%);
+    opacity: 0.68;
+  }
+
+  .dark .premium-brand-panel {
+    border-color: color-mix(in srgb, var(--color-border) 86%, black 14%);
+    background:
+      linear-gradient(
+        156deg,
+        color-mix(in srgb, var(--color-card) 93%, black 7%) 0%,
+        color-mix(in srgb, var(--color-card) 87%, var(--color-primary) 13%) 52%,
+        color-mix(in srgb, var(--color-card) 89%, var(--color-info) 11%) 100%
+      ),
+      radial-gradient(
+        circle at 16% 10%,
+        color-mix(in srgb, var(--color-primary) 8%, transparent),
+        transparent 42%
+      ),
+      radial-gradient(
+        circle at 84% 18%,
+        color-mix(in srgb, var(--color-info) 7%, transparent),
+        transparent 38%
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--color-primary) 8%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, black 42%, transparent),
+      0 30px 54px color-mix(in srgb, black 64%, transparent);
+  }
+
+  .dark .premium-brand-panel::before {
+    border-color: color-mix(in srgb, var(--color-border) 88%, black 12%);
+    opacity: 0.56;
+  }
+
+  .dark .premium-brand-panel::after {
+    opacity: 0.2;
+  }
+
+  .dark .premium-emblem {
+    border-color: color-mix(in srgb, var(--color-border) 86%, black 14%);
+    background:
+      radial-gradient(
+        circle at 28% 24%,
+        color-mix(in srgb, white 18%, transparent),
+        transparent 38%
+      ),
+      linear-gradient(
+        150deg,
+        color-mix(in srgb, var(--color-primary) 30%, var(--color-card) 70%),
+        color-mix(in srgb, var(--color-info) 28%, var(--color-card) 72%)
+      );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 28%, transparent),
+      inset 0 -10px 24px color-mix(in srgb, black 46%, transparent),
+      0 22px 40px color-mix(in srgb, black 62%, transparent);
+  }
+
+  .dark .premium-emblem::before {
+    border-color: color-mix(in srgb, white 30%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 38%, transparent),
+      0 6px 14px color-mix(in srgb, black 40%, transparent);
+  }
+
+  .dark .premium-emblem::after {
+    border-color: color-mix(in srgb, var(--color-border) 86%, black 14%);
+    opacity: 0.52;
+  }
+
   .glass-panel {
     background: color-mix(in srgb, var(--color-card) 74%, transparent);
     border: 1px solid color-mix(in srgb, var(--color-border) 72%, white 8%);

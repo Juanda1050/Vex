@@ -2,20 +2,42 @@ import { createServerClient } from "@supabase/ssr";
 import type { EmailOtpType, Provider } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import type { AuthUser } from "../types";
+import { COOKIE_KEYS } from "../constants/cookies.constants";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!;
 
 async function getSupabaseClient() {
   const cookieStore = await cookies();
+  const rememberPreference = cookieStore.get(
+    COOKIE_KEYS.rememberSession,
+  )?.value;
+  const persistSession = rememberPreference !== "0";
 
   return createServerClient(supabaseUrl, supabaseKey, {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {
-        cookiesToSet.forEach(({ name, value, options }) =>
-          cookieStore.set(name, value, options),
-        );
+        cookiesToSet.forEach(({ name, value, options }) => {
+          if (!options) {
+            cookieStore.set(name, value);
+            return;
+          }
+
+          const isSupabaseAuthCookie = /-auth-token(?:\.|$)/.test(name);
+
+          if (!persistSession && isSupabaseAuthCookie) {
+            const sessionCookieOptions = {
+              ...options,
+              maxAge: undefined,
+              expires: undefined,
+            };
+            cookieStore.set(name, value, sessionCookieOptions);
+            return;
+          }
+
+          cookieStore.set(name, value, options);
+        });
       },
     },
   });

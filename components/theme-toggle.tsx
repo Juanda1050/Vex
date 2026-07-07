@@ -32,20 +32,11 @@ function applyTheme(isDark: boolean) {
 }
 
 function ThemeToggle() {
-  const [mounted, setMounted] = React.useState(false);
-  const [isDark, setIsDark] = React.useState(false);
+  const [isDark, setIsDark] = React.useState(() => getPreferredTheme());
 
   React.useEffect(() => {
-    setMounted(true);
-    const preferredThemeIsDark = getPreferredTheme();
-    setIsDark(preferredThemeIsDark);
-    applyTheme(preferredThemeIsDark);
-  }, []);
-
-  React.useEffect(() => {
-    if (!mounted) return;
     applyTheme(isDark);
-  }, [isDark, mounted]);
+  }, [isDark]);
 
   React.useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");

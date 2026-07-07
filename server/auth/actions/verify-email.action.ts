@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { AUTH_REDIRECTS } from "../constants";
 import { authRepository } from "../repository/auth.repository";
 import { sessionManager } from "../session/session.manager";
+import { TenantService } from "@/server/tenant";
 import {
   getAuthErrorTranslator,
   getFirstValidationKey,
@@ -14,6 +15,7 @@ import {
 import { verifyEmailSchema } from "../validations/verify-email.schema";
 
 const DEFAULT_VERIFY_TYPE: EmailOtpType = "signup";
+const tenantService = new TenantService();
 
 type VerifyEmailParams = {
   token_hash?: string | null;
@@ -21,6 +23,21 @@ type VerifyEmailParams = {
   code?: string | null;
   next?: string | null;
 };
+
+function getDefaultCompanyNameFromEmail(email: string | null): string {
+  if (!email) return "My Company";
+
+  const localPart = email.split("@")[0] ?? "";
+  const normalized = localPart
+    .replace(/[._-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!normalized) return "My Company";
+
+  const withCapital = normalized.charAt(0).toUpperCase() + normalized.slice(1);
+  return `${withCapital} Company`;
+}
 
 export async function resolveVerifyEmailDestination(
   params: VerifyEmailParams,
@@ -66,7 +83,21 @@ export async function resolveVerifyEmailDestination(
   const { user } = await sessionManager.getUser();
   if (!user) return loginRedirect;
 
-  const member = await authRepository.findMemberByUserId(user.id);
+  let member = await authRepository.findMemberByUserId(user.id);
+
+  if (!member) {
+    try {
+      await tenantService.registerNewCompany(
+        getDefaultCompanyNameFromEmail(user.email),
+        user.id,
+      );
+      member = await authRepository.findMemberByUserId(user.id);
+    } catch {
+      const message = errors.fromKey("tenantError");
+      return `${loginRedirect}?error=${encodeURIComponent(message)}`;
+    }
+  }
+
   const fallbackDestination = member
     ? AUTH_REDIRECTS.dashboard(locale)
     : AUTH_REDIRECTS.onboarding(locale);

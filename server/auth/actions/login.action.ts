@@ -1,9 +1,11 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { sessionManager } from "../session/session.manager";
 import { AUTH_REDIRECTS } from "../constants";
+import { COOKIE_KEYS, COOKIE_OPTIONS } from "../constants/cookies.constants";
 import {
   getAuthErrorTranslator,
   getFirstValidationKey,
@@ -38,6 +40,18 @@ export async function loginAction(
   }
 
   const { email, password } = parsed.data;
+  const remember = formData.get("remember") === "true";
+
+  const cookieStore = await cookies();
+  cookieStore.set({
+    name: COOKIE_KEYS.rememberSession,
+    value: remember ? "1" : "0",
+    httpOnly: COOKIE_OPTIONS.httpOnly,
+    secure: COOKIE_OPTIONS.secure,
+    sameSite: COOKIE_OPTIONS.sameSite,
+    path: COOKIE_OPTIONS.path,
+    ...(remember ? { maxAge: COOKIE_OPTIONS.maxAge } : {}),
+  });
 
   const { error } = await sessionManager.signInWithPassword(email, password);
 

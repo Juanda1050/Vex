@@ -62,6 +62,32 @@ Cotify es el MVP de un SaaS multi-tenant para gestionar operaciones comerciales 
 
    Abre [http://localhost:3000](http://localhost:3000).
 
+## Configurar Google OAuth en Supabase
+
+1. En Supabase, ve a `Authentication > Providers > Google` y activa el proveedor.
+2. Configura el `Client ID` y `Client Secret` de Google Cloud para tu proyecto.
+3. En Google Cloud, agrega como URI de redirección autorizada:
+
+   ```text
+   https://<PROJECT-REF>.supabase.co/auth/v1/callback
+   ```
+
+4. En Supabase, agrega como URL de redirección adicional de tu app:
+
+   ```text
+   http://localhost:3000/es/auth/callback
+   http://localhost:3000/en/auth/callback
+   ```
+
+5. En producción, usa las rutas equivalentes de tu dominio público:
+
+   ```text
+   https://tu-dominio.com/es/auth/callback
+   https://tu-dominio.com/en/auth/callback
+   ```
+
+El flujo OAuth usa `NEXT_PUBLIC_APP_URL` para construir el callback localizado, por lo que esta variable debe coincidir con el dominio donde corre la app.
+
 ## Scripts disponibles
 
 - `npm run dev` - arranca la aplicación en desarrollo.

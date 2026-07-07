@@ -6,12 +6,14 @@ export class TenantService {
   private repo = new TenantRepository();
 
   async registerNewCompany(companyName: string, userId: string) {
-    const baseSlug = companyName
+    const normalizedCompanyName = companyName.trim() || "My Company";
+
+    const baseSlugCandidate = normalizedCompanyName
       .toLowerCase()
-      .trim()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-");
+    const baseSlug = baseSlugCandidate || "company";
 
     let slug = baseSlug;
     let attempt = 1;
@@ -22,7 +24,7 @@ export class TenantService {
     }
 
     return this.repo.createWithInitialSetup({
-      name: companyName,
+      name: normalizedCompanyName,
       slug,
       ownerId: userId,
     });

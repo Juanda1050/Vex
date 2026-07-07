@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { EyeOff, LockKeyhole, Mail } from "lucide-react";
 
@@ -24,14 +25,33 @@ const initialState: LoginState = {
 interface LoginFormProps {
   locale: string;
   redirectTo?: string;
+  initialError?: string | null;
 }
 
-export function LoginForm({ locale, redirectTo }: LoginFormProps) {
+export function LoginForm({
+  locale,
+  redirectTo,
+  initialError,
+}: LoginFormProps) {
   const t = useTranslations("auth");
+  const emailPlaceholder = t.has("login.emailPlaceholder")
+    ? t("login.emailPlaceholder")
+    : "email@company.com";
+  const passwordPlaceholder = t.has("login.passwordPlaceholder")
+    ? t("login.passwordPlaceholder")
+    : "Enter your password";
   const [state, formAction, pending] = useActionState(
     loginAction,
     initialState,
   );
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const canSubmit = useMemo(
+    () => email.trim().length > 0 && password.length > 0,
+    [email, password],
+  );
+  const formError = state.error ?? initialError ?? null;
 
   return (
     <form action={formAction} className="grid gap-3 sm:gap-4">
@@ -54,7 +74,9 @@ export function LoginForm({ locale, redirectTo }: LoginFormProps) {
             type="email"
             required
             autoComplete="email"
-            placeholder="you@example.com"
+            placeholder={emailPlaceholder}
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
             className="h-10 rounded-xl border-border/60 bg-background/65 pl-9 text-sm backdrop-blur-sm sm:h-11"
           />
         </div>
@@ -75,6 +97,9 @@ export function LoginForm({ locale, redirectTo }: LoginFormProps) {
             type="password"
             required
             autoComplete="current-password"
+            placeholder={passwordPlaceholder}
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
             className="h-10 rounded-xl border-border/60 bg-background/65 pr-10 pl-9 text-sm backdrop-blur-sm sm:h-11"
           />
           <EyeOff className="pointer-events-none absolute top-1/2 right-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
@@ -94,19 +119,19 @@ export function LoginForm({ locale, redirectTo }: LoginFormProps) {
         </Link>
       </div>
 
-      {state.error ? (
-        <p className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          {state.error}
-        </p>
-      ) : null}
-
       <Button
         type="submit"
-        disabled={pending}
+        disabled={pending || !canSubmit}
         className="h-10 w-full rounded-2xl text-sm sm:h-11 sm:text-[0.95rem]"
       >
         {pending ? t("login.loading") : t("login.submit")}
       </Button>
+
+      {formError ? (
+        <p className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          {formError}
+        </p>
+      ) : null}
 
       <div className="flex items-center gap-3 py-0.5 text-xs text-muted-foreground">
         <span className="h-px flex-1 bg-border/80" />
@@ -117,6 +142,8 @@ export function LoginForm({ locale, redirectTo }: LoginFormProps) {
       <Button
         type="submit"
         formAction={loginWithGoogleAction}
+        formNoValidate
+        disabled={pending}
         variant="outline"
         className="h-10 w-full rounded-2xl border-border/65 bg-background/60 text-sm backdrop-blur-sm sm:h-11"
       >

@@ -125,42 +125,42 @@ model UserProfile {
 // ==========================================
 
 model Tenant {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String
-  slug      String   @unique
-  legalName String?
-  industry  String?
-  countryCode String?
-  logoUrl   String?
-  brandPrimary String?
+  id             String   @id @default(uuid()) @db.Uuid
+  name           String
+  slug           String   @unique
+  legalName      String?
+  industry       String?
+  countryCode    String?
+  logoUrl        String?
+  brandPrimary   String?
   brandSecondary String?
-  address   String?
-  phone     String?
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  address        String?
+  phone          String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  members    TenantMember[]
-  settings   TenantSettings?
-  branches   Branch[]
-  warehouses Warehouse[]
-  categories Category[]
-  units      Unit[]
-  brands     Brand[]
-  products   Product[]
-  variants   ProductVariant[]
-  customers  Customer[]
-  suppliers  Supplier[]
-  inventory  Inventory[]
-  movements  StockMovement[]
-  quotes     Quote[]
-  sales      Sale[]
-  purchases  Purchase[]
-  transfers  InventoryTransfer[]
-  subscriptions TenantSubscription[]
-  rolePermissions TenantRolePermission[]
+  members          TenantMember[]
+  settings         TenantSettings?
+  branches         Branch[]
+  warehouses       Warehouse[]
+  categories       Category[]
+  units            Unit[]
+  brands           Brand[]
+  products         Product[]
+  variants         ProductVariant[]
+  customers        Customer[]
+  suppliers        Supplier[]
+  inventory        Inventory[]
+  movements        StockMovement[]
+  quotes           Quote[]
+  sales            Sale[]
+  purchases        Purchase[]
+  transfers        InventoryTransfer[]
+  subscriptions    TenantSubscription[]
+  rolePermissions  TenantRolePermission[]
   documentCounters DocumentCounter[]
-  invitations Invitation[]
+  invitations      Invitation[]
 
   @@map("tenants")
 }
@@ -234,11 +234,11 @@ model SubscriptionPrice {
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
-  plan          SubscriptionPlan   @relation(fields: [planId], references: [id], onDelete: Cascade)
+  plan          SubscriptionPlan     @relation(fields: [planId], references: [id], onDelete: Cascade)
   subscriptions TenantSubscription[]
 
-  @@index([planId, isActive])
   @@unique([provider, providerPriceId])
+  @@index([planId, isActive])
   @@map("subscription_prices")
 }
 
@@ -264,15 +264,15 @@ model TenantSubscription {
   createdAt              DateTime           @default(now())
   updatedAt              DateTime           @updatedAt
 
-  tenant Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  plan   SubscriptionPlan  @relation(fields: [planId], references: [id], onDelete: Restrict)
-  price  SubscriptionPrice? @relation(fields: [priceId], references: [id], onDelete: SetNull)
+  tenant Tenant              @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  plan   SubscriptionPlan    @relation(fields: [planId], references: [id], onDelete: Restrict)
+  price  SubscriptionPrice?  @relation(fields: [priceId], references: [id], onDelete: SetNull)
   events SubscriptionEvent[]
 
+  @@unique([provider, providerSubscriptionId])
   @@index([tenantId, isCurrent])
   @@index([tenantId, status])
   @@index([planId])
-  @@unique([provider, providerSubscriptionId])
   @@map("tenant_subscriptions")
 }
 
@@ -289,6 +289,21 @@ model SubscriptionEvent {
   @@map("subscription_events")
 }
 
+model PromoCode {
+  id              String   @id @default(uuid()) @db.Uuid
+  code            String   @unique
+  discountPercent Int
+  appliesToInterval BillingInterval?
+  expiryDate      DateTime
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([code, isActive])
+  @@index([expiryDate])
+  @@map("promo_codes")
+}
+
 model TenantMember {
   id       String   @id @default(uuid()) @db.Uuid
   tenantId String   @db.Uuid
@@ -297,8 +312,8 @@ model TenantMember {
   role     UserRole @default(WAREHOUSE)
   isActive Boolean  @default(true)
 
-  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  branch Branch? @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  tenant      Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  branch      Branch?     @relation(fields: [branchId], references: [id], onDelete: SetNull)
   userProfile UserProfile @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@unique([tenantId, userId])
@@ -354,14 +369,14 @@ model TenantSettings {
 // ==========================================
 
 model Branch {
-  id        String  @id @default(uuid()) @db.Uuid
-  tenantId  String  @db.Uuid
-  name      String
-  address   String?
-  phone     String?
-  isActive  Boolean @default(true)
+  id       String  @id @default(uuid()) @db.Uuid
+  tenantId String  @db.Uuid
+  name     String
+  address  String?
+  phone    String?
+  isActive Boolean @default(true)
 
-  tenant     Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  tenant     Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   warehouses Warehouse[]
   members    TenantMember[]
   quotes     Quote[]
@@ -379,8 +394,8 @@ model Warehouse {
   isDefault Boolean @default(false)
   isActive  Boolean @default(true)
 
-  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  branch    Branch?   @relation(fields: [branchId], references: [id])
+  tenant    Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  branch    Branch?         @relation(fields: [branchId], references: [id])
   inventory Inventory[]
   movements StockMovement[]
   sales     Sale[]
@@ -438,26 +453,26 @@ model Brand {
 }
 
 model Product {
-  id           String  @id @default(uuid()) @db.Uuid
-  tenantId     String  @db.Uuid
-  categoryId   String? @db.Uuid
-  brandId      String? @db.Uuid
-  unitId       String? @db.Uuid
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @db.Uuid
+  categoryId   String?  @db.Uuid
+  brandId      String?  @db.Uuid
+  unitId       String?  @db.Uuid
   name         String
   description  String?
-  internalCode String  // Obligatorio — identificador interno del tenant
+  internalCode String // Obligatorio — identificador interno del tenant
   sku          String? // Opcional — código externo / barcode
-  hasVariants  Boolean @default(false)
-  basePrice    Decimal @default(0) @db.Decimal(12, 2)
-  baseCost     Decimal @default(0) @db.Decimal(12, 2)
-  isActive     Boolean @default(true)
+  hasVariants  Boolean  @default(false)
+  basePrice    Decimal  @default(0) @db.Decimal(12, 2)
+  baseCost     Decimal  @default(0) @db.Decimal(12, 2)
+  isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  tenant    Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  category  Category?       @relation(fields: [categoryId], references: [id])
-  brand     Brand?          @relation(fields: [brandId], references: [id])
-  unit      Unit?           @relation(fields: [unitId], references: [id])
+  tenant    Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  category  Category?        @relation(fields: [categoryId], references: [id])
+  brand     Brand?           @relation(fields: [brandId], references: [id])
+  unit      Unit?            @relation(fields: [unitId], references: [id])
   variants  ProductVariant[]
   inventory Inventory[]
 
@@ -481,8 +496,8 @@ model ProductVariant {
   isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
 
-  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  tenant    Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
   inventory Inventory[]
 
   @@unique([tenantId, internalCode])
@@ -496,14 +511,14 @@ model ProductVariant {
 // ==========================================
 
 model Inventory {
-  id             String  @id @default(uuid()) @db.Uuid
-  tenantId       String  @db.Uuid
-  warehouseId    String  @db.Uuid
-  productId      String? @db.Uuid // Null si el producto tiene variantes
-  variantId      String? @db.Uuid // Null si el producto NO tiene variantes
-  quantityOnHand Decimal @default(0) @db.Decimal(12, 3)
-  minStock       Decimal @default(0) @db.Decimal(12, 3)
-  maxStock       Decimal @default(0) @db.Decimal(12, 3)
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @db.Uuid
+  warehouseId    String   @db.Uuid
+  productId      String?  @db.Uuid // Null si el producto tiene variantes
+  variantId      String?  @db.Uuid // Null si el producto NO tiene variantes
+  quantityOnHand Decimal  @default(0) @db.Decimal(12, 3)
+  minStock       Decimal  @default(0) @db.Decimal(12, 3)
+  maxStock       Decimal  @default(0) @db.Decimal(12, 3)
   updatedAt      DateTime @updatedAt
 
   tenant    Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -526,7 +541,7 @@ model StockMovement {
   variantId   String?      @db.Uuid
   type        MovementType
   quantity    Decimal      @db.Decimal(12, 3)
-  referenceId String?      // ID del documento origen (Sale, Purchase, Transfer)
+  referenceId String? // ID del documento origen (Sale, Purchase, Transfer)
   notes       String?
   createdAt   DateTime     @default(now())
   createdBy   String?      @db.Uuid // userId de Supabase Auth
@@ -545,8 +560,8 @@ model StockMovement {
 // ==========================================
 
 model Customer {
-  id          String  @id @default(uuid()) @db.Uuid
-  tenantId    String  @db.Uuid
+  id          String   @id @default(uuid()) @db.Uuid
+  tenantId    String   @db.Uuid
   name        String
   legalName   String?
   email       String?
@@ -554,9 +569,9 @@ model Customer {
   taxId       String?
   rfc         String?
   address     String?
-  creditLimit Decimal @default(0) @db.Decimal(12, 2)
+  creditLimit Decimal  @default(0) @db.Decimal(12, 2)
   notes       String?
-  isActive    Boolean @default(true)
+  isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
 
   tenant Tenant  @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -569,8 +584,8 @@ model Customer {
 }
 
 model Supplier {
-  id           String  @id @default(uuid()) @db.Uuid
-  tenantId     String  @db.Uuid
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String   @db.Uuid
   name         String
   legalName    String?
   email        String?
@@ -580,7 +595,7 @@ model Supplier {
   address      String?
   paymentTerms String?
   notes        String?
-  isActive     Boolean @default(true)
+  isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
 
   tenant    Tenant     @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -596,21 +611,21 @@ model Supplier {
 // ==========================================
 
 model Quote {
-  id               String      @id @default(uuid()) @db.Uuid
-  tenantId         String      @db.Uuid
-  customerId       String?     @db.Uuid
-  branchId         String      @db.Uuid
-  number           String
-  status           QuoteStatus @default(DRAFT)
-  subtotal         Decimal     @default(0) @db.Decimal(12, 2)
-  taxAmount        Decimal     @default(0) @db.Decimal(12, 2)
-  total            Decimal     @default(0) @db.Decimal(12, 2)
-  notes            String?
-  validUntil       DateTime?
-  convertedToSaleId String?    @db.Uuid
-  createdBy        String?     @db.Uuid
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
+  id                String      @id @default(uuid()) @db.Uuid
+  tenantId          String      @db.Uuid
+  customerId        String?     @db.Uuid
+  branchId          String      @db.Uuid
+  number            String
+  status            QuoteStatus @default(DRAFT)
+  subtotal          Decimal     @default(0) @db.Decimal(12, 2)
+  taxAmount         Decimal     @default(0) @db.Decimal(12, 2)
+  total             Decimal     @default(0) @db.Decimal(12, 2)
+  notes             String?
+  validUntil        DateTime?
+  convertedToSaleId String?     @db.Uuid
+  createdBy         String?     @db.Uuid
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 
   tenant   Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   customer Customer?   @relation(fields: [customerId], references: [id])

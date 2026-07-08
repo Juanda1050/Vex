@@ -43,18 +43,16 @@ function PlanCard({
 
   const price = plan.prices[0];
   const isFree = price?.amount === 0;
-  const isEnterprise = plan.code === "enterprise";
 
-  const priceLabel = isEnterprise
-    ? t("checkout.customPricing")
-    : isFree
-      ? t("checkout.free")
-      : `$${price?.amount}`;
+  const priceLabel = isFree ? t("checkout.free") : `$${price?.amount}`;
 
-  const periodLabel =
-    !isEnterprise && !isFree && price?.interval === "month"
+  const periodLabel = !isFree
+    ? price?.interval === "month"
       ? t("checkout.perMonth")
-      : null;
+      : price?.interval === "year"
+        ? t("checkout.perYear")
+        : null
+    : null;
 
   const containerClass = isSelected
     ? "border-primary/50 bg-card shadow-[inset_0_1px_0_hsl(var(--primary)/0.32)]"

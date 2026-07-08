@@ -40,7 +40,14 @@ export const PLANS: PlanDefinition[] = [
     code: "free",
     nameKey: "onboarding.planContent.free.name",
     descriptionKey: "onboarding.planContent.free.summary",
-    prices: [{ amount: 0, currency: "USD", interval: "month" }],
+    prices: [
+      {
+        amount: 0,
+        currency: "USD",
+        interval: "month",
+        externalId: "internal-free-monthly",
+      },
+    ],
     features: [
       { key: "productsLimit", value: 50 },
       { key: "usersLimit", value: 3 },
@@ -53,7 +60,20 @@ export const PLANS: PlanDefinition[] = [
     code: "premium",
     nameKey: "onboarding.planContent.premium.name",
     descriptionKey: "onboarding.planContent.premium.summary",
-    prices: [{ amount: 49, currency: "USD", interval: "month" }],
+    prices: [
+      {
+        amount: 29,
+        currency: "USD",
+        interval: "month",
+        externalId: "internal-premium-monthly",
+      },
+      {
+        amount: 290,
+        currency: "USD",
+        interval: "year",
+        externalId: "internal-premium-yearly",
+      },
+    ],
     features: [
       { key: "productsLimit", value: 500 },
       { key: "usersLimit", value: 15 },
@@ -67,7 +87,20 @@ export const PLANS: PlanDefinition[] = [
     code: "enterprise",
     nameKey: "onboarding.planContent.enterprise.name",
     descriptionKey: "onboarding.planContent.enterprise.summary",
-    prices: [{ amount: 0, currency: "USD", interval: "month" }],
+    prices: [
+      {
+        amount: 99,
+        currency: "USD",
+        interval: "month",
+        externalId: "internal-enterprise-monthly",
+      },
+      {
+        amount: 950,
+        currency: "USD",
+        interval: "year",
+        externalId: "internal-enterprise-yearly",
+      },
+    ],
     features: [
       { key: "productsLimit", value: null },
       { key: "usersLimit", value: null },

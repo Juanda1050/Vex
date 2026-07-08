@@ -3,9 +3,8 @@ export interface PaymentFormData {
   cardNumber: string;
   cardExpiry: string;
   cardCvc: string;
-  billingEmail: string;
-  billingName: string;
   billingCountry: string;
+  billingPostalCode: string;
 }
 
 export interface PaymentGatewayConfig {

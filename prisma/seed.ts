@@ -10,6 +10,7 @@ import {
   seedSubscriptionCatalog,
   seedTenantSubscription,
 } from "./seeds/subscription.seed";
+import { seedPromoCodes } from "./seeds/promo-code.seed";
 
 const prisma = new PrismaClient();
 
@@ -19,6 +20,7 @@ async function main() {
   await seedTenant(prisma);
   await seedSubscriptionCatalog(prisma);
   await seedTenantSubscription(prisma);
+  await seedPromoCodes(prisma);
   await seedSettings(prisma);
   await seedBranch(prisma);
   await seedWarehouse(prisma);

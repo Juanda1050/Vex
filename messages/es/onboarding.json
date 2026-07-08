@@ -91,22 +91,109 @@
   "checkout": {
     "title": "Confirma tu plan",
     "description": "Revisa los detalles del plan seleccionado antes de proceder con el pago.",
+    "brand": "Vex",
+    "cardHeaderTitle": "Activa tu {product}",
+    "cardHeaderSubtitle": "Obtén acceso ilimitado a tus herramientas productivas en segundos.",
+    "starterPlanLabel": "Plan inicial",
+    "billingIntervalLabel": "Intervalo de facturacion",
     "planLabel": "Plan seleccionado",
     "priceLabel": "Total",
     "free": "Sin costo",
     "perMonth": "/ mes",
+    "perYear": "/ año",
     "customPricing": "Precio personalizado",
     "contactSales": "Contactar ventas",
+    "freeFlow": {
+      "title": "Activa tu plan Gratis",
+      "description": "Comienza a operar sin costo mientras organizas tu catalogo, clientes e inventario base.",
+      "capabilitiesTitle": "Lo que puedes hacer desde hoy",
+      "capabilities": {
+        "inventory": {
+          "title": "Inventario inicial",
+          "description": "Registra productos y controla movimientos esenciales de stock."
+        },
+        "sales": {
+          "title": "Ventas y cotizaciones",
+          "description": "Crea cotizaciones y ventas para validar tu flujo comercial."
+        },
+        "team": {
+          "title": "Equipo pequeno",
+          "description": "Invita a tu equipo base para operar de forma colaborativa."
+        },
+        "upgrade": {
+          "title": "Escalar cuando lo necesites",
+          "description": "Cambia a un plan superior cuando aumente tu operacion."
+        }
+      },
+      "note": "No se requiere tarjeta para activar el plan Gratis.",
+      "cta": "Comenzar gratis",
+      "nextStepTitle": "Siguiente paso recomendado",
+      "nextStepDescription": "Configura productos, registra tus primeros clientes y emite tu primera venta para validar el flujo completo.",
+      "launchChecklistTitle": "Checklist de activacion",
+      "launchChecklist": {
+        "items": {
+          "products": "Carga de productos iniciales",
+          "customers": "Registro de clientes frecuentes",
+          "firstSale": "Primera cotizacion o venta emitida"
+        }
+      }
+    },
     "payNow": "Pagar ahora",
+    "subscribe": "Suscribirme",
     "processing": "Procesando pago",
     "changePlan": "Cambiar plan",
+    "payByCard": "Pagar con tarjeta",
+    "payWithPaypal": "Pagar con PayPal",
+    "payWithPaypalSoon": "PayPal (proximamente)",
+    "paymentDetailLabel": "Detalle de pago",
+    "creditCard": "Tarjeta de credito",
+    "monthlyPlanTitle": "Plan mensual",
+    "monthlyPlanDescription": "Ideal para ciclos cortos y pruebas.",
+    "annualPlanTitle": "Plan anual",
+    "annualPlanDescription": "Compromiso de un ano para reducir el costo mensual.",
+    "savingsBadge": "Ahorro de -{percent}%",
+    "breakdown": {
+      "title": "Desglose del cobro",
+      "plan": "Plan",
+      "subtotal": "Subtotal",
+      "frequency": "Frecuencia",
+      "promoCode": "Codigo promocional",
+      "discount": "Descuento",
+      "discountApplied": "Descuento aplicado",
+      "noDiscount": "Sin descuento",
+      "totalNow": "Total"
+    },
+    "operationTitle": "Tu operacion en Vex",
+    "operationItems": {
+      "inventory": {
+        "title": "Inventario centralizado",
+        "description": "Controla stock, movimientos y almacenes desde un solo flujo."
+      },
+      "sales": {
+        "title": "Ventas y cotizaciones",
+        "description": "Crea cotizaciones, conviertelas en ventas y mide resultados."
+      },
+      "team": {
+        "title": "Colaboracion de equipo",
+        "description": "Asigna roles y opera con trazabilidad entre usuarios."
+      }
+    },
+    "footerCopy": "Todo desbloqueado, sincronizado y listo para escalar.",
     "secureNote": "El pago se procesará de forma segura.",
+    "secureExtendedNote": "Tus datos de pago se cifran y se procesan con estandares altos de seguridad.",
     "simulatedNote": "Este es un entorno de prueba. No se realizará ningún cobro real.",
     "cardDetailsLabel": "Datos de la tarjeta",
     "cardDetailsDescription": "Ingresa tu información de pago para completar la compra.",
     "cardNameLabel": "Nombre del titular",
     "cardNamePlaceholder": "Nombre en la tarjeta",
     "cardNumberLabel": "Número de tarjeta",
+    "cardBrandDetected": "Tarjeta detectada: {brand}",
+    "cardBrands": {
+      "visa": "Visa",
+      "mastercard": "Mastercard",
+      "amex": "American Express",
+      "unknown": "Desconocida"
+    },
     "cardExpiryLabel": "Fecha de vencimiento",
     "cardCvcLabel": "CVC",
     "testCardHint": "Usa 4242 4242 4242 4242 para pruebas.",
@@ -115,7 +202,48 @@
     "billingNameLabel": "Nombre completo",
     "billingNamePlaceholder": "Tu nombre completo",
     "billingEmailLabel": "Correo electrónico",
-    "billingCountryLabel": "País"
+    "billingCountryLabel": "Pais",
+    "billingCountryPlaceholder": "Selecciona pais",
+    "cityLabel": "Ciudad",
+    "cityPlaceholder": "Ingresa ciudad",
+    "stateLabel": "Estado",
+    "statePlaceholder": "Ingresa estado",
+    "postalCodeLabel": "Codigo postal",
+    "postalCodePlaceholder": "Ingresa codigo postal",
+    "promo": {
+      "title": "Codigo promocional",
+      "placeholder": "Ingresa codigo promocional",
+      "apply": "Aplicar",
+      "applying": "Aplicando...",
+      "applied": "Promocion aplicada: -{percent}%",
+      "remove": "Quitar cupon",
+      "removed": "Cupon eliminado correctamente.",
+      "errors": {
+        "invalid": "Codigo invalido",
+        "expired": "Codigo expirado",
+        "intervalNotAllowed": "Este codigo no es valido para el intervalo de facturacion seleccionado.",
+        "alreadyApplied": "Ya aplicado"
+      }
+    },
+    "errors": {
+      "cardNameRequired": "Ingresa el nombre del titular.",
+      "cardNameTooShort": "El nombre del titular es demasiado corto.",
+      "cardNumberRequired": "Ingresa el numero de tarjeta.",
+      "cardNumberInvalid": "El numero de tarjeta no es valido. Verificalo.",
+      "cardExpiryRequired": "Ingresa la fecha de vencimiento.",
+      "cardExpiryInvalid": "La fecha de vencimiento no es valida o ya expiro.",
+      "cardCvcRequired": "Ingresa el codigo de seguridad.",
+      "cardCvcAmexInvalid": "El CVC de American Express debe tener exactamente 4 digitos.",
+      "cardCvcInvalid": "El codigo de seguridad debe tener exactamente 3 digitos.",
+      "billingNameRequired": "El nombre de facturacion es obligatorio.",
+      "billingEmailRequired": "El correo de facturacion es obligatorio.",
+      "billingEmailInvalid": "Ingresa un correo electronico valido.",
+      "billingCountryRequired": "Selecciona el pais de facturacion.",
+      "billingCityRequired": "La ciudad de facturacion es obligatoria.",
+      "billingStateRequired": "El estado de facturacion es obligatorio.",
+      "billingPostalCodeRequired": "El codigo postal es obligatorio.",
+      "billingPostalCodeInvalid": "El codigo postal debe tener al menos 4 caracteres."
+    }
   },
   "welcome": {
     "badge": "Pago confirmado",

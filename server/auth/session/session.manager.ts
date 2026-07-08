@@ -18,26 +18,31 @@ async function getSupabaseClient() {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          if (!options) {
-            cookieStore.set(name, value);
-            return;
-          }
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            if (!options) {
+              cookieStore.set(name, value);
+              return;
+            }
 
-          const isSupabaseAuthCookie = /-auth-token(?:\.|$)/.test(name);
+            const isSupabaseAuthCookie = /-auth-token(?:\.|$)/.test(name);
 
-          if (!persistSession && isSupabaseAuthCookie) {
-            const sessionCookieOptions = {
-              ...options,
-              maxAge: undefined,
-              expires: undefined,
-            };
-            cookieStore.set(name, value, sessionCookieOptions);
-            return;
-          }
+            if (!persistSession && isSupabaseAuthCookie) {
+              const sessionCookieOptions = {
+                ...options,
+                maxAge: undefined,
+                expires: undefined,
+              };
+              cookieStore.set(name, value, sessionCookieOptions);
+              return;
+            }
 
-          cookieStore.set(name, value, options);
-        });
+            cookieStore.set(name, value, options);
+          });
+        } catch {
+          // In Server Components Next.js forbids mutating cookies.
+          // Session refresh should be handled by middleware/action contexts.
+        }
       },
     },
   });

@@ -91,22 +91,109 @@
   "checkout": {
     "title": "Confirm your plan",
     "description": "Review your selected plan details before proceeding to payment.",
+    "brand": "Vex",
+    "cardHeaderTitle": "Activate your {product}",
+    "cardHeaderSubtitle": "Get unlimited access to your productivity tools in seconds.",
+    "starterPlanLabel": "Starter plan",
+    "billingIntervalLabel": "Billing interval",
     "planLabel": "Selected plan",
     "priceLabel": "Total",
     "free": "Free",
     "perMonth": "/ month",
+    "perYear": "/ year",
     "customPricing": "Custom pricing",
     "contactSales": "Contact sales",
+    "freeFlow": {
+      "title": "Activate your Free plan",
+      "description": "Start operating at no cost while organizing your catalog, customers, and core inventory.",
+      "capabilitiesTitle": "What you can do from day one",
+      "capabilities": {
+        "inventory": {
+          "title": "Initial inventory control",
+          "description": "Register products and track essential stock movements."
+        },
+        "sales": {
+          "title": "Sales and quotes",
+          "description": "Create quotes and sales to validate your commercial flow."
+        },
+        "team": {
+          "title": "Small team collaboration",
+          "description": "Invite your core team to operate together from the start."
+        },
+        "upgrade": {
+          "title": "Scale when needed",
+          "description": "Move to a higher plan as your operation grows."
+        }
+      },
+      "note": "No card is required to activate the Free plan.",
+      "cta": "Start for free",
+      "nextStepTitle": "Recommended next step",
+      "nextStepDescription": "Set up products, register your first customers, and create your first sale to validate the full flow.",
+      "launchChecklistTitle": "Activation checklist",
+      "launchChecklist": {
+        "items": {
+          "products": "Initial product upload",
+          "customers": "Frequent customer setup",
+          "firstSale": "First quote or sale issued"
+        }
+      }
+    },
     "payNow": "Pay now",
+    "subscribe": "Subscribe",
     "processing": "Processing payment",
     "changePlan": "Change plan",
+    "payByCard": "Pay by card",
+    "payWithPaypal": "Pay with PayPal",
+    "payWithPaypalSoon": "PayPal (coming soon)",
+    "paymentDetailLabel": "Payment detail",
+    "creditCard": "Credit card",
+    "monthlyPlanTitle": "Monthly plan",
+    "monthlyPlanDescription": "Ideal for short-term cycles and trials.",
+    "annualPlanTitle": "Annual plan",
+    "annualPlanDescription": "Commit for one year and lower your monthly cost.",
+    "savingsBadge": "-{percent}% savings",
+    "breakdown": {
+      "title": "Charge breakdown",
+      "plan": "Plan",
+      "subtotal": "Subtotal",
+      "frequency": "Frequency",
+      "promoCode": "Promo code",
+      "discount": "Discount",
+      "discountApplied": "Discount applied",
+      "noDiscount": "No discount",
+      "totalNow": "Total"
+    },
+    "operationTitle": "Your operation in Vex",
+    "operationItems": {
+      "inventory": {
+        "title": "Centralized inventory",
+        "description": "Control stock, movements, and warehouses from one flow."
+      },
+      "sales": {
+        "title": "Sales and quotes",
+        "description": "Create quotes, convert them into sales, and track outcomes."
+      },
+      "team": {
+        "title": "Team collaboration",
+        "description": "Assign roles and operate with full user traceability."
+      }
+    },
+    "footerCopy": "Everything unlocked, synced, and built for speed.",
     "secureNote": "Your payment will be processed securely.",
+    "secureExtendedNote": "Your payment data is encrypted and handled with the highest security standards.",
     "simulatedNote": "This is a test environment. No real charge will be made.",
     "cardDetailsLabel": "Card details",
     "cardDetailsDescription": "Enter your payment information to complete the purchase.",
     "cardNameLabel": "Cardholder name",
     "cardNamePlaceholder": "Name on card",
     "cardNumberLabel": "Card number",
+    "cardBrandDetected": "Detected card: {brand}",
+    "cardBrands": {
+      "visa": "Visa",
+      "mastercard": "Mastercard",
+      "amex": "American Express",
+      "unknown": "Unknown"
+    },
     "cardExpiryLabel": "Expiration date",
     "cardCvcLabel": "CVC",
     "testCardHint": "Use 4242 4242 4242 4242 for testing.",
@@ -115,7 +202,48 @@
     "billingNameLabel": "Full name",
     "billingNamePlaceholder": "Your full name",
     "billingEmailLabel": "Email address",
-    "billingCountryLabel": "Country"
+    "billingCountryLabel": "Country",
+    "billingCountryPlaceholder": "Choose country",
+    "cityLabel": "City",
+    "cityPlaceholder": "Enter city",
+    "stateLabel": "State",
+    "statePlaceholder": "Enter state",
+    "postalCodeLabel": "ZIP code",
+    "postalCodePlaceholder": "Enter ZIP code",
+    "promo": {
+      "title": "Promo code",
+      "placeholder": "Enter promo code",
+      "apply": "Apply",
+      "applying": "Applying...",
+      "applied": "Promo applied: -{percent}%",
+      "remove": "Remove coupon",
+      "removed": "Coupon removed successfully.",
+      "errors": {
+        "invalid": "Invalid code",
+        "expired": "Expired code",
+        "intervalNotAllowed": "This code is not valid for the selected billing interval.",
+        "alreadyApplied": "Already applied"
+      }
+    },
+    "errors": {
+      "cardNameRequired": "Please enter the cardholder name.",
+      "cardNameTooShort": "The cardholder name is too short.",
+      "cardNumberRequired": "Please enter the card number.",
+      "cardNumberInvalid": "Card number looks invalid. Check and try again.",
+      "cardExpiryRequired": "Please enter the expiration date.",
+      "cardExpiryInvalid": "Expiration date is invalid or already expired.",
+      "cardCvcRequired": "Please enter the security code.",
+      "cardCvcAmexInvalid": "American Express CVC must be exactly 4 digits.",
+      "cardCvcInvalid": "Security code must be exactly 3 digits.",
+      "billingNameRequired": "Billing full name is required.",
+      "billingEmailRequired": "Billing email is required.",
+      "billingEmailInvalid": "Please enter a valid email address.",
+      "billingCountryRequired": "Please select your billing country.",
+      "billingCityRequired": "Billing city is required.",
+      "billingStateRequired": "Billing state is required.",
+      "billingPostalCodeRequired": "Billing ZIP code is required.",
+      "billingPostalCodeInvalid": "ZIP code must have at least 4 characters."
+    }
   },
   "welcome": {
     "badge": "Payment confirmed",

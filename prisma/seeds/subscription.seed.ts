@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import {
   SEED_ENTERPRISE_PLAN_ID,
   SEED_ENTERPRISE_PRICE_MONTHLY_ID,
+  SEED_ENTERPRISE_PRICE_YEARLY_ID,
   SEED_FREE_PLAN_ID,
   SEED_FREE_PRICE_MONTHLY_ID,
   SEED_PREMIUM_PLAN_ID,
@@ -247,6 +248,38 @@ export async function seedSubscriptionCatalog(prisma: PrismaClient) {
       isActive: true,
       provider: "INTERNAL",
       providerPriceId: "internal-enterprise-monthly",
+    },
+  });
+
+  await prisma.subscriptionPrice.upsert({
+    where: {
+      provider_providerPriceId: {
+        provider: "INTERNAL",
+        providerPriceId: "internal-enterprise-yearly",
+      },
+    },
+    update: {
+      planId: enterprisePlan.id,
+      nickname: "Enterprise Yearly",
+      amount: 950,
+      currency: "USD",
+      interval: "YEAR",
+      intervalCount: 1,
+      trialDays: null,
+      isActive: true,
+    },
+    create: {
+      id: SEED_ENTERPRISE_PRICE_YEARLY_ID,
+      planId: enterprisePlan.id,
+      nickname: "Enterprise Yearly",
+      amount: 950,
+      currency: "USD",
+      interval: "YEAR",
+      intervalCount: 1,
+      trialDays: null,
+      isActive: true,
+      provider: "INTERNAL",
+      providerPriceId: "internal-enterprise-yearly",
     },
   });
 

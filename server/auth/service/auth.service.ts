@@ -24,7 +24,11 @@ export const authService = {
   buildTenantContext(
     userId: string,
     email: string,
-    userProfile: { fullName?: string | null; avatarUrl?: string | null },
+    userProfile: {
+      fullName?: string | null;
+      avatarUrl?: string | null;
+      authProvider?: string | null;
+    },
     member: TenantMember,
     branchId: string,
     warehouseId: string,
@@ -37,6 +41,7 @@ export const authService = {
       email,
       fullName: userProfile.fullName ?? null,
       avatarUrl: userProfile.avatarUrl ?? null,
+      authProvider: userProfile.authProvider ?? null,
       tenantId: member.tenantId,
       branchId,
       warehouseId,

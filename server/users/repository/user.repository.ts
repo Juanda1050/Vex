@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type { UserRole } from "@prisma/client";
 import { createPaginationMeta } from "@/server/pagination";
 import type { CreateTenantUserInput, UserFilters } from "../types/user.types";
 
@@ -25,7 +26,7 @@ export class UserRepository {
               },
             },
             {
-              role: filters.search.toUpperCase() as any,
+              role: filters.search.toUpperCase() as UserRole,
             },
           ]
         : undefined,
@@ -38,6 +39,7 @@ export class UserRepository {
       prisma.tenantMember.findMany({
         where,
         include: {
+          userProfile: true,
           branch: {
             select: {
               id: true,

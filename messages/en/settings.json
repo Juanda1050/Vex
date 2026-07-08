@@ -1,20 +1,56 @@
 {
   "title": "Settings",
+  "sidebar": {
+    "badge": "Workspace settings"
+  },
   "sections": {
-    "general": "General",
-    "branches": "Branches",
-    "warehouses": "Warehouses",
-    "users": "Users",
-    "billing": "Billing"
+    "profileSecurity": "Profile and Security",
+    "profileSecurityDescription": "Edit personal data, lock fields for OAuth accounts, and update your password when credentials are local.",
+    "companyMembers": "Company Members",
+    "companyMembersDescription": "Manage members, invite new people, and update their roles.",
+    "billing": "Plans and Billing",
+    "billingDescription": "Review the company plan and upgrade when you need more capacity.",
+    "companyData": "Company Data",
+    "companyDataDescription": "Update the corporate profile shown across the workspace.",
+    "preferences": "Preferences",
+    "preferencesDescription": "Theme and language are kept in sync with the current session."
+  },
+  "security": {
+    "changePassword": "Change password",
+    "changePasswordDescription": "Set a new password for direct-login accounts. OAuth accounts keep this section disabled."
   },
   "fields": {
-    "orgName": "Organization name",
-    "timezone": "Timezone",
-    "currency": "Currency",
-    "language": "Language"
+    "avatar": "Avatar",
+    "avatarUpload": "Upload avatar",
+    "fullName": "Full name",
+    "email": "Email address",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "companyName": "Company name",
+    "legalName": "Legal name",
+    "industry": "Industry",
+    "countryCode": "Country code",
+    "phone": "Phone",
+    "address": "Address",
+    "logoUrl": "Logo URL",
+    "inviteEmail": "Invite email",
+    "role": "Role",
+    "channel": "Delivery channel"
   },
   "messages": {
-    "saved": "Settings saved"
+    "saved": "Settings saved",
+    "profileSaved": "Profile updated successfully.",
+    "passwordUpdated": "Password updated successfully.",
+    "companySaved": "Company data updated successfully.",
+    "inviteReady": "Invitation link generated.",
+    "inviteCopied": "Invitation link copied.",
+    "memberRoleSaved": "Member role updated.",
+    "validationError": "Please review the highlighted fields.",
+    "genericError": "Something went wrong. Try again.",
+    "rbacRestricted": "You do not have permission to change this section.",
+    "oauthLocked": "This account is managed by Google OAuth, so these fields are locked.",
+    "avatarTooLarge": "Avatar files must be 5 MB or smaller.",
+    "avatarLimit": "Avatar files must be 5 MB or smaller."
   },
   "preferences": {
     "title": "Preferences",
@@ -25,6 +61,43 @@
       "es": "Spanish",
       "en": "English"
     }
+  },
+  "table": {
+    "member": "Member",
+    "branch": "Branch",
+    "role": "Role",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "noBranch": "No branch assigned"
+  },
+  "actions": {
+    "saveProfile": "Save profile",
+    "updatePassword": "Update password",
+    "saveCompany": "Save company data",
+    "generateInvite": "Generate invite",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "sendEmail": "Send by email",
+    "sendWhatsApp": "Send by WhatsApp",
+    "saveRole": "Save role"
+  },
+  "roles": {
+    "READ_ONLY": "Read only",
+    "SELLER": "Seller",
+    "OWNER": "Owner",
+    "ADMIN": "Admin",
+    "WAREHOUSE": "Warehouse",
+    "PURCHASING": "Purchasing"
+  },
+  "channels": {
+    "EMAIL": "Email",
+    "WHATSAPP": "WhatsApp"
+  },
+  "invitation": {
+    "generatedTitle": "Invitation link generated",
+    "shareMessage": "Join {company}: {email}. Activate your account here: {url}",
+    "emailSubject": "Invitation to join {company}"
   },
   "account": {
     "title": "Account & access",

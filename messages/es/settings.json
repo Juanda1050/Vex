@@ -1,20 +1,56 @@
 {
   "title": "Configuración",
+  "sidebar": {
+    "badge": "Ajustes del workspace"
+  },
   "sections": {
-    "general": "General",
-    "branches": "Sucursales",
-    "warehouses": "Almacenes",
-    "users": "Usuarios",
-    "billing": "Facturación"
+    "profileSecurity": "Perfil y seguridad",
+    "profileSecurityDescription": "Edita tus datos personales, bloquea campos en cuentas OAuth y actualiza tu contraseña si el acceso es local.",
+    "companyMembers": "Miembros de empresa",
+    "companyMembersDescription": "Administra miembros, invita personas nuevas y cambia sus roles.",
+    "billing": "Planes y facturación",
+    "billingDescription": "Revisa el plan de la compañía y mejora cuando necesites más capacidad.",
+    "companyData": "Datos de empresa",
+    "companyDataDescription": "Actualiza el perfil corporativo que se muestra en todo el workspace.",
+    "preferences": "Preferencias",
+    "preferencesDescription": "Tema e idioma sincronizados con la sesión actual."
+  },
+  "security": {
+    "changePassword": "Cambiar contraseña",
+    "changePasswordDescription": "Define una nueva contraseña para cuentas con login directo. Las cuentas OAuth mantienen esta sección deshabilitada."
   },
   "fields": {
-    "orgName": "Nombre de la organización",
-    "timezone": "Zona horaria",
-    "currency": "Moneda",
-    "language": "Idioma"
+    "avatar": "Avatar",
+    "avatarUpload": "Subir avatar",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "newPassword": "Nueva contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "companyName": "Nombre de la empresa",
+    "legalName": "Razón social",
+    "industry": "Industria",
+    "countryCode": "Código de país",
+    "phone": "Teléfono",
+    "address": "Dirección",
+    "logoUrl": "URL del logo",
+    "inviteEmail": "Correo a invitar",
+    "role": "Rol",
+    "channel": "Canal de envío"
   },
   "messages": {
-    "saved": "Configuración guardada"
+    "saved": "Configuración guardada",
+    "profileSaved": "Perfil actualizado correctamente.",
+    "passwordUpdated": "Contraseña actualizada correctamente.",
+    "companySaved": "Datos de empresa actualizados correctamente.",
+    "inviteReady": "Link de invitación generado.",
+    "inviteCopied": "Link de invitación copiado.",
+    "memberRoleSaved": "Rol del miembro actualizado.",
+    "validationError": "Revisa los campos resaltados.",
+    "genericError": "Ocurrió un error. Intenta de nuevo.",
+    "rbacRestricted": "No tienes permiso para modificar esta sección.",
+    "oauthLocked": "Esta cuenta se administra con Google OAuth, por eso los campos están bloqueados.",
+    "avatarTooLarge": "El avatar debe pesar 5 MB o menos.",
+    "avatarLimit": "El avatar debe pesar 5 MB o menos."
   },
   "preferences": {
     "title": "Preferencias",
@@ -25,6 +61,43 @@
       "es": "Español",
       "en": "Inglés"
     }
+  },
+  "table": {
+    "member": "Miembro",
+    "branch": "Sucursal",
+    "role": "Rol",
+    "status": "Estado",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "noBranch": "Sin sucursal asignada"
+  },
+  "actions": {
+    "saveProfile": "Guardar perfil",
+    "updatePassword": "Actualizar contraseña",
+    "saveCompany": "Guardar datos de empresa",
+    "generateInvite": "Generar invitación",
+    "copyLink": "Copiar enlace",
+    "copied": "Copiado",
+    "sendEmail": "Enviar por email",
+    "sendWhatsApp": "Enviar por WhatsApp",
+    "saveRole": "Guardar rol"
+  },
+  "roles": {
+    "READ_ONLY": "Solo lectura",
+    "SELLER": "Vendedor",
+    "OWNER": "Propietario",
+    "ADMIN": "Administrador",
+    "WAREHOUSE": "Bodega",
+    "PURCHASING": "Compras"
+  },
+  "channels": {
+    "EMAIL": "Email",
+    "WHATSAPP": "WhatsApp"
+  },
+  "invitation": {
+    "generatedTitle": "Link de invitación generado",
+    "shareMessage": "Únete a {company}: {email}. Activa tu cuenta aquí: {url}",
+    "emailSubject": "Invitación para unirte a {company}"
   },
   "account": {
     "title": "Cuenta y acceso",

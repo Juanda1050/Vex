@@ -1,10 +1,5 @@
-import { getTranslations } from "next-intl/server";
-
-import { PreferencesPanel } from "@/components/settings/preferences-panel";
-import { SettingsPlanComparison } from "@/components/subscriptions/settings-plan-comparison";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { startServerTimer } from "@/lib/perf";
+import { SettingsDashboard } from "@/components/settings/settings-dashboard";
 import { requirePermission } from "@/server/auth";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { authService } from "@/server/auth/service/auth.service";
@@ -21,24 +16,38 @@ export default async function SettingsPage({
   const perf = startServerTimer("page.settings");
 
   const { locale } = await params;
-  const t = await getTranslations("settings");
   const ctx = await requirePermission("settings.view");
 
-  // With low DB pool limits (e.g. connection_limit=1), firing many Prisma
-  // queries in parallel can exhaust the pool and trigger timeouts.
-  const subscription = await subscriptionService.getTenantSubscription(
-    ctx.tenantId,
-  );
-  const plans = await subscriptionService.listOfferedPlans();
+  const [
+    subscription,
+    plans,
+    member,
+    memberPage,
+    productCount,
+    warehouseCount,
+    userCount,
+  ] = await Promise.all([
+    subscriptionService.getTenantSubscription(ctx.tenantId),
+    subscriptionService.listOfferedPlans(),
+    authRepository.findMemberByUserId(ctx.userId),
+    userService.listUsers(ctx.tenantId, {
+      page: 1,
+      pageSize: 100,
+    }),
+    productService.countActiveProducts(ctx.tenantId),
+    inventoryService.countActiveWarehouses(ctx.tenantId),
+    userService.countActiveUsers(ctx.tenantId),
+  ]);
+
+  if (!member) {
+    perf.end({ locale, tenantId: ctx.tenantId });
+    return null;
+  }
+
   const roleOverrides = await authRepository.listRolePermissions(
     ctx.tenantId,
     ctx.role,
   );
-  const productCount = await productService.countActiveProducts(ctx.tenantId);
-  const warehouseCount = await inventoryService.countActiveWarehouses(
-    ctx.tenantId,
-  );
-  const userCount = await userService.countActiveUsers(ctx.tenantId);
 
   const canManageBilling = authService.hasPermissionWithOverrides(
     ctx.role,
@@ -47,32 +56,36 @@ export default async function SettingsPage({
   );
 
   const page = (
-    <div className="space-y-5">
-      <PreferencesPanel locale={locale} />
-
-      <Card className="border-primary/25 bg-linear-to-br from-card via-card to-primary/10">
-        <CardHeader>
-          <Badge variant="info" className="w-fit">
-            {t("subscriptions.badge")}
-          </Badge>
-          <CardTitle>{t("subscriptions.title")}</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
-          {t("subscriptions.description")}
-        </CardContent>
-      </Card>
-
-      <SettingsPlanComparison
-        plans={plans}
-        currentPlanCode={subscription?.plan.code ?? null}
-        canManageBilling={canManageBilling}
-        usage={{
-          products: productCount,
-          warehouses: warehouseCount,
-          users: userCount,
-        }}
-      />
-    </div>
+    <SettingsDashboard
+      locale={locale}
+      tenant={{
+        id: member.tenant.id,
+        name: member.tenant.name,
+        legalName: member.tenant.legalName ?? null,
+        industry: member.tenant.industry ?? null,
+        countryCode: member.tenant.countryCode ?? null,
+        logoUrl: member.tenant.logoUrl ?? null,
+        address: member.tenant.address ?? null,
+        phone: member.tenant.phone ?? null,
+      }}
+      currentUser={{
+        email: member.userProfile?.email ?? ctx.email,
+        fullName: member.userProfile?.fullName ?? ctx.fullName ?? null,
+        avatarUrl: member.userProfile?.avatarUrl ?? ctx.avatarUrl ?? null,
+        authProvider:
+          ctx.authProvider ?? member.userProfile?.authProvider ?? null,
+      }}
+      members={memberPage.items}
+      plans={plans}
+      currentPlanCode={subscription?.plan.code ?? null}
+      canManageBilling={canManageBilling}
+      canManageCompanySections={ctx.role === "OWNER" || ctx.role === "ADMIN"}
+      subscriptionUsage={{
+        products: productCount,
+        warehouses: warehouseCount,
+        users: userCount,
+      }}
+    />
   );
 
   perf.end({ locale, tenantId: ctx.tenantId });

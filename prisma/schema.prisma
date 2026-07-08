@@ -98,11 +98,24 @@ enum BillingProvider {
   STRIPE
 }
 
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  CANCELED
+}
+
 model UserProfile {
   userId              String   @id @db.Uuid
+  email               String?
+  fullName            String?
+  avatarUrl           String?
+  authProvider        String?
   onboardingCompleted Boolean  @default(false)
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
+
+  tenantMembers TenantMember[]
 
   @@map("user_profiles")
 }
@@ -147,6 +160,7 @@ model Tenant {
   subscriptions TenantSubscription[]
   rolePermissions TenantRolePermission[]
   documentCounters DocumentCounter[]
+  invitations Invitation[]
 
   @@map("tenants")
 }
@@ -285,10 +299,34 @@ model TenantMember {
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   branch Branch? @relation(fields: [branchId], references: [id], onDelete: SetNull)
+  userProfile UserProfile @relation(fields: [userId], references: [userId], onDelete: Cascade)
 
   @@unique([tenantId, userId])
   @@index([tenantId, branchId])
   @@map("tenant_members")
+}
+
+model Invitation {
+  id               String           @id @default(uuid()) @db.Uuid
+  tenantId         String           @db.Uuid
+  email            String
+  role             UserRole         @default(SELLER)
+  channel          String           @default("EMAIL")
+  tokenHash        String           @unique
+  status           InvitationStatus @default(PENDING)
+  invitedByUserId  String?
+  acceptedByUserId String?          @db.Uuid
+  expiresAt        DateTime
+  acceptedAt       DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, email])
+  @@index([tenantId, status])
+  @@index([expiresAt])
+  @@map("invitations")
 }
 
 model TenantSettings {

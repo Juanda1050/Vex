@@ -16,6 +16,37 @@ export const authRepository = {
     });
   },
 
+  async upsertUserProfileFromSession(input: {
+    userId: string;
+    email: string;
+    fullName?: string | null;
+    avatarUrl?: string | null;
+    authProvider?: string | null;
+  }) {
+    return prisma.userProfile.upsert({
+      where: { userId: input.userId },
+      update: {
+        email: input.email,
+        ...(input.fullName !== undefined && input.fullName !== null
+          ? { fullName: input.fullName }
+          : {}),
+        ...(input.avatarUrl !== undefined && input.avatarUrl !== null
+          ? { avatarUrl: input.avatarUrl }
+          : {}),
+        ...(input.authProvider !== undefined && input.authProvider !== null
+          ? { authProvider: input.authProvider }
+          : {}),
+      },
+      create: {
+        userId: input.userId,
+        email: input.email,
+        fullName: input.fullName ?? null,
+        avatarUrl: input.avatarUrl ?? null,
+        authProvider: input.authProvider ?? null,
+      },
+    });
+  },
+
   async markOnboardingCompleted(userId: string) {
     return prisma.userProfile.upsert({
       where: { userId },
@@ -31,6 +62,7 @@ export const authRepository = {
     return prisma.tenantMember.findFirst({
       where: { userId },
       include: {
+        userProfile: true,
         tenant: {
           include: {
             branches: {

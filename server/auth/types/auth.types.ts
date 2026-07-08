@@ -6,6 +6,7 @@ export interface TenantContext {
   email: string;
   fullName?: string | null;
   avatarUrl?: string | null;
+  authProvider?: string | null;
   tenantId: string;
   branchId: string;
   warehouseId: string;
@@ -27,4 +28,5 @@ export interface AuthUser {
   email: string;
   fullName?: string | null;
   avatarUrl?: string | null;
+  authProvider?: string | null;
 }

@@ -56,6 +56,8 @@ export const sessionManager = {
 
     const metadata = user.user_metadata as
       Record<string, string | undefined> | undefined;
+    const appMetadata = user.app_metadata as
+      Record<string, string | undefined> | undefined;
 
     return {
       user: {
@@ -68,6 +70,7 @@ export const sessionManager = {
           null,
         avatarUrl:
           metadata?.avatar_url?.trim() || metadata?.picture?.trim() || null,
+        authProvider: appMetadata?.provider?.trim() || null,
       },
       error: null,
     };
@@ -119,6 +122,20 @@ export const sessionManager = {
   async updateEmail(email: string) {
     const supabase = await getSupabaseClient();
     return supabase.auth.updateUser({ email });
+  },
+
+  async updateUserMetadata(data: {
+    fullName?: string | null;
+    avatarUrl?: string | null;
+  }) {
+    const supabase = await getSupabaseClient();
+    return supabase.auth.updateUser({
+      data: {
+        full_name: data.fullName ?? undefined,
+        name: data.fullName ?? undefined,
+        avatar_url: data.avatarUrl ?? undefined,
+      },
+    });
   },
 
   async verifyOtp(tokenHash: string, type: EmailOtpType) {

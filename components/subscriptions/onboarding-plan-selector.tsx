@@ -2,7 +2,6 @@
 
 import { Check } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { LoadingSubmitButton } from "@/components/ui/loading-submit-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useOnboardingPlanSelector } from "@/hooks/use-onboarding-plan-selector";

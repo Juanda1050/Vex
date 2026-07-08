@@ -24,7 +24,7 @@ export default async function RegisterModulePage({
   }
 
   const tAuth = await getTranslations("auth");
-  const tRegister = await getTranslations("mvp.register");
+  const tRegister = await getTranslations("authShowcase.register");
 
   const showcaseCharts = {
     slide1Label: tRegister("charts.slide1Label"),

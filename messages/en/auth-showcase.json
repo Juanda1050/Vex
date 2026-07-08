@@ -1,0 +1,61 @@
+{
+  "login": {
+    "badge": "Authentication module",
+    "description": "Manage sales, inventory, and customers in minutes with zero hassle.",
+    "appTypeTitle": "Your growth command center",
+    "brandSlogan": "Your entire business, on one platform.",
+    "heroDescription": "Vex turns your daily operation into measurable results: quote faster, control inventory in real time, and make clearer decisions to sell better from day one.",
+    "back": "Back to hub",
+    "charts": {
+      "slide1Label": "Quotes funnel",
+      "slide1Value": "74 active",
+      "slide1Delta": "+18 won",
+      "slide1StageDraft": "Draft",
+      "slide1StageSent": "Sent",
+      "slide1StageWon": "Won",
+      "slide1Note": "Monthly conversion",
+      "slide2Label": "Weekly sales",
+      "slide2Value": "$89.4K",
+      "slide2Delta": "+9.1%",
+      "slide2AxisStart": "Mon",
+      "slide2AxisEnd": "Sun",
+      "slide3Label": "Inventory health",
+      "slide3Value": "92% in stock",
+      "slide3Delta": "12 SKUs at risk",
+      "slide3CategoryA": "A",
+      "slide3CategoryB": "B",
+      "slide3CategoryC": "C",
+      "slide3CategoryD": "D"
+    }
+  },
+  "register": {
+    "badge": "Onboarding module",
+    "description": "Get started today and run your operation with less effort and more control.",
+    "appTypeTitle": "Create your space and launch",
+    "brandName": "VEX",
+    "brandSlogan": "Your entire business, on one platform.",
+    "heroDescription": "Activate your account and run everything in one place: fast, clear, and built for your team.",
+    "backToLogin": "Go to login",
+    "charts": {
+      "slide1Label": "Quotes funnel",
+      "slide1Value": "74 active",
+      "slide1Delta": "+18 won",
+      "slide1StageDraft": "Draft",
+      "slide1StageSent": "Sent",
+      "slide1StageWon": "Won",
+      "slide1Note": "Monthly conversion",
+      "slide2Label": "Weekly sales",
+      "slide2Value": "$89.4K",
+      "slide2Delta": "+9.1%",
+      "slide2AxisStart": "Mon",
+      "slide2AxisEnd": "Sun",
+      "slide3Label": "Inventory health",
+      "slide3Value": "92% in stock",
+      "slide3Delta": "12 SKUs at risk",
+      "slide3CategoryA": "A",
+      "slide3CategoryB": "B",
+      "slide3CategoryC": "C",
+      "slide3CategoryD": "D"
+    }
+  }
+}

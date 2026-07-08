@@ -50,10 +50,13 @@ export async function loginWithGoogleAction(formData: FormData): Promise<void> {
   );
   const callbackUrl = `${callbackBase}?next=${encodeURIComponent(nextPath)}`;
 
-  const { data, error } = await sessionManager.signInWithOAuth(
-    "google",
-    callbackUrl,
-  );
+  const { data, error } = await sessionManager.signInWithOAuth("google", {
+    redirectTo: callbackUrl,
+    queryParams: {
+      prompt: "select_account",
+      access_type: "offline",
+    },
+  });
 
   if (error || !data.url) {
     redirect(AUTH_REDIRECTS.login(locale));

@@ -63,7 +63,7 @@ export function EnhancedCheckoutForm({
   locale,
   onPay,
 }: EnhancedCheckoutFormProps) {
-  const t = useTranslations("mvp.onboarding");
+  const t = useTranslations("onboarding");
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
 

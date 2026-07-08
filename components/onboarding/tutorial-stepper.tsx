@@ -29,7 +29,7 @@ interface TutorialStepperProps {
 }
 
 export function TutorialStepper({ onFinish }: TutorialStepperProps) {
-  const t = useTranslations("mvp.onboarding.tutorial");
+  const t = useTranslations("onboarding.tutorial");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFinishing, setIsFinishing] = useState(false);
 

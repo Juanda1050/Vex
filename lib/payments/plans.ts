@@ -29,17 +29,17 @@ export interface PlanDefinition {
  * Static plan catalogue.
  *
  * Name and description keys reference the i18n namespace:
- *   mvp.onboarding.planContent.<code>.name
- *   mvp.onboarding.planContent.<code>.summary
+ *   onboarding.planContent.<code>.name
+ *   onboarding.planContent.<code>.summary
  *
  * Feature keys reference:
- *   mvp.onboarding.planFeatures.<key>.label
+ *   onboarding.planFeatures.<key>.label
  */
 export const PLANS: PlanDefinition[] = [
   {
     code: "free",
-    nameKey: "mvp.onboarding.planContent.free.name",
-    descriptionKey: "mvp.onboarding.planContent.free.summary",
+    nameKey: "onboarding.planContent.free.name",
+    descriptionKey: "onboarding.planContent.free.summary",
     prices: [{ amount: 0, currency: "USD", interval: "month" }],
     features: [
       { key: "productsLimit", value: 50 },
@@ -51,8 +51,8 @@ export const PLANS: PlanDefinition[] = [
   },
   {
     code: "premium",
-    nameKey: "mvp.onboarding.planContent.premium.name",
-    descriptionKey: "mvp.onboarding.planContent.premium.summary",
+    nameKey: "onboarding.planContent.premium.name",
+    descriptionKey: "onboarding.planContent.premium.summary",
     prices: [{ amount: 49, currency: "USD", interval: "month" }],
     features: [
       { key: "productsLimit", value: 500 },
@@ -65,8 +65,8 @@ export const PLANS: PlanDefinition[] = [
   },
   {
     code: "enterprise",
-    nameKey: "mvp.onboarding.planContent.enterprise.name",
-    descriptionKey: "mvp.onboarding.planContent.enterprise.summary",
+    nameKey: "onboarding.planContent.enterprise.name",
+    descriptionKey: "onboarding.planContent.enterprise.summary",
     prices: [{ amount: 0, currency: "USD", interval: "month" }],
     features: [
       { key: "productsLimit", value: null },

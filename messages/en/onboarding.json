@@ -1,0 +1,154 @@
+{
+  "badge": "Initial setup",
+  "headline": "Let's begin",
+  "title": "Complete your company setup",
+  "description": "Choose your plan and confirm the minimum tenant data to unlock the dashboard and operations modules.",
+  "descriptionCompact": "Choose the plan that best matches your current operation, review included capabilities, and get your account ready to launch with real business context.",
+  "current": "Current",
+  "selected": "Selected",
+  "choosePlan": "Choose plan",
+  "planUpdated": "Plan updated to {planCode}",
+  "onboardingCompleted": "Initial setup completed. You can continue to the dashboard.",
+  "continueToDashboard": "Continue to dashboard",
+  "customPricing": "Custom pricing",
+  "noFeatures": "No declared features",
+  "features": {
+    "unlimited": "Unlimited",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "intervals": {
+    "day": "day",
+    "week": "week",
+    "month": "month",
+    "year": "year"
+  },
+  "selectPlan": "Select plan",
+  "planContent": {
+    "free": {
+      "name": "Free",
+      "summary": "Great for getting started with a small team. It includes the core sales and inventory flow with clear limits so you can validate your operation and scale with structure."
+    },
+    "premium": {
+      "name": "Premium",
+      "summary": "Built for growing businesses that need faster operations, more concurrent users, and broader traceability without additional complexity."
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "summary": "Designed for complex operations that require advanced security, higher scalability, and specialized support across multiple teams."
+    }
+  },
+  "planFeatures": {
+    "productsLimit": {
+      "label": "Products",
+      "description": "Maximum number of active products you can manage."
+    },
+    "usersLimit": {
+      "label": "Users",
+      "description": "Team members with operational access to the platform."
+    },
+    "warehousesLimit": {
+      "label": "Warehouses",
+      "description": "Storage locations available to control your inventory."
+    },
+    "reports": {
+      "label": "Advanced reports",
+      "description": "Dashboards and reports to analyze sales and inventory performance."
+    },
+    "support": {
+      "label": "Support",
+      "description": "Level of operational assistance available for your team.",
+      "values": {
+        "community": "Community",
+        "priority": "Priority",
+        "dedicated": "Dedicated"
+      }
+    },
+    "sso": {
+      "label": "Enterprise SSO",
+      "description": "Single sign-on with your corporate identity provider."
+    }
+  },
+  "billingPermissionRequired": "Your current role does not have billing permissions to change the plan.",
+  "plans": {
+    "badge": "Subscription",
+    "title": "Choose your subscription type",
+    "description": "Each plan unlocks different capabilities to run your business.",
+    "descriptionCompact": "Compare capabilities, limits, and support level to pick the right plan for your current growth stage."
+  },
+  "status": {
+    "tenant": "Tenant",
+    "branch": "Branch",
+    "warehouse": "Warehouse",
+    "ok": "Ready",
+    "pending": "Pending"
+  },
+  "nextSteps": {
+    "badge": "Next step",
+    "title": "What comes next",
+    "description": "After completing onboarding, open the dashboard and start with products, customers, inventory and sales according to your plan."
+  },
+  "checkout": {
+    "title": "Confirm your plan",
+    "description": "Review your selected plan details before proceeding to payment.",
+    "planLabel": "Selected plan",
+    "priceLabel": "Total",
+    "free": "Free",
+    "perMonth": "/ month",
+    "customPricing": "Custom pricing",
+    "contactSales": "Contact sales",
+    "payNow": "Pay now",
+    "processing": "Processing payment",
+    "changePlan": "Change plan",
+    "secureNote": "Your payment will be processed securely.",
+    "simulatedNote": "This is a test environment. No real charge will be made.",
+    "cardDetailsLabel": "Card details",
+    "cardDetailsDescription": "Enter your payment information to complete the purchase.",
+    "cardNameLabel": "Cardholder name",
+    "cardNamePlaceholder": "Name on card",
+    "cardNumberLabel": "Card number",
+    "cardExpiryLabel": "Expiration date",
+    "cardCvcLabel": "CVC",
+    "testCardHint": "Use 4242 4242 4242 4242 for testing.",
+    "billingDetailsLabel": "Billing information",
+    "billingDetailsDescription": "Provide your billing address and contact information.",
+    "billingNameLabel": "Full name",
+    "billingNamePlaceholder": "Your full name",
+    "billingEmailLabel": "Email address",
+    "billingCountryLabel": "Country"
+  },
+  "welcome": {
+    "badge": "Payment confirmed",
+    "title": "Your account is now active",
+    "description": "Your plan has been successfully activated. We will now walk you through the key features of the platform so you can start operating right away.",
+    "planActivated": "Plan activated",
+    "startTutorial": "View tutorial",
+    "skipTutorial": "Skip tutorial and go to dashboard"
+  },
+  "tutorial": {
+    "title": "Discover the platform",
+    "description": "Review the modules available in your plan before you start operating.",
+    "step": "Step {current} of {total}",
+    "next": "Next",
+    "back": "Previous",
+    "finish": "Go to dashboard",
+    "steps": {
+      "dashboard": {
+        "title": "Operational dashboard",
+        "description": "The dashboard gives you immediate visibility into revenue, inventory stock alerts, active quotes, and recent sales - all in one view so you can make decisions without hunting for data across multiple screens."
+      },
+      "products": {
+        "title": "Product catalogue",
+        "description": "Create and organise your catalogue with prices, units of measure, and references. Each product is linked to your inventory so stock is updated automatically with every movement."
+      },
+      "customers": {
+        "title": "Customers and sales pipeline",
+        "description": "Register customers with their contact and tax details. From here you can create quotes and track the sales history per customer to measure the commercial relationship."
+      },
+      "quotes": {
+        "title": "Quotes",
+        "description": "Generate professional quotes in seconds, add products from the catalogue, and send them directly to the customer. When the customer accepts, the quote converts to a sale with a single click."
+      }
+    }
+  }
+}

@@ -39,7 +39,7 @@ function PlanCard({
   isSelected: boolean;
   onSelect: () => void;
 }) {
-  const t = useTranslations("mvp.onboarding");
+  const t = useTranslations("onboarding");
 
   const price = plan.prices[0];
   const isFree = price?.amount === 0;
@@ -150,7 +150,7 @@ function PlanCard({
 export function OnboardingPlanSelectorStatic({
   locale,
 }: OnboardingPlanSelectorStaticProps) {
-  const t = useTranslations("mvp.onboarding");
+  const t = useTranslations("onboarding");
   const router = useRouter();
   const [selectedCode, setSelectedCode] = useState<string | null>(null);
 

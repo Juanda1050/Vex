@@ -1,0 +1,61 @@
+{
+  "login": {
+    "badge": "Módulo de autenticación",
+    "description": "Gestiona ventas, inventario y clientes en minutos, sin complicaciones.",
+    "appTypeTitle": "Tu centro de control para crecer",
+    "brandSlogan": "Todo tu negocio, en una sola plataforma.",
+    "heroDescription": "Vex convierte tu operacion diaria en resultados medibles: cotiza mas rapido, controla inventario en tiempo real y toma decisiones con claridad para vender mejor desde hoy.",
+    "back": "Volver al hub",
+    "charts": {
+      "slide1Label": "Embudo de cotizaciones",
+      "slide1Value": "74 activas",
+      "slide1Delta": "+18 cerradas",
+      "slide1StageDraft": "Borrador",
+      "slide1StageSent": "Enviadas",
+      "slide1StageWon": "Ganadas",
+      "slide1Note": "Conversion del mes",
+      "slide2Label": "Ventas semanales",
+      "slide2Value": "$89.4K",
+      "slide2Delta": "+9.1%",
+      "slide2AxisStart": "Lun",
+      "slide2AxisEnd": "Dom",
+      "slide3Label": "Salud de inventario",
+      "slide3Value": "92% disponible",
+      "slide3Delta": "12 SKU en alerta",
+      "slide3CategoryA": "A",
+      "slide3CategoryB": "B",
+      "slide3CategoryC": "C",
+      "slide3CategoryD": "D"
+    }
+  },
+  "register": {
+    "badge": "Módulo de onboarding",
+    "description": "Empieza hoy y ordena tu operacion para vender mas con menos esfuerzo.",
+    "appTypeTitle": "Crea tu espacio y despega",
+    "brandName": "VEX",
+    "brandSlogan": "Todo tu negocio, en una sola plataforma.",
+    "heroDescription": "Activa tu cuenta y empieza a trabajar con todo en un solo lugar: rapido, claro y pensado para tu equipo.",
+    "backToLogin": "Ir a login",
+    "charts": {
+      "slide1Label": "Embudo de cotizaciones",
+      "slide1Value": "74 activas",
+      "slide1Delta": "+18 cerradas",
+      "slide1StageDraft": "Borrador",
+      "slide1StageSent": "Enviadas",
+      "slide1StageWon": "Ganadas",
+      "slide1Note": "Conversion del mes",
+      "slide2Label": "Ventas semanales",
+      "slide2Value": "$89.4K",
+      "slide2Delta": "+9.1%",
+      "slide2AxisStart": "Lun",
+      "slide2AxisEnd": "Dom",
+      "slide3Label": "Salud de inventario",
+      "slide3Value": "92% disponible",
+      "slide3Delta": "12 SKU en alerta",
+      "slide3CategoryA": "A",
+      "slide3CategoryB": "B",
+      "slide3CategoryC": "C",
+      "slide3CategoryD": "D"
+    }
+  }
+}

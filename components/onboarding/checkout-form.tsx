@@ -47,7 +47,7 @@ function getPriceDisplay(
 }
 
 export function CheckoutForm({ planCode, locale, onPay }: CheckoutFormProps) {
-  const t = useTranslations("mvp.onboarding");
+  const t = useTranslations("onboarding");
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 

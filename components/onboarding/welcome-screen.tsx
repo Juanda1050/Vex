@@ -18,7 +18,7 @@ export function WelcomeScreen({
   locale,
   onSkip,
 }: WelcomeScreenProps) {
-  const t = useTranslations("mvp.onboarding");
+  const t = useTranslations("onboarding");
   const router = useRouter();
   const [isSkipping, startTransition] = useTransition();
 

@@ -77,7 +77,7 @@ export function useOnboardingPlanSelector({
   plans,
   currentPlanCode,
 }: UseOnboardingPlanSelectorInput) {
-  const t = useTranslations("mvp.onboarding");
+  const t = useTranslations("onboarding");
 
   const [planState, planAction, planPending] = useActionState(
     selectOnboardingPlanAction,

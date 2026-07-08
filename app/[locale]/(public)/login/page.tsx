@@ -27,7 +27,7 @@ export default async function LoginModulePage({
   }
 
   const tAuth = await getTranslations("auth");
-  const tLogin = await getTranslations("mvp.login");
+  const tLogin = await getTranslations("authShowcase.login");
 
   const showcaseCharts = {
     slide1Label: tLogin("charts.slide1Label"),

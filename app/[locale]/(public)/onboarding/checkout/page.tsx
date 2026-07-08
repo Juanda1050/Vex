@@ -32,7 +32,7 @@ export default async function OnboardingCheckoutPage({
     redirect(`/${locale}/onboarding`);
   }
 
-  const t = await getTranslations("mvp.onboarding");
+  const t = await getTranslations("onboarding");
 
   async function handlePay(selectedPlanCode: string): Promise<void> {
     "use server";

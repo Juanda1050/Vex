@@ -1,0 +1,154 @@
+{
+  "badge": "Configuración inicial",
+  "headline": "Empecemos",
+  "title": "Completa tu configuración de empresa",
+  "description": "Selecciona tu plan y confirma los datos mínimos del tenant para desbloquear el dashboard y los módulos operativos.",
+  "descriptionCompact": "Selecciona el plan que mejor encaja con tu operación actual, revisa las capacidades incluidas y deja tu cuenta lista para arrancar con contexto real de negocio.",
+  "current": "Actual",
+  "selected": "Seleccionado",
+  "choosePlan": "Elegir plan",
+  "planUpdated": "Plan actualizado a {planCode}",
+  "onboardingCompleted": "Configuración inicial completada. Ya puedes continuar al dashboard.",
+  "continueToDashboard": "Continuar al dashboard",
+  "customPricing": "Precio personalizado",
+  "noFeatures": "Sin funcionalidades declaradas",
+  "features": {
+    "unlimited": "Ilimitado",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "intervals": {
+    "day": "día",
+    "week": "semana",
+    "month": "mes",
+    "year": "año"
+  },
+  "selectPlan": "Seleccionar plan",
+  "planContent": {
+    "free": {
+      "name": "Gratis",
+      "summary": "Ideal para iniciar con un equipo pequeño. Incluye el flujo base para ventas e inventario con límites claros para validar tu operación y crecer con orden."
+    },
+    "premium": {
+      "name": "Premium",
+      "summary": "Pensado para negocios en crecimiento que necesitan mayor velocidad operativa, más usuarios simultáneos y trazabilidad ampliada sin fricción."
+    },
+    "enterprise": {
+      "name": "Empresa",
+      "summary": "Diseñado para operaciones complejas con necesidades avanzadas de seguridad, escalabilidad y soporte especializado para múltiples equipos."
+    }
+  },
+  "planFeatures": {
+    "productsLimit": {
+      "label": "Productos",
+      "description": "Cantidad máxima de productos activos que puedes administrar."
+    },
+    "usersLimit": {
+      "label": "Usuarios",
+      "description": "Número de miembros del equipo con acceso operativo."
+    },
+    "warehousesLimit": {
+      "label": "Almacenes",
+      "description": "Centros de almacenamiento disponibles para controlar inventario."
+    },
+    "reports": {
+      "label": "Reportes avanzados",
+      "description": "Paneles y reportes para analizar desempeño comercial e inventario."
+    },
+    "support": {
+      "label": "Soporte",
+      "description": "Nivel de acompañamiento disponible para tu operación.",
+      "values": {
+        "community": "Comunidad",
+        "priority": "Prioritario",
+        "dedicated": "Dedicado"
+      }
+    },
+    "sso": {
+      "label": "SSO corporativo",
+      "description": "Inicio de sesión unificado con tu proveedor de identidad empresarial."
+    }
+  },
+  "billingPermissionRequired": "Tu rol actual no tiene permisos de facturación para cambiar el plan.",
+  "plans": {
+    "badge": "Suscripción",
+    "title": "Selecciona el tipo de suscripción",
+    "description": "Cada plan habilita diferentes capacidades para operar tu negocio.",
+    "descriptionCompact": "Compara capacidades, límites y nivel de soporte para elegir el plan correcto según tu etapa de crecimiento."
+  },
+  "status": {
+    "tenant": "Tenant",
+    "branch": "Sucursal",
+    "warehouse": "Almacén",
+    "ok": "Listo",
+    "pending": "Pendiente"
+  },
+  "nextSteps": {
+    "badge": "Siguiente paso",
+    "title": "Qué sigue",
+    "description": "Después de finalizar onboarding, accede al dashboard para comenzar con productos, clientes, inventario y ventas según tu plan."
+  },
+  "checkout": {
+    "title": "Confirma tu plan",
+    "description": "Revisa los detalles del plan seleccionado antes de proceder con el pago.",
+    "planLabel": "Plan seleccionado",
+    "priceLabel": "Total",
+    "free": "Sin costo",
+    "perMonth": "/ mes",
+    "customPricing": "Precio personalizado",
+    "contactSales": "Contactar ventas",
+    "payNow": "Pagar ahora",
+    "processing": "Procesando pago",
+    "changePlan": "Cambiar plan",
+    "secureNote": "El pago se procesará de forma segura.",
+    "simulatedNote": "Este es un entorno de prueba. No se realizará ningún cobro real.",
+    "cardDetailsLabel": "Datos de la tarjeta",
+    "cardDetailsDescription": "Ingresa tu información de pago para completar la compra.",
+    "cardNameLabel": "Nombre del titular",
+    "cardNamePlaceholder": "Nombre en la tarjeta",
+    "cardNumberLabel": "Número de tarjeta",
+    "cardExpiryLabel": "Fecha de vencimiento",
+    "cardCvcLabel": "CVC",
+    "testCardHint": "Usa 4242 4242 4242 4242 para pruebas.",
+    "billingDetailsLabel": "Información de facturación",
+    "billingDetailsDescription": "Proporciona tu domicilio y datos de contacto para la facturación.",
+    "billingNameLabel": "Nombre completo",
+    "billingNamePlaceholder": "Tu nombre completo",
+    "billingEmailLabel": "Correo electrónico",
+    "billingCountryLabel": "País"
+  },
+  "welcome": {
+    "badge": "Pago confirmado",
+    "title": "Tu cuenta ya está activa",
+    "description": "El plan ha sido activado correctamente. Ahora te guiaremos por las funciones clave de la plataforma para que empieces a operar desde el primer momento.",
+    "planActivated": "Plan activado",
+    "startTutorial": "Ver tutorial",
+    "skipTutorial": "Saltar tutorial e ir al dashboard"
+  },
+  "tutorial": {
+    "title": "Conoce la plataforma",
+    "description": "Revisa los módulos disponibles en tu plan antes de empezar a operar.",
+    "step": "Paso {current} de {total}",
+    "next": "Siguiente",
+    "back": "Anterior",
+    "finish": "Ir al dashboard",
+    "steps": {
+      "dashboard": {
+        "title": "Dashboard operativo",
+        "description": "Desde el dashboard tienes visibilidad inmediata sobre ingresos, inventario con alerta de stock, cotizaciones activas y ventas recientes. Todo en una sola vista para tomar decisiones sin buscar datos en múltiples pantallas."
+      },
+      "products": {
+        "title": "Catálogo de productos",
+        "description": "Crea y organiza tu catálogo con precios, unidades de medida y referencias. Cada producto queda vinculado a tu inventario para que el stock se actualice automáticamente con cada movimiento."
+      },
+      "customers": {
+        "title": "Clientes y comercial",
+        "description": "Registra clientes con su información de contacto y fiscal. Desde aquí podrás crear cotizaciones y rastrear el historial de ventas por cliente para medir la relación comercial."
+      },
+      "quotes": {
+        "title": "Cotizaciones",
+        "description": "Genera cotizaciones profesionales en segundos, agrégales productos del catálogo y envíalas directamente al cliente. Cuando el cliente acepte, la cotización se convierte en venta con un solo clic."
+      }
+    }
+  }
+}

@@ -11,8 +11,8 @@ import {
   type RegisterState,
 } from "@/server/auth/actions/register.action";
 import { loginWithGoogleAction } from "@/server/auth/actions/login-google.action";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { LoadingSubmitButton } from "@/components/ui/loading-submit-button";
 
 const initialState: RegisterState = {
   error: null,
@@ -28,10 +28,7 @@ interface RegisterFormProps {
 
 export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
   const t = useTranslations("auth");
-  const [state, formAction, pending] = useActionState(
-    registerAction,
-    initialState,
-  );
+  const [state, formAction] = useActionState(registerAction, initialState);
   const [orgName, setOrgName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -148,13 +145,14 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
         </p>
       ) : null}
 
-      <Button
+      <LoadingSubmitButton
         type="submit"
-        disabled={pending || !canSubmit}
+        disabled={!canSubmit}
+        pendingText={t("register.loading")}
         className="h-10 w-full rounded-2xl text-sm sm:h-11 sm:text-[0.95rem]"
       >
-        {pending ? t("register.loading") : t("register.submit")}
-      </Button>
+        {t("register.submit")}
+      </LoadingSubmitButton>
 
       {state.error ? (
         <p className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -168,11 +166,11 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
         <span className="h-px flex-1 bg-border/80" />
       </div>
 
-      <Button
+      <LoadingSubmitButton
         type="submit"
         formAction={loginWithGoogleAction}
         formNoValidate
-        disabled={pending}
+        pendingText={t("login.loading")}
         variant="outline"
         className="h-10 w-full rounded-2xl border-border/65 bg-background/60 text-sm backdrop-blur-sm sm:h-11"
       >
@@ -195,7 +193,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
           />
         </svg>
         {t("login.google")}
-      </Button>
+      </LoadingSubmitButton>
 
       {showFooter ? (
         <p className="text-center text-sm text-muted-foreground">

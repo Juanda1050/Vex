@@ -10,7 +10,7 @@ export default async function OnboardingPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations("mvp.onboarding");
+  const t = await getTranslations("onboarding");
   const onboarding = await getOnboardingState();
 
   if (!onboarding.isAuthenticated) {

@@ -70,11 +70,17 @@ export const sessionManager = {
     return supabase.auth.signInWithPassword({ email, password });
   },
 
-  async signInWithOAuth(provider: Provider, redirectTo?: string) {
+  async signInWithOAuth(
+    provider: Provider,
+    options?: {
+      redirectTo?: string;
+      queryParams?: Record<string, string>;
+    },
+  ) {
     const supabase = await getSupabaseClient();
     return supabase.auth.signInWithOAuth({
       provider,
-      options: redirectTo ? { redirectTo } : undefined,
+      options,
     });
   },
 

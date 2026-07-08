@@ -44,7 +44,7 @@ function UserMenu({
 }: UserMenuProps) {
   const router = useRouter();
   const tNav = useTranslations("nav");
-  const tDashboard = useTranslations("mvp.dashboard");
+  const tDashboard = useTranslations("dashboard");
   const displayName = name?.trim() || email;
   const settingsPath = `/${locale}/settings`;
   const logoutSettingsPath = `${settingsPath}#account-security`;

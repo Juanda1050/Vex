@@ -24,7 +24,7 @@ export default async function OnboardingTutorialPage({
     redirect(`/${locale}/dashboard`);
   }
 
-  const t = await getTranslations("mvp.onboarding.tutorial");
+  const t = await getTranslations("onboarding.tutorial");
 
   async function completeOnboarding(): Promise<void> {
     "use server";

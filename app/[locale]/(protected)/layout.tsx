@@ -15,7 +15,7 @@ export default async function ProtectedLayout({
   const auth = await requireAuth();
   const supabase = await createClient();
   const [tDashboard, tNav] = await Promise.all([
-    getTranslations("mvp.dashboard"),
+    getTranslations("dashboard"),
     getTranslations("nav"),
   ]);
 

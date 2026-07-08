@@ -1,0 +1,36 @@
+{
+  "layout": {
+    "title": "Panel de gestión",
+    "description": "Interfaz unificada con navegación responsiva y preferencias.",
+    "badge": "Tema dinámico"
+  },
+  "home": {
+    "badge": "MVP Hub",
+    "premium": "Premium UI",
+    "title": "Superficie de lanzamiento Vex",
+    "description": "Esta pantalla centraliza los módulos clave para iniciar el MVP: autenticación, registro y dashboard. Ya puedes conectar cada flujo sin rehacer layout ni navegación base.",
+    "openModule": "Abrir módulo",
+    "goToLogin": "Ir a login",
+    "openDashboard": "Abrir dashboard",
+    "workspaceFeed": "Workspace feed",
+    "syncedTodos": "Todos sincronizados",
+    "feedDescription": "Fuente de datos conectada para validar rápidamente integración con Supabase durante desarrollo.",
+    "emptyTodos": "Sin tareas cargadas todavía.",
+    "modules": {
+      "loginDescription": "Acceso con email para operadores y administradores.",
+      "registerDescription": "Alta de tenant y usuario inicial para onboarding.",
+      "dashboardDescription": "Centro operativo con métricas, actividad y accesos rápidos."
+    },
+    "status": {
+      "ready": "listo",
+      "tasksLive": "tasks activas"
+    }
+  },
+  "modules": {
+    "customersDescription": "Gestión de clientes y relación comercial.",
+    "productsDescription": "Catálogo de productos, precios y atributos.",
+    "inventoryDescription": "Movimientos y kardex por almacén.",
+    "quotesDescription": "Cotizaciones y conversión de oportunidades.",
+    "subscriptionsDescription": "Planes, cambios y estado de facturación."
+  }
+}

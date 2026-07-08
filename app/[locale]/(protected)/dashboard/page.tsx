@@ -52,7 +52,7 @@ export default async function DashboardModulePage({
   const salesStatus = resolveDashboardSalesStatus(query.salesStatus);
 
   const [tDashboard, tNav, tProducts, tQuotes, overview] = await Promise.all([
-    getTranslations("mvp.dashboard"),
+    getTranslations("dashboard"),
     getTranslations("nav"),
     getTranslations("products"),
     getTranslations("quotes"),

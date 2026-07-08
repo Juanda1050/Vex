@@ -11,9 +11,9 @@ import {
   type LoginState,
 } from "@/server/auth/actions/login.action";
 import { loginWithGoogleAction } from "@/server/auth/actions/login-google.action";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { LoadingSubmitButton } from "@/components/ui/loading-submit-button";
 
 const initialState: LoginState = {
   error: null,
@@ -42,10 +42,7 @@ export function LoginForm({
   const passwordPlaceholder = t.has("login.passwordPlaceholder")
     ? t("login.passwordPlaceholder")
     : "Enter your password";
-  const [state, formAction, pending] = useActionState(
-    loginAction,
-    initialState,
-  );
+  const [state, formAction] = useActionState(loginAction, initialState);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -121,13 +118,14 @@ export function LoginForm({
         </Link>
       </div>
 
-      <Button
+      <LoadingSubmitButton
         type="submit"
-        disabled={pending || !canSubmit}
+        disabled={!canSubmit}
+        pendingText={t("login.loading")}
         className="h-10 w-full rounded-2xl text-sm sm:h-11 sm:text-[0.95rem]"
       >
-        {pending ? t("login.loading") : t("login.submit")}
-      </Button>
+        {t("login.submit")}
+      </LoadingSubmitButton>
 
       {formError ? (
         <p className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -141,11 +139,11 @@ export function LoginForm({
         <span className="h-px flex-1 bg-border/80" />
       </div>
 
-      <Button
+      <LoadingSubmitButton
         type="submit"
         formAction={loginWithGoogleAction}
         formNoValidate
-        disabled={pending}
+        pendingText={t("login.loading")}
         variant="outline"
         className="h-10 w-full rounded-2xl border-border/65 bg-background/60 text-sm backdrop-blur-sm sm:h-11"
       >
@@ -168,7 +166,7 @@ export function LoginForm({
           />
         </svg>
         {t("login.google")}
-      </Button>
+      </LoadingSubmitButton>
 
       {showFooter ? (
         <p className="text-center text-sm text-muted-foreground">

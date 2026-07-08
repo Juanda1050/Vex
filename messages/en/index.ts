@@ -9,8 +9,11 @@ import purchases from "./purchases.json";
 import quotes from "./quotes.json";
 import settings from "./settings.json";
 import subscriptions from "./subscriptions.json";
-import mvp from "./mvp.json";
 import users from "./users.json";
+import app from "./app.json";
+import authShowcase from "./auth-showcase.json";
+import onboarding from "./onboarding.json";
+import dashboard from "./dashboard.json";
 
 const messages = {
   common,
@@ -24,8 +27,11 @@ const messages = {
   quotes,
   settings,
   subscriptions,
-  mvp,
   users,
+  app,
+  authShowcase,
+  onboarding,
+  dashboard,
 };
 
 export default messages;

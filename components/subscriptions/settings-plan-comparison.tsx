@@ -63,10 +63,15 @@ export function SettingsPlanComparison({
   usage,
 }: SettingsPlanComparisonProps) {
   const t = useTranslations("settings");
-  const [state, action, pending] = useActionState(
-    changeSubscriptionPlanAction,
-    initialState,
-  );
+
+  const actionWrapper = async (
+    _prevState: SubscriptionActionResult,
+    formData: FormData,
+  ): Promise<SubscriptionActionResult> => {
+    return changeSubscriptionPlanAction(formData);
+  };
+
+  const [state, action, pending] = useActionState(actionWrapper, initialState);
 
   const currentPlan =
     plans.find((plan) => plan.code === currentPlanCode) ?? null;

@@ -25,9 +25,7 @@ export class UserRepository {
               },
             },
             {
-              role: {
-                equals: filters.search.toUpperCase(),
-              },
+              role: filters.search.toUpperCase() as any,
             },
           ]
         : undefined,

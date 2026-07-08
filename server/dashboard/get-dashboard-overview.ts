@@ -217,81 +217,85 @@ export async function getDashboardOverview({
   const range = buildPeriodRange(period, now);
   const recentSaleStatus = resolveSaleStatusFilter(salesStatus);
 
-  const [
-    tenantSettings,
-    productsCount,
-    inventoryRows,
-    totalSales,
-    salesByDayRows,
-    quoteStatusTotals,
-    customerCountsRows,
-    recentSales,
-  ] = await Promise.all([
-    prisma.tenantSettings.findUnique({
-      where: { tenantId },
-      select: { currency: true },
-    }),
-    prisma.product.count({
-      where: { tenantId, isActive: true },
-    }),
-    prisma.$queryRaw<Array<InventoryOverviewRow>>`
-      SELECT
-        COUNT(*)::int AS positions,
-        COALESCE(SUM("quantityOnHand"), 0) AS "unitsInStock",
-        COUNT(*) FILTER (
-          WHERE "minStock" > 0 AND "quantityOnHand" <= "minStock"
-        )::int AS "lowStock"
-      FROM inventory
-      WHERE "tenantId" = ${tenantId}::uuid
-    `,
-    prisma.sale.aggregate({
-      where: { tenantId },
-      _sum: { total: true },
-    }),
-    prisma.$queryRaw<Array<SalesByDayRow>>`
-      SELECT DATE("saleDate") AS day, SUM(total) AS total
-      FROM sales
-      WHERE "tenantId" = ${tenantId}::uuid
-        AND "saleDate" >= ${range.previousStart}
-        AND "saleDate" <= ${range.currentEnd}
-      GROUP BY DATE("saleDate")
-    `,
-    prisma.quote.groupBy({
-      by: ["status"],
-      where: { tenantId },
-      _count: { _all: true },
-    }),
-    prisma.$queryRaw<Array<CustomerCountsRow>>`
-      SELECT
-        COUNT(*) FILTER (
-          WHERE "createdAt" >= ${range.currentStart}
-            AND "createdAt" <= ${range.currentEnd}
-        )::int AS "currentCount",
-        COUNT(*) FILTER (
-          WHERE "createdAt" >= ${range.previousStart}
-            AND "createdAt" <= ${range.previousEnd}
-        )::int AS "previousCount"
-      FROM customers
-      WHERE "tenantId" = ${tenantId}::uuid
-    `,
-    prisma.sale.findMany({
-      where: {
-        tenantId,
-        ...(recentSaleStatus ? { status: recentSaleStatus } : {}),
-      },
-      orderBy: { saleDate: "desc" },
-      take: 6,
-      select: {
-        id: true,
-        number: true,
-        status: true,
-        total: true,
-        saleDate: true,
-        customer: { select: { name: true } },
-        _count: { select: { items: true } },
-      },
-    }),
-  ]);
+  // Fetch tenant settings first (required for currency)
+  const tenantSettings = await prisma.tenantSettings.findUnique({
+    where: { tenantId },
+    select: { currency: true },
+  });
+
+  // Fetch products count
+  const productsCount = await prisma.product.count({
+    where: { tenantId, isActive: true },
+  });
+
+  // Fetch inventory in a single aggregated query
+  const inventoryRows = await prisma.$queryRaw<Array<InventoryOverviewRow>>`
+    SELECT
+      COUNT(*)::int AS positions,
+      COALESCE(SUM("quantityOnHand"), 0) AS "unitsInStock",
+      COUNT(*) FILTER (
+        WHERE "minStock" > 0 AND "quantityOnHand" <= "minStock"
+      )::int AS "lowStock"
+    FROM inventory
+    WHERE "tenantId" = ${tenantId}::uuid
+  `;
+
+  // Fetch all sales totals in one query
+  const totalSales = await prisma.sale.aggregate({
+    where: { tenantId },
+    _sum: { total: true },
+  });
+
+  // Fetch sales by day for the entire period
+  const salesByDayRows = await prisma.$queryRaw<Array<SalesByDayRow>>`
+    SELECT DATE("saleDate") AS day, SUM(total) AS total
+    FROM sales
+    WHERE "tenantId" = ${tenantId}::uuid
+      AND "saleDate" >= ${range.previousStart}
+      AND "saleDate" <= ${range.currentEnd}
+    GROUP BY DATE("saleDate")
+  `;
+
+  // Fetch quote statuses
+  const quoteStatusTotals = await prisma.quote.groupBy({
+    by: ["status"],
+    where: { tenantId },
+    _count: { _all: true },
+  });
+
+  // Fetch customer counts
+  const customerCountsRows = await prisma.$queryRaw<Array<CustomerCountsRow>>`
+    SELECT
+      COUNT(*) FILTER (
+        WHERE "createdAt" >= ${range.currentStart}
+          AND "createdAt" <= ${range.currentEnd}
+      )::int AS "currentCount",
+      COUNT(*) FILTER (
+        WHERE "createdAt" >= ${range.previousStart}
+          AND "createdAt" <= ${range.previousEnd}
+      )::int AS "previousCount"
+    FROM customers
+    WHERE "tenantId" = ${tenantId}::uuid
+  `;
+
+  // Fetch recent sales with limited fields
+  const recentSales = await prisma.sale.findMany({
+    where: {
+      tenantId,
+      ...(recentSaleStatus ? { status: recentSaleStatus } : {}),
+    },
+    orderBy: { saleDate: "desc" },
+    take: 6,
+    select: {
+      id: true,
+      number: true,
+      status: true,
+      total: true,
+      saleDate: true,
+      customer: { select: { name: true } },
+      _count: { select: { items: true } },
+    },
+  });
 
   const inventoryOverview = inventoryRows[0];
   const customerCounts = customerCountsRows[0];

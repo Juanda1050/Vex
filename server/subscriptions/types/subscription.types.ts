@@ -53,6 +53,7 @@ export interface TenantSubscriptionSummary {
     code: string;
     name: string;
     tier: PlanTier;
+    features: Record<string, unknown>;
   };
   price: PlanPriceSummary | null;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useOptimistic, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import {
@@ -13,25 +13,29 @@ type UseDashboardFiltersProps = {
   salesStatus: DashboardSalesStatusFilter;
 };
 
+type DashboardFilterHandlers = {
+  isPending: boolean;
+  period: DashboardPeriod;
+  salesStatus: DashboardSalesStatusFilter;
+  setPeriod: (value: DashboardPeriod | null, eventDetails?: unknown) => void;
+  setSalesStatus: (
+    value: DashboardSalesStatusFilter | null,
+    eventDetails?: unknown,
+  ) => void;
+};
+
 function useDashboardFilters({
   period,
   salesStatus,
-}: UseDashboardFiltersProps) {
+}: UseDashboardFiltersProps): DashboardFilterHandlers {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  const [selectedPeriod, setSelectedPeriod] = useState<DashboardPeriod>(period);
+  const [selectedPeriod, setSelectedPeriod] =
+    useOptimistic<DashboardPeriod>(period);
   const [selectedSalesStatus, setSelectedSalesStatus] =
-    useState<DashboardSalesStatusFilter>(salesStatus);
-
-  useEffect(() => {
-    setSelectedPeriod(period);
-  }, [period]);
-
-  useEffect(() => {
-    setSelectedSalesStatus(salesStatus);
-  }, [salesStatus]);
+    useOptimistic<DashboardSalesStatusFilter>(salesStatus);
 
   const updateFilter = (name: string, value: string, defaultValue: string) => {
     if (!pathname) {
@@ -58,13 +62,23 @@ function useDashboardFilters({
     isPending,
     period: selectedPeriod,
     salesStatus: selectedSalesStatus,
-    setPeriod: (value: string) => {
-      setSelectedPeriod(value as DashboardPeriod);
-      updateFilter("period", value, "7d");
+    setPeriod: (value: DashboardPeriod | null) => {
+      if (value) {
+        setSelectedPeriod(value);
+        updateFilter("period", value, "7d");
+      } else {
+        setSelectedPeriod("7d");
+        updateFilter("period", "7d", "7d");
+      }
     },
-    setSalesStatus: (value: string) => {
-      setSelectedSalesStatus(value as DashboardSalesStatusFilter);
-      updateFilter("salesStatus", value, "all");
+    setSalesStatus: (value: DashboardSalesStatusFilter | null) => {
+      if (value) {
+        setSelectedSalesStatus(value);
+        updateFilter("salesStatus", value, "all");
+      } else {
+        setSelectedSalesStatus("all");
+        updateFilter("salesStatus", "all", "all");
+      }
     },
   };
 }

@@ -56,8 +56,12 @@ function PreferencesPanel({ locale }: PreferencesPanelProps) {
     [t],
   );
 
-  const onLanguageChange = (nextLocale: string) => {
-    if (!pathname || !isSupportedLocale(nextLocale)) {
+  const onLanguageChange = (nextLocale: string | null) => {
+    if (!pathname || !nextLocale) {
+      return;
+    }
+
+    if (!isSupportedLocale(nextLocale)) {
       return;
     }
 

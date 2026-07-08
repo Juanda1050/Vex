@@ -69,12 +69,20 @@ function DashboardToolbar({
     isPending,
     period: selectedPeriod,
     salesStatus: selectedSalesStatus,
-    setPeriod,
-    setSalesStatus,
+    setPeriod: setPeriodRaw,
+    setSalesStatus: setSalesStatusRaw,
   } = useDashboardFilters({
     period,
     salesStatus,
   });
+
+  const handlePeriodChange = (value: string | null) => {
+    setPeriodRaw(value as DashboardPeriod | null);
+  };
+
+  const handleSalesStatusChange = (value: string | null) => {
+    setSalesStatusRaw(value as DashboardSalesStatusFilter | null);
+  };
 
   return (
     <div className="space-y-4">
@@ -112,8 +120,8 @@ function DashboardToolbar({
               {labels.period}
             </p>
             <Select
-              value={selectedPeriod}
-              onValueChange={setPeriod}
+              value={selectedPeriod ?? "7d"}
+              onValueChange={handlePeriodChange}
               disabled={isPending}
             >
               <SelectTrigger className="min-w-40 rounded-full bg-card/70">
@@ -134,8 +142,8 @@ function DashboardToolbar({
               {labels.salesStatus}
             </p>
             <Select
-              value={selectedSalesStatus}
-              onValueChange={setSalesStatus}
+              value={selectedSalesStatus ?? "all"}
+              onValueChange={handleSalesStatusChange}
               disabled={isPending}
             >
               <SelectTrigger className="min-w-44 rounded-full bg-card/70">

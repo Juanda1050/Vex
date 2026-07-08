@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
-import { CheckoutForm } from "@/components/onboarding/checkout-form";
+import { EnhancedCheckoutForm } from "@/components/onboarding/enhanced-checkout-form";
 import { getOnboardingState } from "@/server/auth";
 import { getPlanByCode } from "@/lib/payments/plans";
 import { paymentGateway } from "@/lib/payments/gateway";
@@ -40,7 +40,7 @@ export default async function OnboardingCheckoutPage({
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
     const session = await paymentGateway.createCheckoutSession({
       planCode: selectedPlanCode,
-      userId: "",
+      userId: onboarding.userId ?? "",
       locale,
       successUrl: `${baseUrl}/${locale}/onboarding/welcome?plan=${selectedPlanCode}`,
       cancelUrl: `${baseUrl}/${locale}/onboarding`,
@@ -50,7 +50,7 @@ export default async function OnboardingCheckoutPage({
   }
 
   return (
-    <div className="mx-auto grid w-full max-w-368 gap-6 lg:gap-8">
+    <div className="mx-auto grid w-full max-w-7xl gap-6 px-4 lg:gap-8">
       <section className="space-y-2.5">
         <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
           {t("badge")}
@@ -63,7 +63,11 @@ export default async function OnboardingCheckoutPage({
         </p>
       </section>
 
-      <CheckoutForm planCode={planCode} locale={locale} onPay={handlePay} />
+      <EnhancedCheckoutForm
+        planCode={planCode}
+        locale={locale}
+        onPay={handlePay}
+      />
     </div>
   );
 }

@@ -58,6 +58,7 @@ const toSummary = (
     code: subscription.plan.code,
     name: subscription.plan.name,
     tier: subscription.plan.tier,
+    features: subscription.plan.features as Record<string, unknown>,
   },
   price: priceToSummary(subscription.price),
 });

@@ -52,6 +52,7 @@ interface TenantSubscriptionSummaryRecord {
     code: string;
     name: string;
     tier: PlanTier;
+    features: unknown;
   };
   price: PriceRecord | null;
 }
@@ -74,6 +75,7 @@ const subscriptionSummaryInclude = {
       code: true,
       name: true,
       tier: true,
+      features: true,
     },
   },
   price: {

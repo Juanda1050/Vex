@@ -1,147 +1,140 @@
 "use client";
 
-import { useActionState } from "react";
-import { useTranslations } from "next-intl";
+import { Check } from "lucide-react";
 
-import {
-  selectOnboardingPlanAction,
-  type OnboardingActionResult,
-} from "@/app/actions/onboarding";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { LoadingSubmitButton } from "@/components/ui/loading-submit-button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useOnboardingPlanSelector } from "@/hooks/use-onboarding-plan-selector";
 import type { SubscriptionPlanSummary } from "@/server/subscriptions";
 
 interface OnboardingPlanSelectorProps {
+  locale: string;
   plans: SubscriptionPlanSummary[];
   currentPlanCode?: string | null;
   canManageBilling: boolean;
 }
 
-const initialState: OnboardingActionResult = {
-  success: false,
-  error: null,
-  errorKey: null,
-  status: undefined,
-  selectedPlanCode: null,
-};
-
-function formatFeatureLabel(key: string) {
-  return key
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/[_-]/g, " ")
-    .replace(/^./, (char) => char.toUpperCase());
-}
-
-function formatFeatureValue(value: unknown) {
-  if (value === null) return "Unlimited";
-  if (typeof value === "boolean") return value ? "Yes" : "No";
-  return String(value);
-}
-
 export function OnboardingPlanSelector({
+  locale,
   plans,
   currentPlanCode,
   canManageBilling,
 }: OnboardingPlanSelectorProps) {
-  const t = useTranslations("mvp.onboarding");
-  const [state, action, pending] = useActionState(
-    selectOnboardingPlanAction,
-    initialState,
-  );
+  const { t, planState, planAction, planPending, planCards } =
+    useOnboardingPlanSelector({
+      locale,
+      plans,
+      currentPlanCode,
+    });
 
   return (
-    <div className="grid gap-4">
-      {state.error ? (
-        <p className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {state.error}
+    <div className="grid gap-5">
+      {planState.error ? (
+        <p className="border-l-2 border-destructive/45 pl-3 text-sm text-destructive">
+          {planState.error}
         </p>
       ) : null}
 
-      {state.success && state.selectedPlanCode ? (
-        <p className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-700 dark:text-emerald-300">
-          {t("planUpdated", { planCode: state.selectedPlanCode })}
+      {planState.success && planState.selectedPlanCode ? (
+        <p className="border-l-2 border-success/45 pl-3 text-sm text-success">
+          {t("planUpdated", { planCode: planState.selectedPlanCode })}
         </p>
       ) : null}
 
       <div className="grid gap-4 lg:grid-cols-3">
-        {plans.map((plan) => {
-          const isCurrent = currentPlanCode === plan.code;
-          const features = Object.entries(plan.features ?? {});
-          const monthlyPrice =
-            plan.prices.find((price) => price.interval === "MONTH") ??
-            plan.prices[0] ??
-            null;
+        {planCards.map((plan) => {
+          const planClass = plan.isCurrent
+            ? "border-primary/45 bg-card shadow-[inset_0_1px_0_hsl(var(--primary)/0.32)]"
+            : "border-border/70 bg-card";
 
           return (
             <Card
               key={plan.code}
-              className="border-border/80 bg-card/95 shadow-[0_10px_30px_hsl(var(--foreground)/0.06)]"
+              className={`h-full rounded-[1.35rem] shadow-none ${planClass}`}
             >
-              <CardHeader>
-                <div className="flex items-center justify-between gap-2">
-                  <CardTitle>{plan.name}</CardTitle>
-                  {isCurrent ? (
-                    <Badge variant="success">{t("current")}</Badge>
+              <CardContent className="flex h-full flex-col gap-4 p-5">
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-lg font-semibold text-foreground">
+                      {plan.name}
+                    </p>
+                    {plan.isCurrent ? (
+                      <span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-[11px] font-semibold tracking-wide text-primary uppercase">
+                        {t("current")}
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="text-3xl font-semibold tracking-tight text-foreground">
+                    {plan.priceLabel}
+                    {plan.periodLabel ? (
+                      <span className="ml-2 text-sm font-normal text-muted-foreground">
+                        / {plan.periodLabel}
+                      </span>
+                    ) : null}
+                  </p>
+                  {plan.description ? (
+                    <p className="text-sm leading-6 text-muted-foreground">
+                      {plan.description}
+                    </p>
                   ) : null}
                 </div>
-                <CardDescription>{plan.description}</CardDescription>
-                <p className="text-2xl font-semibold text-foreground">
-                  {monthlyPrice
-                    ? `${monthlyPrice.amount} ${monthlyPrice.currency}`
-                    : t("customPricing")}
-                  {monthlyPrice ? (
-                    <span className="ml-1 text-sm font-normal text-muted-foreground">
-                      / {monthlyPrice.interval.toLowerCase()}
-                    </span>
-                  ) : null}
-                </p>
-              </CardHeader>
 
-              <CardContent className="grid gap-3">
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  {features.length > 0 ? (
-                    features.map(([key, value]) => (
+                {plan.features.length > 0 ? (
+                  <ul className="grid flex-1 auto-rows-min gap-2.5 overflow-auto pr-1 text-sm">
+                    {plan.features.map((feature) => (
                       <li
-                        key={key}
-                        className="flex items-center justify-between gap-2 rounded-lg border border-border/60 bg-background px-3 py-2"
+                        key={`${plan.code}-${feature.key}`}
+                        className="rounded-lg border border-border/65 bg-muted/35 px-3 py-2"
                       >
-                        <span>{formatFeatureLabel(key)}</span>
-                        <span className="font-medium text-foreground">
-                          {formatFeatureValue(value)}
-                        </span>
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="space-y-0.5">
+                            <p className="font-medium text-foreground">
+                              {feature.label}
+                            </p>
+                            {feature.description ? (
+                              <p className="text-xs leading-5 text-muted-foreground">
+                                {feature.description}
+                              </p>
+                            ) : null}
+                          </div>
+                          <span className="shrink-0 rounded-full border border-border/70 bg-card px-2 py-0.5 text-xs font-semibold text-foreground">
+                            {feature.value}
+                          </span>
+                        </div>
                       </li>
-                    ))
-                  ) : (
-                    <li className="rounded-lg border border-border/60 bg-background px-3 py-2">
-                      {t("noFeatures")}
-                    </li>
-                  )}
-                </ul>
+                    ))}
+                  </ul>
+                ) : null}
 
-                <form action={action} className="grid gap-2">
+                {plan.features.length === 0 ? (
+                  <p className="flex-1 text-sm text-muted-foreground">
+                    {t("noFeatures")}
+                  </p>
+                ) : null}
+
+                <form action={planAction} className="mt-auto grid gap-2 pt-1">
                   <input type="hidden" name="planCode" value={plan.code} />
-                  {monthlyPrice ? (
-                    <input
-                      type="hidden"
-                      name="priceId"
-                      value={monthlyPrice.id}
-                    />
+                  {plan.priceId ? (
+                    <input type="hidden" name="priceId" value={plan.priceId} />
                   ) : null}
-                  <Button
+                  <LoadingSubmitButton
                     type="submit"
-                    disabled={pending || !canManageBilling || isCurrent}
-                    variant={isCurrent ? "outline" : "default"}
-                    className="w-full"
+                    disabled={
+                      planPending || !canManageBilling || plan.isCurrent
+                    }
+                    variant={plan.isCurrent ? "outline" : "default"}
+                    className="h-11 w-full"
                   >
-                    {isCurrent ? t("selected") : t("choosePlan")}
-                  </Button>
+                    {plan.isCurrent ? (
+                      <span className="inline-flex items-center gap-1.5">
+                        <Check className="size-3.5" />
+                        {t("selected")}
+                      </span>
+                    ) : (
+                      t("choosePlan")
+                    )}
+                  </LoadingSubmitButton>
                 </form>
               </CardContent>
             </Card>
@@ -150,7 +143,7 @@ export function OnboardingPlanSelector({
       </div>
 
       {!canManageBilling ? (
-        <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-300">
+        <p className="border-l-2 border-warning/45 pl-3 text-sm text-warning">
           {t("billingPermissionRequired")}
         </p>
       ) : null}

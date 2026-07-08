@@ -2,6 +2,31 @@ import { prisma } from "@/lib/prisma";
 import type { UserRole } from "@prisma/client";
 
 export const authRepository = {
+  async getOrCreateUserProfile(userId: string) {
+    const existing = await prisma.userProfile.findUnique({
+      where: { userId },
+    });
+
+    if (existing) {
+      return existing;
+    }
+
+    return prisma.userProfile.create({
+      data: { userId },
+    });
+  },
+
+  async markOnboardingCompleted(userId: string) {
+    return prisma.userProfile.upsert({
+      where: { userId },
+      update: { onboardingCompleted: true },
+      create: {
+        userId,
+        onboardingCompleted: true,
+      },
+    });
+  },
+
   async findMemberByUserId(userId: string) {
     return prisma.tenantMember.findFirst({
       where: { userId },

@@ -98,6 +98,15 @@ enum BillingProvider {
   STRIPE
 }
 
+model UserProfile {
+  userId              String   @id @db.Uuid
+  onboardingCompleted Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("user_profiles")
+}
+
 // ==========================================
 // TENANT — Raíz del sistema
 // ==========================================

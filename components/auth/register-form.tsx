@@ -23,9 +23,10 @@ const initialState: RegisterState = {
 
 interface RegisterFormProps {
   locale: string;
+  showFooter?: boolean;
 }
 
-export function RegisterForm({ locale }: RegisterFormProps) {
+export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
   const t = useTranslations("auth");
   const [state, formAction, pending] = useActionState(
     registerAction,
@@ -196,15 +197,17 @@ export function RegisterForm({ locale }: RegisterFormProps) {
         {t("login.google")}
       </Button>
 
-      <p className="text-center text-sm text-muted-foreground">
-        {t("register.hasAccount")}{" "}
-        <Link
-          href={`/${locale}/login`}
-          className="font-medium text-primary hover:underline"
-        >
-          {t("register.login")}
-        </Link>
-      </p>
+      {showFooter ? (
+        <p className="text-center text-sm text-muted-foreground">
+          {t("register.hasAccount")}{" "}
+          <Link
+            href={`/${locale}/login`}
+            className="font-medium text-primary hover:underline"
+          >
+            {t("register.login")}
+          </Link>
+        </p>
+      ) : null}
     </form>
   );
 }

@@ -16,6 +16,21 @@
   "messages": {
     "saved": "Configuración guardada"
   },
+  "preferences": {
+    "title": "Preferencias",
+    "description": "Configura idioma y tema visual para un workspace sin fricción.",
+    "theme": "Tema",
+    "themeHint": "Cambia entre modo claro y oscuro",
+    "languages": {
+      "es": "Español",
+      "en": "Inglés"
+    }
+  },
+  "account": {
+    "title": "Cuenta y acceso",
+    "description": "Cierra sesión de forma segura en tu espacio de trabajo actual.",
+    "logout": "Cerrar sesión"
+  },
   "subscriptions": {
     "badge": "Gestión de plan",
     "title": "Compara planes y ajusta tu suscripción",

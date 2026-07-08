@@ -72,7 +72,21 @@
   }
   html {
     @apply font-sans;
+    font-size: 15px;
   }
+
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    html {
+      font-size: 17px;
+    }
+  }
+
   body {
     @apply bg-background text-foreground;
     background-image:
@@ -520,12 +534,12 @@
 
   .dark
     :where(
-      [data-slot="button"],
-      [data-slot="input"],
-      [data-slot="select-trigger"],
-      [data-slot="textarea"]
+      [data-slot="button"]:not([data-no-dark-elevation]),
+      [data-slot="input"]:not([data-no-dark-elevation]),
+      [data-slot="select-trigger"]:not([data-no-dark-elevation]),
+      [data-slot="textarea"]:not([data-no-dark-elevation])
     ) {
-    box-shadow: 0 8px 18px color-mix(in srgb, black 48%, transparent);
+    box-shadow: 0 6px 16px color-mix(in srgb, black 48%, transparent);
     border-color: color-mix(in srgb, var(--color-border) 94%, black 6%);
   }
 }

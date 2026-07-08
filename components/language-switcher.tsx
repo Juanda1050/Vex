@@ -47,10 +47,7 @@ function LanguageSwitcher({ locale, className }: LanguageSwitcherProps) {
 
   return (
     <div
-      className={cn(
-        "glass-soft inline-flex items-center gap-1 rounded-md p-1",
-        className,
-      )}
+      className={cn("inline-flex items-center gap-1 rounded-md p-1", className)}
       role="group"
       aria-label="Language switcher"
     >

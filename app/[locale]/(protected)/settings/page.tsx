@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
+import { PreferencesPanel } from "@/components/settings/preferences-panel";
 import { SettingsPlanComparison } from "@/components/subscriptions/settings-plan-comparison";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +12,12 @@ import { productService } from "@/server/products";
 import { subscriptionService } from "@/server/subscriptions";
 import { userService } from "@/server/users";
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const t = await getTranslations("settings");
   const ctx = await requirePermission("settings.view");
 
@@ -39,6 +45,8 @@ export default async function SettingsPage() {
 
   return (
     <div className="space-y-5">
+      <PreferencesPanel locale={locale} />
+
       <Card className="border-primary/25 bg-linear-to-br from-card via-card to-primary/10">
         <CardHeader>
           <Badge variant="info" className="w-fit">

@@ -26,12 +26,14 @@ interface LoginFormProps {
   locale: string;
   redirectTo?: string;
   initialError?: string | null;
+  showFooter?: boolean;
 }
 
 export function LoginForm({
   locale,
   redirectTo,
   initialError,
+  showFooter = true,
 }: LoginFormProps) {
   const t = useTranslations("auth");
   const emailPlaceholder = t.has("login.emailPlaceholder")
@@ -168,15 +170,17 @@ export function LoginForm({
         {t("login.google")}
       </Button>
 
-      <p className="text-center text-sm text-muted-foreground">
-        {t("login.noAccount")}{" "}
-        <Link
-          href={`/${locale}/register`}
-          className="font-medium text-primary hover:underline"
-        >
-          {t("login.register")}
-        </Link>
-      </p>
+      {showFooter ? (
+        <p className="text-center text-sm text-muted-foreground">
+          {t("login.noAccount")}{" "}
+          <Link
+            href={`/${locale}/register`}
+            className="font-medium text-primary hover:underline"
+          >
+            {t("login.register")}
+          </Link>
+        </p>
+      ) : null}
     </form>
   );
 }

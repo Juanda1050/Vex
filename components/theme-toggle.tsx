@@ -4,6 +4,7 @@ import * as React from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const STORAGE_KEY = "vex-theme";
 const THEME_EVENT = "vex-theme-change";
@@ -51,7 +52,12 @@ function subscribe(onStoreChange: () => void) {
   };
 }
 
-function ThemeToggle() {
+type ThemeToggleProps = {
+  className?: string;
+  noDarkElevation?: boolean;
+};
+
+function ThemeToggle({ className, noDarkElevation }: ThemeToggleProps) {
   const isDark = React.useSyncExternalStore(
     subscribe,
     getPreferredTheme,
@@ -68,7 +74,11 @@ function ThemeToggle() {
       type="button"
       variant="outline"
       size="icon-sm"
-      className="shrink-0 border-sidebar-border bg-background/80 text-foreground shadow-sm backdrop-blur-sm hover:bg-accent hover:text-accent-foreground"
+      className={cn(
+        "shrink-0 border-sidebar-border bg-background/80 text-foreground shadow-sm backdrop-blur-sm hover:bg-accent hover:text-accent-foreground",
+        className,
+      )}
+      data-no-dark-elevation={noDarkElevation ? "true" : undefined}
       onClick={toggleTheme}
       aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
       title={`Switch to ${isDark ? "light" : "dark"} theme`}

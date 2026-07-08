@@ -1,7 +1,7 @@
 {
   "layout": {
-    "title": "Workspace",
-    "description": "Unified interface with semantic theming and responsive layout.",
+    "title": "Management panel",
+    "description": "Unified interface with responsive navigation and preferences.",
     "badge": "Dynamic theme"
   },
   "home": {
@@ -59,24 +59,105 @@
     "badge": "Onboarding module",
     "description": "Get started today and run your operation with less effort and more control.",
     "appTypeTitle": "Create your space and launch",
+    "brandName": "VEX",
+    "brandSlogan": "Your entire business, on one platform.",
     "heroDescription": "Activate your account and run everything in one place: fast, clear, and built for your team.",
-    "backToLogin": "Go to login"
+    "backToLogin": "Go to login",
+    "charts": {
+      "slide1Label": "Quotes funnel",
+      "slide1Value": "74 active",
+      "slide1Delta": "+18 won",
+      "slide1StageDraft": "Draft",
+      "slide1StageSent": "Sent",
+      "slide1StageWon": "Won",
+      "slide1Note": "Monthly conversion",
+      "slide2Label": "Weekly sales",
+      "slide2Value": "$89.4K",
+      "slide2Delta": "+9.1%",
+      "slide2AxisStart": "Mon",
+      "slide2AxisEnd": "Sun",
+      "slide3Label": "Inventory health",
+      "slide3Value": "92% in stock",
+      "slide3Delta": "12 SKUs at risk",
+      "slide3CategoryA": "A",
+      "slide3CategoryB": "B",
+      "slide3CategoryC": "C",
+      "slide3CategoryD": "D"
+    }
   },
   "onboarding": {
     "badge": "Initial setup",
+    "headline": "Let’s begin",
     "title": "Complete your company setup",
     "description": "Choose your plan and confirm the minimum tenant data to unlock the dashboard and operations modules.",
+    "descriptionCompact": "Choose the plan that best matches your current operation, review included capabilities, and get your account ready to launch with real business context.",
     "current": "Current",
     "selected": "Selected",
     "choosePlan": "Choose plan",
     "planUpdated": "Plan updated to {planCode}",
+    "onboardingCompleted": "Initial setup completed. You can continue to the dashboard.",
+    "continueToDashboard": "Continue to dashboard",
     "customPricing": "Custom pricing",
     "noFeatures": "No declared features",
+    "features": {
+      "unlimited": "Unlimited",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "intervals": {
+      "day": "day",
+      "week": "week",
+      "month": "month",
+      "year": "year"
+    },
+    "planContent": {
+      "free": {
+        "summary": "Great for getting started with a small team. It includes the core sales and inventory flow with clear limits so you can validate your operation and scale with structure."
+      },
+      "premium": {
+        "summary": "Built for growing businesses that need faster operations, more concurrent users, and broader traceability without additional complexity."
+      },
+      "enterprise": {
+        "summary": "Designed for complex operations that require advanced security, higher scalability, and specialized support across multiple teams."
+      }
+    },
+    "planFeatures": {
+      "productsLimit": {
+        "label": "Products",
+        "description": "Maximum number of active products you can manage."
+      },
+      "usersLimit": {
+        "label": "Users",
+        "description": "Team members with operational access to the platform."
+      },
+      "warehousesLimit": {
+        "label": "Warehouses",
+        "description": "Storage locations available to control your inventory."
+      },
+      "reports": {
+        "label": "Advanced reports",
+        "description": "Dashboards and reports to analyze sales and inventory performance."
+      },
+      "support": {
+        "label": "Support",
+        "description": "Level of operational assistance available for your team.",
+        "values": {
+          "community": "Community",
+          "priority": "Priority",
+          "dedicated": "Dedicated"
+        }
+      },
+      "sso": {
+        "label": "Enterprise SSO",
+        "description": "Single sign-on with your corporate identity provider."
+      }
+    },
     "billingPermissionRequired": "Your current role does not have billing permissions to change the plan.",
     "plans": {
       "badge": "Subscription",
       "title": "Choose your subscription type",
-      "description": "Each plan unlocks different capabilities to run your business."
+      "description": "Each plan unlocks different capabilities to run your business.",
+      "descriptionCompact": "Compare capabilities, limits, and support level to pick the right plan for your current growth stage."
     },
     "status": {
       "tenant": "Tenant",
@@ -93,10 +174,91 @@
   },
   "dashboard": {
     "badge": "Operations core",
+    "title": "Business dashboard",
     "description": "Domain modules already present in server, ready to consume from UI or API.",
+    "descriptionModern": "Track inventory, sales, products and quotes from a cleaner operational workspace.",
+    "dateRangeLabel": "Active range",
+    "weeklyRevenueTitle": "Weekly revenue",
+    "weeklyRevenueDescription": "Daily sales behavior across the current operating window.",
+    "periodRevenueTitle": "Period revenue",
+    "periodRevenueDescription": "Sales comparison for the selected time range.",
+    "newCustomersTitle": "New customers",
+    "previousWeekRevenue": "Previous week: {amount}",
+    "previousWeekCustomers": "Previous week: {count}",
+    "previousPeriodRevenue": "Previous period: {amount}",
+    "previousPeriodCustomers": "Previous period: {count}",
+    "lowStockTitle": "Low stock SKUs",
+    "inventoryCoverage": "Coverage across {count} inventory positions",
+    "acceptedQuotesTitle": "Closed quotes",
+    "quoteBaseLabel": "Across {count} total quotes",
+    "totalRevenueTitle": "Recorded revenue",
+    "periodThisWeek": "This week",
+    "quotePipelineTitle": "Quote pipeline",
+    "quotePipelineDescription": "Current distribution of the commercial funnel by status.",
+    "recentSalesTitle": "Recent sales",
+    "recentSalesDescription": "Latest orders recorded for operational follow-up.",
+    "searchPlaceholder": "Search sale",
+    "sortBy": "Sort by",
+    "salesOrderLabel": "Order",
+    "dateColumnLabel": "Date",
+    "statusColumnLabel": "Status",
+    "itemsColumnLabel": "Items",
+    "totalColumnLabel": "Total",
+    "customerFallback": "Walk-in customer",
+    "itemsCount": "{count} items",
     "apiLabel": "API endpoint",
     "serviceLabel": "Server service",
     "openApi": "Open API",
+    "openData": "Open data endpoint",
+    "viewModule": "Go to {module}",
+    "moduleNavigationLabel": "Module navigation",
+    "moduleNav": "Module quick navigation",
+    "moduleCardDescription": "Quick visual status and trend for this module.",
+    "trendLabel": "Last 7 days trend",
+    "openUserMenu": "Open user menu",
+    "units": "units",
+    "noData": "No data available yet",
+    "noSalesInRange": "No sales were recorded in the selected range.",
+    "quoteStatusTitle": "Quote status distribution",
+    "noQuotesYet": "No quotes yet.",
+    "totalSalesLabel": "Total sales recorded: {amount}",
+    "filters": {
+      "period": {
+        "label": "Period",
+        "7d": "Last 7 days",
+        "30d": "Last 30 days",
+        "90d": "Last 90 days"
+      },
+      "salesStatus": {
+        "label": "Sales status",
+        "all": "All statuses"
+      }
+    },
+    "quoteStatus": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "expired": "Expired",
+      "converted": "Converted"
+    },
+    "saleStatus": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "returned": "Returned"
+    },
+    "stats": {
+      "unitsInStock": "Units in stock",
+      "availability": "Availability",
+      "weeklyRevenue": "Weekly revenue",
+      "weeklyGrowth": "Weekly growth",
+      "activeSkus": "Active SKUs",
+      "lowStockSkus": "Low stock SKUs",
+      "activeQuotes": "Active quotes",
+      "winRate": "Win rate"
+    },
     "backToHub": "Back to hub",
     "backToLogin": "Back to login"
   },

@@ -2,8 +2,10 @@
 
 import { getLocale } from "next-intl/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 import { getOnboardingState } from "@/server/auth/get-onboarding-state";
+import { authRepository } from "@/server/auth/repository/auth.repository";
 import { HTTP_STATUS, type HttpStatusCode } from "@/server/http-status";
 import { subscriptionService } from "@/server/subscriptions";
 import {
@@ -78,7 +80,6 @@ export async function selectOnboardingPlanAction(
       priceId: parsed.data.priceId,
     });
 
-    revalidatePath(`/${locale}/onboarding`);
     revalidatePath(`/${locale}/dashboard`);
 
     return {
@@ -100,4 +101,58 @@ export async function selectOnboardingPlanAction(
       selectedPlanCode: null,
     };
   }
+}
+
+export async function completeOnboardingAction(
+  prev: OnboardingActionResult,
+  formData: FormData,
+): Promise<OnboardingActionResult> {
+  void prev;
+  void formData;
+
+  const locale = await getLocale();
+  const onboarding = await getOnboardingState();
+  const errors = await getSubscriptionErrorTranslatorByLocale(locale);
+
+  if (!onboarding.isAuthenticated || !onboarding.userId) {
+    return {
+      success: false,
+      error: errors.fromKey("billingAccessDenied"),
+      errorKey: "unauthorized",
+      status: HTTP_STATUS.UNAUTHORIZED,
+      selectedPlanCode: null,
+    };
+  }
+
+  await authRepository.markOnboardingCompleted(onboarding.userId);
+
+  revalidatePath(`/${locale}/onboarding`);
+  revalidatePath(`/${locale}/dashboard`);
+
+  return {
+    success: true,
+    error: null,
+    errorKey: null,
+    status: HTTP_STATUS.OK,
+    selectedPlanCode: null,
+  };
+}
+
+export async function completeOnboardingAndRedirectAction(
+  formData: FormData,
+): Promise<void> {
+  void formData;
+
+  const locale = await getLocale();
+  const onboarding = await getOnboardingState();
+
+  if (!onboarding.isAuthenticated || !onboarding.userId) {
+    redirect(`/${locale}/login`);
+  }
+
+  await authRepository.markOnboardingCompleted(onboarding.userId);
+  revalidatePath(`/${locale}/onboarding`);
+  revalidatePath(`/${locale}/dashboard`);
+
+  redirect(`/${locale}/dashboard`);
 }

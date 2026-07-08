@@ -16,6 +16,21 @@
   "messages": {
     "saved": "Settings saved"
   },
+  "preferences": {
+    "title": "Preferences",
+    "description": "Configure your language and visual theme for a zero-manual workspace.",
+    "theme": "Theme",
+    "themeHint": "Switch between light and dark mode",
+    "languages": {
+      "es": "Spanish",
+      "en": "English"
+    }
+  },
+  "account": {
+    "title": "Account & access",
+    "description": "Log out securely from your current workspace session.",
+    "logout": "Log out"
+  },
   "subscriptions": {
     "badge": "Plan management",
     "title": "Compare plans and adjust your subscription",

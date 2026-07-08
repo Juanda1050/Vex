@@ -1,8 +1,10 @@
 {
   "dashboard": "Inicio",
+  "customers": "Clientes",
   "products": "Productos",
   "inventory": "Inventario",
   "sales": "Ventas",
+  "quotes": "Cotizaciones",
   "purchases": "Compras",
   "settings": "Configuración",
   "logout": "Cerrar sesión"

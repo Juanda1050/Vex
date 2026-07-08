@@ -7,8 +7,7 @@ const themeScript = `(() => {
   const storageKey = "vex-theme";
   const root = document.documentElement;
   const storedTheme = localStorage.getItem(storageKey);
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const isDark = storedTheme ? storedTheme === "dark" : prefersDark;
+  const isDark = storedTheme === "dark";
   root.classList.toggle("dark", isDark);
   root.style.colorScheme = isDark ? "dark" : "light";
 })();`;

@@ -3,6 +3,7 @@ import {
   PREMIUM_PLAN_CODE,
   SUBSCRIPTION_EVENT_TYPES,
 } from "../constants/subscription.constants";
+import { unstable_cache } from "next/cache";
 import { subscriptionRepository } from "../repository/subscription.repository";
 import type {
   PublicPlanRecord,
@@ -24,6 +25,15 @@ const PREMIUM_STATUSES = new Set<SubscriptionStatus>([
   "ACTIVE",
   "PAST_DUE",
 ]);
+
+const getCachedPublicPlans = unstable_cache(
+  async () => subscriptionRepository.listPublicPlans(),
+  ["subscription-public-plans"],
+  {
+    revalidate: 300,
+    tags: ["subscription-plans"],
+  },
+);
 
 const toSummary = (
   subscription: TenantSubscriptionSummaryRecord,
@@ -80,7 +90,7 @@ const priceToSummary = (
 
 export class SubscriptionService {
   async listOfferedPlans(): Promise<SubscriptionPlanSummary[]> {
-    const plans = await subscriptionRepository.listPublicPlans();
+    const plans = await getCachedPublicPlans();
 
     return plans.map((plan: PublicPlanRecord) => ({
       id: plan.id,
@@ -157,6 +167,18 @@ export class SubscriptionService {
 
     if (data.priceId && !selectedPrice) {
       throw new Error("El precio seleccionado no pertenece al plan indicado.");
+    }
+
+    const current = await subscriptionRepository.findCurrentByTenantId(
+      data.tenantId,
+    );
+
+    if (
+      current &&
+      current.plan.code === plan.code &&
+      (current.price?.id ?? null) === (selectedPrice?.id ?? null)
+    ) {
+      return toSummary(current);
     }
 
     const currentPeriodStart = new Date();

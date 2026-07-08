@@ -1,8 +1,10 @@
 {
   "dashboard": "Home",
+  "customers": "Customers",
   "products": "Products",
   "inventory": "Inventory",
   "sales": "Sales",
+  "quotes": "Quotes",
   "purchases": "Purchases",
   "settings": "Settings",
   "logout": "Sign out"

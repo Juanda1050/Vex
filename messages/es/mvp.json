@@ -1,7 +1,7 @@
 {
   "layout": {
-    "title": "Espacio de trabajo",
-    "description": "Interfaz unificada con tema semántico y layout adaptable.",
+    "title": "Panel de gestión",
+    "description": "Interfaz unificada con navegación responsiva y preferencias.",
     "badge": "Tema dinámico"
   },
   "home": {
@@ -59,24 +59,105 @@
     "badge": "Módulo de onboarding",
     "description": "Empieza hoy y ordena tu operacion para vender mas con menos esfuerzo.",
     "appTypeTitle": "Crea tu espacio y despega",
+    "brandName": "VEX",
+    "brandSlogan": "Todo tu negocio, en una sola plataforma.",
     "heroDescription": "Activa tu cuenta y empieza a trabajar con todo en un solo lugar: rapido, claro y pensado para tu equipo.",
-    "backToLogin": "Ir a login"
+    "backToLogin": "Ir a login",
+    "charts": {
+      "slide1Label": "Embudo de cotizaciones",
+      "slide1Value": "74 activas",
+      "slide1Delta": "+18 cerradas",
+      "slide1StageDraft": "Borrador",
+      "slide1StageSent": "Enviadas",
+      "slide1StageWon": "Ganadas",
+      "slide1Note": "Conversion del mes",
+      "slide2Label": "Ventas semanales",
+      "slide2Value": "$89.4K",
+      "slide2Delta": "+9.1%",
+      "slide2AxisStart": "Lun",
+      "slide2AxisEnd": "Dom",
+      "slide3Label": "Salud de inventario",
+      "slide3Value": "92% disponible",
+      "slide3Delta": "12 SKU en alerta",
+      "slide3CategoryA": "A",
+      "slide3CategoryB": "B",
+      "slide3CategoryC": "C",
+      "slide3CategoryD": "D"
+    }
   },
   "onboarding": {
     "badge": "Configuración inicial",
+    "headline": "Empecemos",
     "title": "Completa tu configuración de empresa",
     "description": "Selecciona tu plan y confirma los datos mínimos del tenant para desbloquear el dashboard y los módulos operativos.",
+    "descriptionCompact": "Selecciona el plan que mejor encaja con tu operación actual, revisa las capacidades incluidas y deja tu cuenta lista para arrancar con contexto real de negocio.",
     "current": "Actual",
     "selected": "Seleccionado",
     "choosePlan": "Elegir plan",
     "planUpdated": "Plan actualizado a {planCode}",
+    "onboardingCompleted": "Configuración inicial completada. Ya puedes continuar al dashboard.",
+    "continueToDashboard": "Continuar al dashboard",
     "customPricing": "Precio personalizado",
     "noFeatures": "Sin funcionalidades declaradas",
+    "features": {
+      "unlimited": "Ilimitado",
+      "yes": "Sí",
+      "no": "No"
+    },
+    "intervals": {
+      "day": "día",
+      "week": "semana",
+      "month": "mes",
+      "year": "año"
+    },
+    "planContent": {
+      "free": {
+        "summary": "Ideal para iniciar con un equipo pequeño. Incluye el flujo base para ventas e inventario con límites claros para validar tu operación y crecer con orden."
+      },
+      "premium": {
+        "summary": "Pensado para negocios en crecimiento que necesitan mayor velocidad operativa, más usuarios simultáneos y trazabilidad ampliada sin fricción."
+      },
+      "enterprise": {
+        "summary": "Diseñado para operaciones complejas con necesidades avanzadas de seguridad, escalabilidad y soporte especializado para múltiples equipos."
+      }
+    },
+    "planFeatures": {
+      "productsLimit": {
+        "label": "Productos",
+        "description": "Cantidad máxima de productos activos que puedes administrar."
+      },
+      "usersLimit": {
+        "label": "Usuarios",
+        "description": "Número de miembros del equipo con acceso operativo."
+      },
+      "warehousesLimit": {
+        "label": "Almacenes",
+        "description": "Centros de almacenamiento disponibles para controlar inventario."
+      },
+      "reports": {
+        "label": "Reportes avanzados",
+        "description": "Paneles y reportes para analizar desempeño comercial e inventario."
+      },
+      "support": {
+        "label": "Soporte",
+        "description": "Nivel de acompañamiento disponible para tu operación.",
+        "values": {
+          "community": "Comunidad",
+          "priority": "Prioritario",
+          "dedicated": "Dedicado"
+        }
+      },
+      "sso": {
+        "label": "SSO corporativo",
+        "description": "Inicio de sesión unificado con tu proveedor de identidad empresarial."
+      }
+    },
     "billingPermissionRequired": "Tu rol actual no tiene permisos de facturación para cambiar el plan.",
     "plans": {
       "badge": "Suscripción",
       "title": "Selecciona el tipo de suscripción",
-      "description": "Cada plan habilita diferentes capacidades para operar tu negocio."
+      "description": "Cada plan habilita diferentes capacidades para operar tu negocio.",
+      "descriptionCompact": "Compara capacidades, límites y nivel de soporte para elegir el plan correcto según tu etapa de crecimiento."
     },
     "status": {
       "tenant": "Tenant",
@@ -93,10 +174,91 @@
   },
   "dashboard": {
     "badge": "Núcleo de operaciones",
+    "title": "Dashboard de negocio",
     "description": "Módulos de dominio existentes en server listos para consumir desde UI o API.",
+    "descriptionModern": "Monitorea inventario, ventas, productos y cotizaciones desde una vista operativa más limpia y enfocada.",
+    "dateRangeLabel": "Rango activo",
+    "weeklyRevenueTitle": "Ingresos de la semana",
+    "weeklyRevenueDescription": "Comportamiento diario de ventas durante la ventana operativa actual.",
+    "periodRevenueTitle": "Ingresos del periodo",
+    "periodRevenueDescription": "Comparativo de ventas según el rango seleccionado.",
+    "newCustomersTitle": "Clientes nuevos",
+    "previousWeekRevenue": "Semana anterior: {amount}",
+    "previousWeekCustomers": "Semana anterior: {count}",
+    "previousPeriodRevenue": "Periodo anterior: {amount}",
+    "previousPeriodCustomers": "Periodo anterior: {count}",
+    "lowStockTitle": "SKU con stock bajo",
+    "inventoryCoverage": "Cobertura sobre {count} posiciones de inventario",
+    "acceptedQuotesTitle": "Cotizaciones cerradas",
+    "quoteBaseLabel": "Sobre {count} cotizaciones totales",
+    "totalRevenueTitle": "Ingresos acumulados",
+    "periodThisWeek": "Esta semana",
+    "quotePipelineTitle": "Pipeline de cotizaciones",
+    "quotePipelineDescription": "Distribución actual del funnel comercial según estado.",
+    "recentSalesTitle": "Ventas recientes",
+    "recentSalesDescription": "Últimas órdenes registradas para seguimiento operativo.",
+    "searchPlaceholder": "Buscar venta",
+    "sortBy": "Ordenar por",
+    "salesOrderLabel": "Orden",
+    "dateColumnLabel": "Fecha",
+    "statusColumnLabel": "Estado",
+    "itemsColumnLabel": "Items",
+    "totalColumnLabel": "Total",
+    "customerFallback": "Cliente general",
+    "itemsCount": "{count} items",
     "apiLabel": "Endpoint API",
     "serviceLabel": "Servicio server",
     "openApi": "Abrir API",
+    "openData": "Abrir endpoint de datos",
+    "viewModule": "Ir a {module}",
+    "moduleNavigationLabel": "Navegación de módulos",
+    "moduleNav": "Navegación rápida de módulos",
+    "moduleCardDescription": "Estado visual y tendencia rápida de este módulo.",
+    "trendLabel": "Tendencia de los últimos 7 días",
+    "openUserMenu": "Abrir menú de usuario",
+    "units": "unidades",
+    "noData": "Aún no hay datos disponibles",
+    "noSalesInRange": "No se registraron ventas en el rango seleccionado.",
+    "quoteStatusTitle": "Distribución por estado de cotizaciones",
+    "noQuotesYet": "Aún no hay cotizaciones.",
+    "totalSalesLabel": "Ventas totales registradas: {amount}",
+    "filters": {
+      "period": {
+        "label": "Periodo",
+        "7d": "Últimos 7 días",
+        "30d": "Últimos 30 días",
+        "90d": "Últimos 90 días"
+      },
+      "salesStatus": {
+        "label": "Estado de ventas",
+        "all": "Todos los estados"
+      }
+    },
+    "quoteStatus": {
+      "draft": "Borrador",
+      "sent": "Enviada",
+      "accepted": "Aceptada",
+      "rejected": "Rechazada",
+      "expired": "Vencida",
+      "converted": "Convertida"
+    },
+    "saleStatus": {
+      "pending": "Pendiente",
+      "confirmed": "Confirmada",
+      "delivered": "Entregada",
+      "cancelled": "Cancelada",
+      "returned": "Devuelta"
+    },
+    "stats": {
+      "unitsInStock": "Unidades en stock",
+      "availability": "Disponibilidad",
+      "weeklyRevenue": "Ingresos semanales",
+      "weeklyGrowth": "Crecimiento semanal",
+      "activeSkus": "SKU activos",
+      "lowStockSkus": "SKU con bajo stock",
+      "activeQuotes": "Cotizaciones activas",
+      "winRate": "Tasa de cierre"
+    },
     "backToHub": "Volver al hub",
     "backToLogin": "Volver a login"
   },

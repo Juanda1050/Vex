@@ -35,6 +35,56 @@ function quoteItemAmounts(item: QuoteItemInput) {
 }
 
 export class QuoteRepository {
+  private async ensureProductIdsBelongToTenant(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    productIds: string[],
+  ) {
+    if (productIds.length === 0) return;
+
+    const products = await tx.product.findMany({
+      where: {
+        tenantId,
+        id: { in: productIds },
+      },
+      select: { id: true },
+    });
+
+    const existingProductIds = new Set(products.map((product) => product.id));
+    const hasMissingProduct = productIds.some(
+      (productId) => !existingProductIds.has(productId),
+    );
+
+    if (hasMissingProduct) {
+      throw new Error("Producto no encontrado para el tenant actual.");
+    }
+  }
+
+  private async ensureVariantIdsBelongToTenant(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    variantIds: string[],
+  ) {
+    if (variantIds.length === 0) return;
+
+    const variants = await tx.productVariant.findMany({
+      where: {
+        tenantId,
+        id: { in: variantIds },
+      },
+      select: { id: true },
+    });
+
+    const existingVariantIds = new Set(variants.map((variant) => variant.id));
+    const hasMissingVariant = variantIds.some(
+      (variantId) => !existingVariantIds.has(variantId),
+    );
+
+    if (hasMissingVariant) {
+      throw new Error("Variante no encontrada para el tenant actual.");
+    }
+  }
+
   private async ensureBranchBelongsToTenant(
     tx: Prisma.TransactionClient,
     tenantId: string,
@@ -85,29 +135,26 @@ export class QuoteRepository {
     tenantId: string,
     items: QuoteItemInput[],
   ) {
-    for (const item of items) {
-      if (item.productId) {
-        const product = await tx.product.findFirst({
-          where: { id: item.productId, tenantId },
-          select: { id: true },
-        });
+    const productIds = Array.from(
+      new Set(
+        items
+          .map((item) => item.productId)
+          .filter((productId): productId is string => Boolean(productId)),
+      ),
+    );
 
-        if (!product) {
-          throw new Error("Producto no encontrado para el tenant actual.");
-        }
-      }
+    const variantIds = Array.from(
+      new Set(
+        items
+          .map((item) => item.variantId)
+          .filter((variantId): variantId is string => Boolean(variantId)),
+      ),
+    );
 
-      if (item.variantId) {
-        const variant = await tx.productVariant.findFirst({
-          where: { id: item.variantId, tenantId },
-          select: { id: true },
-        });
-
-        if (!variant) {
-          throw new Error("Variante no encontrada para el tenant actual.");
-        }
-      }
-    }
+    await Promise.all([
+      this.ensureProductIdsBelongToTenant(tx, tenantId, productIds),
+      this.ensureVariantIdsBelongToTenant(tx, tenantId, variantIds),
+    ]);
   }
 
   private async nextDocumentNumberTx(
@@ -427,71 +474,139 @@ export class QuoteRepository {
         },
       });
 
+      const stockRequirements = new Map<
+        string,
+        {
+          productId: string | null;
+          variantId: string | null;
+          quantity: Prisma.Decimal;
+        }
+      >();
+
       for (const item of quote.items) {
         if (!item.productId && !item.variantId) continue;
 
-        if (item.productId) {
-          const product = await tx.product.findFirst({
-            where: { id: item.productId, tenantId: input.tenantId },
-            select: { id: true },
-          });
+        const key = item.productId
+          ? `product:${item.productId}`
+          : `variant:${item.variantId}`;
 
-          if (!product) {
-            throw new Error("Producto no encontrado para el tenant actual.");
-          }
+        const existing = stockRequirements.get(key);
+        if (existing) {
+          existing.quantity = existing.quantity.add(item.quantity);
+          continue;
         }
 
-        if (item.variantId) {
-          const variant = await tx.productVariant.findFirst({
-            where: { id: item.variantId, tenantId: input.tenantId },
-            select: { id: true },
-          });
+        stockRequirements.set(key, {
+          productId: item.productId,
+          variantId: item.variantId,
+          quantity: new Prisma.Decimal(item.quantity),
+        });
+      }
 
-          if (!variant) {
-            throw new Error("Variante no encontrada para el tenant actual.");
-          }
-        }
+      const requirements = Array.from(stockRequirements.values());
+      const productIds = requirements
+        .map((item) => item.productId)
+        .filter((productId): productId is string => Boolean(productId));
+      const variantIds = requirements
+        .map((item) => item.variantId)
+        .filter((variantId): variantId is string => Boolean(variantId));
 
-        const whereUnique = item.productId
-          ? {
-              warehouseId_productId: {
+      await Promise.all([
+        this.ensureProductIdsBelongToTenant(tx, input.tenantId, productIds),
+        this.ensureVariantIdsBelongToTenant(tx, input.tenantId, variantIds),
+      ]);
+
+      const [productInventoryRows, variantInventoryRows] = await Promise.all([
+        productIds.length > 0
+          ? tx.inventory.findMany({
+              where: {
                 warehouseId: input.warehouseId,
-                productId: item.productId,
+                productId: { in: productIds },
               },
-            }
-          : {
-              warehouseId_variantId: {
+              select: {
+                id: true,
+                productId: true,
+                quantityOnHand: true,
+              },
+            })
+          : Promise.resolve([]),
+        variantIds.length > 0
+          ? tx.inventory.findMany({
+              where: {
                 warehouseId: input.warehouseId,
-                variantId: item.variantId!,
+                variantId: { in: variantIds },
               },
-            };
+              select: {
+                id: true,
+                variantId: true,
+                quantityOnHand: true,
+              },
+            })
+          : Promise.resolve([]),
+      ]);
 
-        const current = await tx.inventory.findUnique({ where: whereUnique });
+      const inventoryByKey = new Map<
+        string,
+        { id: string; quantityOnHand: Prisma.Decimal }
+      >();
 
-        if (!current || current.quantityOnHand.lt(item.quantity)) {
+      for (const row of productInventoryRows) {
+        if (!row.productId) continue;
+        inventoryByKey.set(`product:${row.productId}`, {
+          id: row.id,
+          quantityOnHand: row.quantityOnHand,
+        });
+      }
+
+      for (const row of variantInventoryRows) {
+        if (!row.variantId) continue;
+        inventoryByKey.set(`variant:${row.variantId}`, {
+          id: row.id,
+          quantityOnHand: row.quantityOnHand,
+        });
+      }
+
+      const inventoryUpdates: Array<Promise<unknown>> = [];
+      for (const requirement of requirements) {
+        const key = requirement.productId
+          ? `product:${requirement.productId}`
+          : `variant:${requirement.variantId}`;
+        const current = inventoryByKey.get(key);
+
+        if (!current || current.quantityOnHand.lt(requirement.quantity)) {
           throw new Error("Stock insuficiente para convertir la cotizacion.");
         }
 
-        await tx.inventory.update({
-          where: { id: current.id },
-          data: {
-            quantityOnHand: current.quantityOnHand.sub(item.quantity),
-          },
-        });
+        inventoryUpdates.push(
+          tx.inventory.update({
+            where: { id: current.id },
+            data: {
+              quantityOnHand: current.quantityOnHand.sub(requirement.quantity),
+            },
+          }),
+        );
+      }
 
-        await tx.stockMovement.create({
-          data: {
-            tenantId: input.tenantId,
-            warehouseId: input.warehouseId,
-            productId: item.productId,
-            variantId: item.variantId,
-            type: "SALE_OUT",
-            quantity: item.quantity,
-            referenceId: sale.id,
-            notes: `Salida por conversion de cotizacion ${quote.number}`,
-            createdBy: input.createdBy,
-          },
-        });
+      if (inventoryUpdates.length > 0) {
+        await Promise.all(inventoryUpdates);
+      }
+
+      const movementRows = quote.items
+        .filter((item) => item.productId || item.variantId)
+        .map((item) => ({
+          tenantId: input.tenantId,
+          warehouseId: input.warehouseId,
+          productId: item.productId,
+          variantId: item.variantId,
+          type: "SALE_OUT" as const,
+          quantity: item.quantity,
+          referenceId: sale.id,
+          notes: `Salida por conversion de cotizacion ${quote.number}`,
+          createdBy: input.createdBy,
+        }));
+
+      if (movementRows.length > 0) {
+        await tx.stockMovement.createMany({ data: movementRows });
       }
 
       await tx.quote.update({

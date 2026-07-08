@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { WelcomeScreen } from "@/components/onboarding/welcome-screen";
 import { getOnboardingState } from "@/server/auth";
+import { invalidateAuthStateCache } from "@/server/auth/cache/auth-state-cache";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { getPlanByCode } from "@/lib/payments/plans";
 import { paymentGateway } from "@/lib/payments/gateway";
@@ -50,6 +51,7 @@ export default async function OnboardingWelcomePage({
     }
 
     await authRepository.markOnboardingCompleted(onboarding.userId);
+    invalidateAuthStateCache(onboarding.userId);
     revalidatePath(`/${locale}/onboarding`);
     revalidatePath(`/${locale}/dashboard`);
     redirect(`/${locale}/dashboard`);

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { getOnboardingState } from "@/server/auth/get-onboarding-state";
+import { invalidateAuthStateCache } from "@/server/auth/cache/auth-state-cache";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { HTTP_STATUS, type HttpStatusCode } from "@/server/http-status";
 import { subscriptionService } from "@/server/subscriptions";
@@ -125,6 +126,7 @@ export async function completeOnboardingAction(
   }
 
   await authRepository.markOnboardingCompleted(onboarding.userId);
+  invalidateAuthStateCache(onboarding.userId);
 
   revalidatePath(`/${locale}/onboarding`);
   revalidatePath(`/${locale}/dashboard`);
@@ -151,6 +153,7 @@ export async function completeOnboardingAndRedirectAction(
   }
 
   await authRepository.markOnboardingCompleted(onboarding.userId);
+  invalidateAuthStateCache(onboarding.userId);
   revalidatePath(`/${locale}/onboarding`);
   revalidatePath(`/${locale}/dashboard`);
 

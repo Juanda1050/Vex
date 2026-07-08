@@ -98,6 +98,7 @@ function DashboardToolbar({
               <Link
                 key={item.key}
                 href={item.href}
+                prefetch={false}
                 className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
               >
                 <Icon className="size-4 text-primary" />
@@ -168,6 +169,7 @@ function DashboardCardLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
+      prefetch={false}
       aria-label={label}
       className={cn(
         buttonVariants({ variant: "outline", size: "icon" }),

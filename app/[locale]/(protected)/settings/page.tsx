@@ -4,6 +4,7 @@ import { PreferencesPanel } from "@/components/settings/preferences-panel";
 import { SettingsPlanComparison } from "@/components/subscriptions/settings-plan-comparison";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { startServerTimer } from "@/lib/perf";
 import { requirePermission } from "@/server/auth";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { authService } from "@/server/auth/service/auth.service";
@@ -17,25 +18,27 @@ export default async function SettingsPage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
+  const perf = startServerTimer("page.settings");
+
   const { locale } = await params;
   const t = await getTranslations("settings");
   const ctx = await requirePermission("settings.view");
 
-  const [
-    subscription,
-    plans,
-    roleOverrides,
-    productCount,
-    warehouseCount,
-    userCount,
-  ] = await Promise.all([
-    subscriptionService.getTenantSubscription(ctx.tenantId),
-    subscriptionService.listOfferedPlans(),
-    authRepository.listRolePermissions(ctx.tenantId, ctx.role),
-    productService.countActiveProducts(ctx.tenantId),
-    inventoryService.countActiveWarehouses(ctx.tenantId),
-    userService.countActiveUsers(ctx.tenantId),
-  ]);
+  // With low DB pool limits (e.g. connection_limit=1), firing many Prisma
+  // queries in parallel can exhaust the pool and trigger timeouts.
+  const subscription = await subscriptionService.getTenantSubscription(
+    ctx.tenantId,
+  );
+  const plans = await subscriptionService.listOfferedPlans();
+  const roleOverrides = await authRepository.listRolePermissions(
+    ctx.tenantId,
+    ctx.role,
+  );
+  const productCount = await productService.countActiveProducts(ctx.tenantId);
+  const warehouseCount = await inventoryService.countActiveWarehouses(
+    ctx.tenantId,
+  );
+  const userCount = await userService.countActiveUsers(ctx.tenantId);
 
   const canManageBilling = authService.hasPermissionWithOverrides(
     ctx.role,
@@ -43,7 +46,7 @@ export default async function SettingsPage({
     roleOverrides,
   );
 
-  return (
+  const page = (
     <div className="space-y-5">
       <PreferencesPanel locale={locale} />
 
@@ -71,4 +74,7 @@ export default async function SettingsPage({
       />
     </div>
   );
+
+  perf.end({ locale, tenantId: ctx.tenantId });
+  return page;
 }

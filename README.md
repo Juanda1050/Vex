@@ -43,9 +43,26 @@ Vex es el MVP de un SaaS multi-tenant para gestionar operaciones comerciales bá
    NEXT_PUBLIC_APP_URL=
    NEXT_PUBLIC_SUPABASE_URL=
    NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+   PERF_LOG=false
    ```
 
    Si `DIRECT_URL` no está definido, Prisma puede reutilizar `DATABASE_URL` para migraciones.
+
+   Para mejorar rendimiento cuando hay contención de conexiones, agrega parámetros de pool en `DATABASE_URL` y `DIRECT_URL`:
+
+   ```text
+   connection_limit=10
+   pool_timeout=30
+   connect_timeout=15
+   ```
+
+   Ejemplo:
+
+   ```text
+   postgresql://.../postgres?pgbouncer=true&connection_limit=10&pool_timeout=30&connect_timeout=15&sslmode=require
+   ```
+
+   Si tu proveedor limita conexiones, usa valores acordes al plan (por ejemplo `connection_limit=5`).
 
 3. Genera Prisma y aplica migraciones.
 
@@ -61,6 +78,26 @@ Vex es el MVP de un SaaS multi-tenant para gestionar operaciones comerciales bá
    ```
 
    Abre [http://localhost:3000](http://localhost:3000).
+
+5. (Opcional) Activa medición de performance server para detectar rutas lentas.
+
+   ```bash
+   PERF_LOG=true npm run dev
+   ```
+
+   Verás logs con formato `[perf] ...` para tiempos de render y consultas pesadas.
+
+## Caching operacional (dashboard/settings)
+
+- El overview del dashboard usa cache por tenant y filtros (`period`, `salesStatus`) con revalidación corta.
+- Los contadores usados en settings (productos, almacenes, usuarios) usan cache por tenant.
+- Las mutaciones operativas invalidan tags para refresco inmediato (productos, inventario, quotes, usuarios).
+
+Archivo clave de invalidación:
+
+- `server/cache/tenant-cache-invalidation.ts`
+
+Esto permite navegación más rápida sin mantener datos stale por largos periodos.
 
 ## Configurar Google OAuth en Supabase
 

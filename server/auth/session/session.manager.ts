@@ -54,8 +54,21 @@ export const sessionManager = {
     if (error || !user)
       return { user: null, error: error?.message ?? "No session" };
 
+    const metadata = user.user_metadata as
+      Record<string, string | undefined> | undefined;
+
     return {
-      user: { id: user.id, email: user.email! },
+      user: {
+        id: user.id,
+        email: user.email!,
+        fullName:
+          metadata?.full_name?.trim() ||
+          metadata?.name?.trim() ||
+          metadata?.user_name?.trim() ||
+          null,
+        avatarUrl:
+          metadata?.avatar_url?.trim() || metadata?.picture?.trim() || null,
+      },
       error: null,
     };
   },

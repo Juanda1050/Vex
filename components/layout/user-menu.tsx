@@ -8,6 +8,7 @@ import { LogOut, Settings } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -80,12 +81,14 @@ function UserMenu({
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-64">
-        <DropdownMenuLabel className="space-y-1">
-          <p className="truncate text-sm font-semibold text-foreground">
-            {displayName}
-          </p>
-          <p className="truncate text-xs text-muted-foreground">{email}</p>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="space-y-1">
+            <p className="truncate text-sm font-semibold text-foreground">
+              {displayName}
+            </p>
+            <p className="truncate text-xs text-muted-foreground">{email}</p>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => router.push(settingsPath)}>
           <Settings className="size-4" />

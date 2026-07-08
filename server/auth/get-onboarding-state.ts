@@ -1,8 +1,8 @@
 import { cache } from "react";
-import { authRepository } from "./repository/auth.repository";
 import { authService } from "./service/auth.service";
 import { sessionManager } from "./session/session.manager";
 import type { Role } from "./types";
+import { getCachedAuthState } from "./cache/auth-state-cache";
 
 export interface OnboardingState {
   isAuthenticated: boolean;
@@ -38,17 +38,16 @@ export const getOnboardingState = cache(
       };
     }
 
-    const userProfile = await authRepository.getOrCreateUserProfile(user.id);
+    const authState = await getCachedAuthState(user.id);
 
-    const member = await authRepository.findMemberByUserId(user.id);
-    if (!member) {
+    if (!authState.member) {
       return {
         isAuthenticated: true,
         userId: user.id,
         email: user.email,
         tenantId: null,
         role: null,
-        onboardingCompleted: userProfile.onboardingCompleted,
+        onboardingCompleted: authState.onboardingCompleted,
         hasTenantMember: false,
         hasBranch: false,
         hasWarehouse: false,
@@ -57,35 +56,24 @@ export const getOnboardingState = cache(
       };
     }
 
-    const branchId = authService.resolveBranchId(member);
-    const warehouseId = authService.resolveWarehouseId(member);
+    const branchId = authState.branchId;
+    const warehouseId = authState.warehouseId;
     const hasBranch = Boolean(branchId);
     const hasWarehouse = Boolean(warehouseId);
-
-    const overrides = await authRepository.listRolePermissions(
-      member.tenantId,
-      member.role,
-    );
-
-    const hasBillingAccess = authService.hasPermissionWithOverrides(
-      member.role,
-      "billing.manage",
-      overrides,
-    );
 
     return {
       isAuthenticated: true,
       userId: user.id,
       email: user.email,
-      tenantId: member.tenantId,
-      role: member.role,
-      onboardingCompleted: userProfile.onboardingCompleted,
+      tenantId: authState.member.tenantId,
+      role: authState.member.role,
+      onboardingCompleted: authState.onboardingCompleted,
       hasTenantMember: true,
       hasBranch,
       hasWarehouse,
-      hasBillingAccess,
+      hasBillingAccess: authState.hasBillingAccess,
       needsOnboarding:
-        !hasBranch || !hasWarehouse || !userProfile.onboardingCompleted,
+        !hasBranch || !hasWarehouse || !authState.onboardingCompleted,
     };
   },
 );

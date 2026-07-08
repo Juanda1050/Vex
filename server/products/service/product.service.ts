@@ -1,4 +1,6 @@
 import { productRepository } from "../repository/product.repository";
+import { unstable_cache } from "next/cache";
+import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
 import type {
   CreateProductInput,
   ProductFilters,
@@ -7,11 +9,20 @@ import type {
 
 export class ProductService {
   async countActiveProducts(tenantId: string) {
-    return productRepository.countActiveByTenant(tenantId);
+    return unstable_cache(
+      () => productRepository.countActiveByTenant(tenantId),
+      ["products-active-count", tenantId],
+      {
+        revalidate: 30,
+        tags: [`products-active-count:${tenantId}`],
+      },
+    )();
   }
 
   async createProduct(input: CreateProductInput) {
-    return productRepository.create(input);
+    const product = await productRepository.create(input);
+    invalidateTenantOperationalCaches(input.tenantId);
+    return product;
   }
 
   async getProduct(tenantId: string, productId: string) {
@@ -26,12 +37,15 @@ export class ProductService {
 
   async updateProduct(input: UpdateProductInput) {
     await this.getProduct(input.tenantId, input.id);
-    return productRepository.update(input);
+    const product = await productRepository.update(input);
+    invalidateTenantOperationalCaches(input.tenantId);
+    return product;
   }
 
   async deleteProduct(tenantId: string, productId: string) {
     await this.getProduct(tenantId, productId);
     await productRepository.softDelete(tenantId, productId);
+    invalidateTenantOperationalCaches(tenantId);
   }
 }
 

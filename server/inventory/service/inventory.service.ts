@@ -1,4 +1,6 @@
 import { inventoryRepository } from "../repository/inventory.repository";
+import { unstable_cache } from "next/cache";
+import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
 import type {
   InventoryFilters,
   RegisterStockMovementInput,
@@ -6,7 +8,14 @@ import type {
 
 export class InventoryService {
   async countActiveWarehouses(tenantId: string) {
-    return inventoryRepository.countActiveWarehousesByTenant(tenantId);
+    return unstable_cache(
+      () => inventoryRepository.countActiveWarehousesByTenant(tenantId),
+      ["warehouses-active-count", tenantId],
+      {
+        revalidate: 30,
+        tags: [`warehouses-active-count:${tenantId}`],
+      },
+    )();
   }
 
   async listInventory(tenantId: string, filters: InventoryFilters) {
@@ -14,7 +23,9 @@ export class InventoryService {
   }
 
   async registerStockMovement(input: RegisterStockMovementInput) {
-    return inventoryRepository.registerMovement(input);
+    const movement = await inventoryRepository.registerMovement(input);
+    invalidateTenantOperationalCaches(input.tenantId);
+    return movement;
   }
 
   async getKardex(data: {

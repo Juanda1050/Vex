@@ -1,4 +1,5 @@
 import { quoteRepository } from "../repository/quote.repository";
+import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
 import type {
   ConvertQuoteToSaleInput,
   CreateQuoteInput,
@@ -7,7 +8,9 @@ import type {
 
 export class QuoteService {
   async createQuote(input: CreateQuoteInput) {
-    return quoteRepository.createQuote(input);
+    const quote = await quoteRepository.createQuote(input);
+    invalidateTenantOperationalCaches(input.tenantId);
+    return quote;
   }
 
   async getQuote(tenantId: string, quoteId: string) {
@@ -22,10 +25,13 @@ export class QuoteService {
 
   async deleteQuote(tenantId: string, quoteId: string) {
     await quoteRepository.deleteQuote(tenantId, quoteId);
+    invalidateTenantOperationalCaches(tenantId);
   }
 
   async convertQuoteToSale(input: ConvertQuoteToSaleInput) {
-    return quoteRepository.convertToSale(input);
+    const sale = await quoteRepository.convertToSale(input);
+    invalidateTenantOperationalCaches(input.tenantId);
+    return sale;
   }
 }
 

@@ -4,6 +4,8 @@ import type { PlanTier, SubscriptionStatus } from "@prisma/client";
 export interface TenantContext {
   userId: string;
   email: string;
+  fullName?: string | null;
+  avatarUrl?: string | null;
   tenantId: string;
   branchId: string;
   warehouseId: string;
@@ -23,4 +25,6 @@ export interface AuthContext extends TenantContext {
 export interface AuthUser {
   id: string;
   email: string;
+  fullName?: string | null;
+  avatarUrl?: string | null;
 }

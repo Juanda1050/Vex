@@ -3,9 +3,24 @@ import { SaleStatus } from "@prisma/client";
 import { type DashboardPeriod } from "@/lib/dashboard/dashboard-filters";
 
 type ChartBucket = {
-  start: Date;
-  end: Date;
+  start: DateInput;
+  end: DateInput;
 };
+
+type DateInput = Date | string | number | null | undefined;
+
+function toValidDate(value: DateInput) {
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value;
+  }
+
+  if (typeof value === "string" || typeof value === "number") {
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  return null;
+}
 
 export function toNumber(value: unknown) {
   if (value == null) return 0;
@@ -43,23 +58,33 @@ export function formatCurrency(
   }).format(value);
 }
 
-export function formatDayLabel(date: Date, locale: string) {
+export function formatDayLabel(date: DateInput, locale: string) {
+  const validDate = toValidDate(date);
+  if (!validDate) return "-";
+
   const outputLocale = locale === "es" ? "es-MX" : "en-US";
   return new Intl.DateTimeFormat(outputLocale, { weekday: "short" }).format(
-    date,
+    validDate,
   );
 }
 
-export function formatShortDate(date: Date, locale: string) {
+export function formatShortDate(date: DateInput, locale: string) {
+  const validDate = toValidDate(date);
+  if (!validDate) return "-";
+
   const outputLocale = locale === "es" ? "es-MX" : "en-US";
   return new Intl.DateTimeFormat(outputLocale, {
     month: "short",
     day: "numeric",
     year: "numeric",
-  }).format(date);
+  }).format(validDate);
 }
 
-export function formatDateRange(start: Date, end: Date, locale: string) {
+export function formatDateRange(
+  start: DateInput,
+  end: DateInput,
+  locale: string,
+) {
   return `${formatShortDate(start, locale)} - ${formatShortDate(end, locale)}`;
 }
 
@@ -95,9 +120,14 @@ export function formatChartBucketLabel(
   locale: string,
   period: DashboardPeriod,
 ) {
+  const startDate = toValidDate(bucket.start);
+  const endDate = toValidDate(bucket.end);
+
   if (period === "7d") {
-    return formatDayLabel(bucket.start, locale);
+    return formatDayLabel(startDate, locale);
   }
+
+  if (!startDate || !endDate) return "-";
 
   const outputLocale = locale === "es" ? "es-MX" : "en-US";
   const formatter = new Intl.DateTimeFormat(outputLocale, {
@@ -105,5 +135,5 @@ export function formatChartBucketLabel(
     day: "numeric",
   });
 
-  return `${formatter.format(bucket.start)} - ${formatter.format(bucket.end)}`;
+  return `${formatter.format(startDate)} - ${formatter.format(endDate)}`;
 }

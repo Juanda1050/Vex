@@ -1,4 +1,5 @@
 import { QuoteStatus, SaleStatus } from "@prisma/client";
+import { unstable_cache } from "next/cache";
 
 import {
   type DashboardPeriod,
@@ -6,6 +7,7 @@ import {
   getDashboardPeriodDays,
 } from "@/lib/dashboard/dashboard-filters";
 import { toNumber } from "@/lib/dashboard/dashboard-formatters";
+import { startServerTimer } from "@/lib/perf";
 import { prisma } from "@/lib/prisma";
 
 type DashboardOverviewInput = {
@@ -208,11 +210,17 @@ function resolveSaleStatusFilter(status: DashboardSalesStatusFilter) {
   }
 }
 
-export async function getDashboardOverview({
+async function computeDashboardOverview({
   tenantId,
   period,
   salesStatus,
 }: DashboardOverviewInput): Promise<DashboardOverview> {
+  const perf = startServerTimer("dashboard.overview", {
+    tenantId,
+    period,
+    salesStatus,
+  });
+
   const now = new Date();
   const range = buildPeriodRange(period, now);
   const recentSaleStatus = resolveSaleStatusFilter(salesStatus);
@@ -377,7 +385,7 @@ export async function getDashboardOverview({
   const currentPeriodCustomers = customerCounts?.currentCount ?? 0;
   const previousPeriodCustomers = customerCounts?.previousCount ?? 0;
 
-  return {
+  const result = {
     currency: tenantSettings?.currency ?? "USD",
     range,
     revenue: {
@@ -424,4 +432,22 @@ export async function getDashboardOverview({
       itemCount: sale._count.items,
     })),
   };
+
+  perf.end();
+  return result;
+}
+
+export async function getDashboardOverview(
+  input: DashboardOverviewInput,
+): Promise<DashboardOverview> {
+  const { tenantId, period, salesStatus } = input;
+
+  return unstable_cache(
+    () => computeDashboardOverview({ tenantId, period, salesStatus }),
+    ["dashboard-overview", tenantId, period, salesStatus],
+    {
+      revalidate: 20,
+      tags: [`dashboard-overview:${tenantId}`],
+    },
+  )();
 }

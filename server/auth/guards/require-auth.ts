@@ -2,10 +2,10 @@ import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { cache } from "react";
 import { sessionManager } from "../session/session.manager";
-import { authRepository } from "../repository/auth.repository";
 import { authService } from "../service/auth.service";
 import { AUTH_REDIRECTS } from "../constants";
 import type { TenantContext } from "../types";
+import { getCachedAuthState } from "../cache/auth-state-cache";
 
 export const requireAuth = cache(
   async function requireAuth(): Promise<TenantContext> {
@@ -14,25 +14,27 @@ export const requireAuth = cache(
     const { user, error } = await sessionManager.getUser();
     if (error || !user) redirect(AUTH_REDIRECTS.login(locale));
 
-    const userProfile = await authRepository.getOrCreateUserProfile(user.id);
+    const authState = await getCachedAuthState(user.id);
+    if (!authState.member) redirect(AUTH_REDIRECTS.onboarding(locale));
 
-    const member = await authRepository.findMemberByUserId(user.id);
-    if (!member) redirect(AUTH_REDIRECTS.onboarding(locale));
-
-    const branchId = authService.resolveBranchId(member);
+    const branchId = authState.branchId;
     if (!branchId) redirect(AUTH_REDIRECTS.onboarding(locale));
 
-    const warehouseId = authService.resolveWarehouseId(member);
+    const warehouseId = authState.warehouseId;
     if (!warehouseId) redirect(AUTH_REDIRECTS.onboarding(locale));
 
-    if (!userProfile.onboardingCompleted) {
+    if (!authState.onboardingCompleted) {
       redirect(AUTH_REDIRECTS.onboarding(locale));
     }
 
     return authService.buildTenantContext(
       user.id,
       user.email,
-      member,
+      {
+        fullName: user.fullName,
+        avatarUrl: user.avatarUrl,
+      },
+      authState.member,
       branchId,
       warehouseId,
     );

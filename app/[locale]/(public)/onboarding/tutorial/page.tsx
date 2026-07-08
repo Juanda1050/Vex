@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 
 import { TutorialStepper } from "@/components/onboarding/tutorial-stepper";
 import { getOnboardingState } from "@/server/auth";
+import { invalidateAuthStateCache } from "@/server/auth/cache/auth-state-cache";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 
 export default async function OnboardingTutorialPage({
@@ -36,6 +37,7 @@ export default async function OnboardingTutorialPage({
     }
 
     await authRepository.markOnboardingCompleted(onboarding.userId);
+    invalidateAuthStateCache(onboarding.userId);
     revalidatePath(`/${locale}/onboarding`);
     revalidatePath(`/${locale}/dashboard`);
     redirect(`/${locale}/dashboard`);

@@ -110,14 +110,18 @@
       "month": "month",
       "year": "year"
     },
+    "selectPlan": "Select plan",
     "planContent": {
       "free": {
+        "name": "Free",
         "summary": "Great for getting started with a small team. It includes the core sales and inventory flow with clear limits so you can validate your operation and scale with structure."
       },
       "premium": {
+        "name": "Premium",
         "summary": "Built for growing businesses that need faster operations, more concurrent users, and broader traceability without additional complexity."
       },
       "enterprise": {
+        "name": "Enterprise",
         "summary": "Designed for complex operations that require advanced security, higher scalability, and specialized support across multiple teams."
       }
     },
@@ -170,6 +174,54 @@
       "badge": "Next step",
       "title": "What comes next",
       "description": "After completing onboarding, open the dashboard and start with products, customers, inventory and sales according to your plan."
+    },
+    "checkout": {
+      "title": "Confirm your plan",
+      "description": "Review your selected plan details before proceeding to payment.",
+      "planLabel": "Selected plan",
+      "priceLabel": "Total",
+      "free": "Free",
+      "perMonth": "/ month",
+      "customPricing": "Custom pricing",
+      "contactSales": "Contact sales",
+      "payNow": "Pay now",
+      "changePlan": "Change plan",
+      "secureNote": "Your payment will be processed securely.",
+      "simulatedNote": "This is a test environment. No real charge will be made."
+    },
+    "welcome": {
+      "badge": "Payment confirmed",
+      "title": "Your account is now active",
+      "description": "Your plan has been successfully activated. We will now walk you through the key features of the platform so you can start operating right away.",
+      "planActivated": "Plan activated",
+      "startTutorial": "View tutorial",
+      "skipTutorial": "Skip tutorial and go to dashboard"
+    },
+    "tutorial": {
+      "title": "Discover the platform",
+      "description": "Review the modules available in your plan before you start operating.",
+      "step": "Step {current} of {total}",
+      "next": "Next",
+      "back": "Previous",
+      "finish": "Go to dashboard",
+      "steps": {
+        "dashboard": {
+          "title": "Operational dashboard",
+          "description": "The dashboard gives you immediate visibility into revenue, inventory stock alerts, active quotes, and recent sales — all in one view so you can make decisions without hunting for data across multiple screens."
+        },
+        "products": {
+          "title": "Product catalogue",
+          "description": "Create and organise your catalogue with prices, units of measure, and references. Each product is linked to your inventory so stock is updated automatically with every movement."
+        },
+        "customers": {
+          "title": "Customers and sales pipeline",
+          "description": "Register customers with their contact and tax details. From here you can create quotes and track the sales history per customer to measure the commercial relationship."
+        },
+        "quotes": {
+          "title": "Quotes",
+          "description": "Generate professional quotes in seconds, add products from the catalogue, and send them directly to the customer. When the customer accepts, the quote converts to a sale with a single click."
+        }
+      }
     }
   },
   "dashboard": {

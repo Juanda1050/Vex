@@ -1,0 +1,67 @@
+import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
+import { revalidatePath } from "next/cache";
+
+import { WelcomeScreen } from "@/components/onboarding/welcome-screen";
+import { getOnboardingState } from "@/server/auth";
+import { authRepository } from "@/server/auth/repository/auth.repository";
+import { getPlanByCode } from "@/lib/payments/plans";
+import { paymentGateway } from "@/lib/payments/gateway";
+
+export default async function OnboardingWelcomePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ plan?: string; session?: string }>;
+}) {
+  const [{ locale }, { plan: planCode, session: sessionId }] =
+    await Promise.all([params, searchParams]);
+
+  const onboarding = await getOnboardingState();
+
+  if (!onboarding.isAuthenticated) {
+    redirect(`/${locale}/login`);
+  }
+
+  if (!onboarding.needsOnboarding) {
+    redirect(`/${locale}/dashboard`);
+  }
+
+  // Verify the payment session before showing the welcome screen.
+  if (!planCode || !sessionId || !getPlanByCode(planCode)) {
+    redirect(`/${locale}/onboarding`);
+  }
+
+  const verification = await paymentGateway.verifyPayment(sessionId);
+
+  if (!verification.valid) {
+    redirect(`/${locale}/onboarding`);
+  }
+
+  async function completeAndGoToDashboard(): Promise<void> {
+    "use server";
+    const locale = await getLocale();
+    const onboarding = await getOnboardingState();
+
+    if (!onboarding.isAuthenticated || !onboarding.userId) {
+      redirect(`/${locale}/login`);
+    }
+
+    await authRepository.markOnboardingCompleted(onboarding.userId);
+    revalidatePath(`/${locale}/onboarding`);
+    revalidatePath(`/${locale}/dashboard`);
+    redirect(`/${locale}/dashboard`);
+  }
+
+  return (
+    <div className="flex min-h-[60vh] w-full items-center justify-center px-4">
+      <WelcomeScreen
+        planCode={planCode}
+        locale={locale}
+        onSkip={completeAndGoToDashboard}
+      />
+    </div>
+  );
+}

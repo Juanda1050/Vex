@@ -7,6 +7,7 @@ import { WelcomeScreen } from "@/components/onboarding/welcome-screen";
 import { getOnboardingState } from "@/server/auth";
 import { invalidateAuthStateCache } from "@/server/auth/cache/auth-state-cache";
 import { authRepository } from "@/server/auth/repository/auth.repository";
+import { subscriptionService } from "@/server/subscriptions";
 import { getPlanByCode } from "@/lib/payments/plans";
 import { paymentGateway } from "@/lib/payments/gateway";
 
@@ -38,6 +39,27 @@ export default async function OnboardingWelcomePage({
   const verification = await paymentGateway.verifyPayment(sessionId);
 
   if (!verification.valid) {
+    redirect(`/${locale}/onboarding`);
+  }
+
+  const verifiedPlanCode = verification.planCode;
+  if (
+    !verifiedPlanCode ||
+    verifiedPlanCode.toLowerCase() !== planCode.toLowerCase()
+  ) {
+    redirect(`/${locale}/onboarding`);
+  }
+
+  if (!onboarding.tenantId) {
+    redirect(`/${locale}/onboarding`);
+  }
+
+  try {
+    await subscriptionService.changeTenantPlan({
+      tenantId: onboarding.tenantId,
+      planCode: verifiedPlanCode,
+    });
+  } catch {
     redirect(`/${locale}/onboarding`);
   }
 

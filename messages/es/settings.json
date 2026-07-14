@@ -35,7 +35,8 @@
     "logoUrl": "URL del logo",
     "inviteEmail": "Correo a invitar",
     "role": "Rol",
-    "channel": "Canal de envío"
+    "channel": "Canal de envío",
+    "language": "Idioma"
   },
   "messages": {
     "saved": "Configuración guardada",

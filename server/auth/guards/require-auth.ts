@@ -7,6 +7,13 @@ import { authRepository } from "../repository/auth.repository";
 import { AUTH_REDIRECTS } from "../constants";
 import type { TenantContext } from "../types";
 import { getCachedAuthState } from "../cache/auth-state-cache";
+import type { SubscriptionStatus } from "@/server/subscriptions/types/subscription.types";
+
+const ACTIVE_SUBSCRIPTION_STATUSES: ReadonlySet<SubscriptionStatus> = new Set([
+  "TRIALING",
+  "ACTIVE",
+  "PAST_DUE",
+]);
 
 export const requireAuth = cache(
   async function requireAuth(): Promise<TenantContext> {
@@ -25,6 +32,17 @@ export const requireAuth = cache(
 
     const authState = await getCachedAuthState(user.id);
     if (!authState.member) redirect(AUTH_REDIRECTS.onboarding(locale));
+
+    const currentSubscription =
+      authState.member.tenant.subscriptions[0] ?? null;
+    const hasActiveCompanySubscription = currentSubscription
+      ? ACTIVE_SUBSCRIPTION_STATUSES.has(currentSubscription.status)
+      : false;
+    const hasActivationAccess = hasActiveCompanySubscription;
+
+    if (!hasActivationAccess) {
+      redirect(AUTH_REDIRECTS.onboarding(locale));
+    }
 
     const branchId = authState.branchId;
     if (!branchId) redirect(AUTH_REDIRECTS.onboarding(locale));

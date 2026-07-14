@@ -35,7 +35,8 @@
     "logoUrl": "Logo URL",
     "inviteEmail": "Invite email",
     "role": "Role",
-    "channel": "Delivery channel"
+    "channel": "Delivery channel",
+    "language": "Language"
   },
   "messages": {
     "saved": "Settings saved",

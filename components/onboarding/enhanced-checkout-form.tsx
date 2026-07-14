@@ -434,8 +434,8 @@ function EnhancedCheckoutFormContent({
           </p>
         </section>
 
-        <section className="space-y-5">
-          <div className="grid grid-cols-2 gap-2 rounded-xl border border-border/80 bg-muted/35 p-1">
+        <section className="space-y-5 rounded-xl border border-border/70 bg-background/70 p-4 sm:p-5">
+          <div className="grid grid-cols-2 gap-2 rounded-xl border border-border/80 bg-muted/25 p-1">
             <button
               type="button"
               className={cn(
@@ -461,31 +461,11 @@ function EnhancedCheckoutFormContent({
             </button>
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground">
-              {t("checkout.billingNameLabel")}
-            </label>
-            <Input
-              type="text"
-              placeholder={t("checkout.billingNamePlaceholder")}
-              value={checkout.formData.billingName}
-              onChange={(e) =>
-                checkout.setFieldValue("billingName", e.target.value)
-              }
-              onBlur={() => checkout.touchField("billingName")}
-              disabled={checkout.isPending}
-              className="h-11 rounded-lg border-border/70"
-            />
-            {showCardFieldErrors
-              ? renderError(checkout.visibleErrors.billingName)
-              : null}
-          </div>
-
           <div className="space-y-2">
             <p className="text-lg font-semibold tracking-tight text-foreground">
               {t("checkout.paymentDetailLabel")}
             </p>
-            <div className="flex min-h-11 items-center rounded-xl border border-primary bg-primary/5 px-4 py-3 text-sm text-foreground">
+            <div className="flex min-h-11 items-center rounded-xl border border-primary/40 bg-primary/5 px-4 py-3 text-sm text-foreground">
               <p className="flex items-center gap-2 font-medium">
                 <WalletCards className="size-4" />
                 {t("checkout.creditCard")}

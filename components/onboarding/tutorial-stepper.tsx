@@ -175,9 +175,9 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
             </div>
 
             <div className="mt-4 grid grid-cols-3 gap-2">
-              {example.metrics.map((metric) => (
+              {example.metrics.map((metric, idx) => (
                 <div
-                  key={metric.label}
+                  key={`${stepKey}-${metric.labelKey}-${idx}`}
                   className="rounded-xl border border-border/70 bg-card px-2.5 py-2 transition-transform duration-250 hover:-translate-y-0.5"
                 >
                   <p className="text-[11px] text-muted-foreground">

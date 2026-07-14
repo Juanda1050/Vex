@@ -126,8 +126,13 @@ export class SubscriptionRepository {
   }
 
   async findPlanByCode(code: string): Promise<PlanRecord | null> {
-    const plan = await prisma.subscriptionPlan.findUnique({
-      where: { code },
+    const plan = await prisma.subscriptionPlan.findFirst({
+      where: {
+        code: {
+          equals: code,
+          mode: "insensitive",
+        },
+      },
       include: {
         prices: {
           where: { isActive: true },

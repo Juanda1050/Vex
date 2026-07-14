@@ -14,6 +14,7 @@ import app from "./app.json";
 import authShowcase from "./auth-showcase.json";
 import onboarding from "./onboarding.json";
 import dashboard from "./dashboard.json";
+import tutorial from "./tutorial.json";
 
 const messages = {
   common,
@@ -30,7 +31,10 @@ const messages = {
   users,
   app,
   authShowcase,
-  onboarding,
+  onboarding: {
+    ...onboarding,
+    tutorial,
+  },
   dashboard,
 };
 

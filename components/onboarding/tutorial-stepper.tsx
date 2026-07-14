@@ -116,7 +116,7 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
             </div>
 
             <div className="inline-flex w-fit items-center rounded-full border border-info/30 bg-info/10 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-info uppercase">
-              Vista previa real
+              {t("preview.badge")}
             </div>
 
             {/* Navigation anchored to the bottom to keep card height stable across steps. */}
@@ -167,10 +167,10 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
           >
             <div className="flex items-center justify-between gap-2 border-b border-border/70 pb-3">
               <p className="font-heading text-sm font-semibold tracking-wide text-foreground/95">
-                {example.section}
+                {t(example.sectionKey as Parameters<typeof t>[0])}
               </p>
               <span className="rounded-full border border-border/70 bg-card px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
-                Demo
+                {t("preview.demo")}
               </span>
             </div>
 
@@ -181,7 +181,7 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
                   className="rounded-xl border border-border/70 bg-card px-2.5 py-2 transition-transform duration-250 hover:-translate-y-0.5"
                 >
                   <p className="text-[11px] text-muted-foreground">
-                    {metric.label}
+                    {t(metric.labelKey as Parameters<typeof t>[0])}
                   </p>
                   <p className="mt-1 text-sm font-semibold text-foreground">
                     {metric.value}
@@ -189,7 +189,7 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
                   <span
                     className={`mt-1 inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${metric.accent}`}
                   >
-                    Live
+                    {t("preview.live")}
                   </span>
                 </div>
               ))}
@@ -203,10 +203,10 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
                 >
                   <div className="min-w-0">
                     <p className="truncate text-sm font-medium text-foreground">
-                      {row.title}
+                      {t(row.titleKey as Parameters<typeof t>[0])}
                     </p>
                     <p className="truncate text-xs text-muted-foreground">
-                      {row.subtitle}
+                      {t(row.subtitleKey as Parameters<typeof t>[0])}
                     </p>
                   </div>
                   <div className="text-right">
@@ -214,7 +214,7 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
                       {row.amount}
                     </p>
                     <p className="text-[11px] text-muted-foreground">
-                      {row.status}
+                      {t(row.statusKey as Parameters<typeof t>[0])}
                     </p>
                   </div>
                 </div>

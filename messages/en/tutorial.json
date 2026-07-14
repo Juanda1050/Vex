@@ -1,0 +1,93 @@
+{
+  "title": "Discover the platform",
+  "description": "Review the modules available in your plan before you start operating.",
+  "step": "Step {current} of {total}",
+  "next": "Next",
+  "back": "Previous",
+  "finish": "Go to dashboard",
+  "steps": {
+    "dashboard": {
+      "title": "Operational dashboard",
+      "description": "The dashboard gives you immediate visibility into revenue, inventory stock alerts, active quotes, and recent sales - all in one view so you can make decisions without hunting for data across multiple screens."
+    },
+    "products": {
+      "title": "Product catalogue",
+      "description": "Create and organise your catalogue with prices, units of measure, and references. Each product is linked to your inventory so stock is updated automatically with every movement."
+    },
+    "customers": {
+      "title": "Customers and sales pipeline",
+      "description": "Register customers with their contact and tax details. From here you can create quotes and track the sales history per customer to measure the commercial relationship."
+    },
+    "quotes": {
+      "title": "Quotes",
+      "description": "Generate professional quotes in seconds, add products from the catalogue, and send them directly to the customer. When the customer accepts, the quote converts to a sale with a single click."
+    }
+  },
+  "preview": {
+    "badge": "Real interface preview",
+    "demo": "Demo",
+    "live": "Live",
+    "sections": {
+      "dashboard": "Dashboard",
+      "inventory": "Inventory",
+      "customers": "Customers",
+      "quotes": "Quotes"
+    },
+    "metrics": {
+      "sales": "Sales",
+      "orders": "Orders",
+      "margin": "Margin",
+      "sku": "SKU",
+      "lowStock": "Low stock",
+      "newItems": "New",
+      "active": "Active",
+      "newCustomers": "New",
+      "returning": "Returning",
+      "open": "Open",
+      "accepted": "Accepted",
+      "pipeline": "Pipeline"
+    },
+    "rows": {
+      "dailySummary": {
+        "title": "Daily summary",
+        "subtitle": "Performance by channel",
+        "status": "Updated"
+      },
+      "topProducts": {
+        "title": "Top products",
+        "subtitle": "Weekly rotation",
+        "status": "Active"
+      },
+      "headphones": {
+        "title": "Headphones Pro",
+        "subtitle": "Category: Audio",
+        "status": "Available"
+      },
+      "monitor": {
+        "title": "Monitor 27\"",
+        "subtitle": "Category: Office",
+        "status": "Low stock"
+      },
+      "rivera": {
+        "title": "Comercial Rivera",
+        "subtitle": "Last purchase: 3 days ago",
+        "status": "Premium"
+      },
+      "nova": {
+        "title": "Nova Studio",
+        "subtitle": "Last purchase: today",
+        "status": "Active"
+      },
+      "quote184": {
+        "title": "Q-2026-184",
+        "subtitle": "Corporate bundle",
+        "status": "Pending"
+      },
+      "quote187": {
+        "title": "Q-2026-187",
+        "subtitle": "Annual renewal",
+        "status": "Under review"
+      }
+    }
+  }
+}

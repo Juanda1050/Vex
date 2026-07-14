@@ -1,0 +1,93 @@
+{
+  "title": "Conoce la plataforma",
+  "description": "Revisa los módulos disponibles en tu plan antes de empezar a operar.",
+  "step": "Paso {current} de {total}",
+  "next": "Siguiente",
+  "back": "Anterior",
+  "finish": "Ir al dashboard",
+  "steps": {
+    "dashboard": {
+      "title": "Dashboard operativo",
+      "description": "Desde el dashboard tienes visibilidad inmediata sobre ingresos, inventario con alerta de stock, cotizaciones activas y ventas recientes. Todo en una sola vista para tomar decisiones sin buscar datos en múltiples pantallas."
+    },
+    "products": {
+      "title": "Catálogo de productos",
+      "description": "Crea y organiza tu catálogo con precios, unidades de medida y referencias. Cada producto queda vinculado a tu inventario para que el stock se actualice automáticamente con cada movimiento."
+    },
+    "customers": {
+      "title": "Clientes y comercial",
+      "description": "Registra clientes con su información de contacto y fiscal. Desde aquí podrás crear cotizaciones y rastrear el historial de ventas por cliente para medir la relación comercial."
+    },
+    "quotes": {
+      "title": "Cotizaciones",
+      "description": "Genera cotizaciones profesionales en segundos, agrégales productos del catálogo y envíalas directamente al cliente. Cuando el cliente acepte, la cotización se convierte en venta con un solo clic."
+    }
+  },
+  "preview": {
+    "badge": "Vista previa real",
+    "demo": "Demo",
+    "live": "Live",
+    "sections": {
+      "dashboard": "Dashboard",
+      "inventory": "Inventario",
+      "customers": "Clientes",
+      "quotes": "Cotizaciones"
+    },
+    "metrics": {
+      "sales": "Ventas",
+      "orders": "Pedidos",
+      "margin": "Margen",
+      "sku": "SKU",
+      "lowStock": "Stock bajo",
+      "newItems": "Nuevos",
+      "active": "Activos",
+      "newCustomers": "Nuevos",
+      "returning": "Recurrentes",
+      "open": "Abiertas",
+      "accepted": "Aceptadas",
+      "pipeline": "Pipeline"
+    },
+    "rows": {
+      "dailySummary": {
+        "title": "Resumen diario",
+        "subtitle": "Rendimiento por canal",
+        "status": "Actualizado"
+      },
+      "topProducts": {
+        "title": "Top productos",
+        "subtitle": "Rotación semanal",
+        "status": "Activo"
+      },
+      "headphones": {
+        "title": "Auriculares Pro",
+        "subtitle": "Categoría: Audio",
+        "status": "Disponible"
+      },
+      "monitor": {
+        "title": "Monitor 27\"",
+        "subtitle": "Categoría: Oficina",
+        "status": "Stock bajo"
+      },
+      "rivera": {
+        "title": "Comercial Rivera",
+        "subtitle": "Última compra: hace 3 días",
+        "status": "Premium"
+      },
+      "nova": {
+        "title": "Nova Studio",
+        "subtitle": "Última compra: hoy",
+        "status": "Activo"
+      },
+      "quote184": {
+        "title": "Q-2026-184",
+        "subtitle": "Paquete corporativo",
+        "status": "Pendiente"
+      },
+      "quote187": {
+        "title": "Q-2026-187",
+        "subtitle": "Renovación anual",
+        "status": "En revisión"
+      }
+    }
+  }
+}

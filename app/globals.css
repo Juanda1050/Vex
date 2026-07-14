@@ -237,6 +237,27 @@
     }
   }
 
+  @keyframes tutorial-fade-up {
+    0% {
+      opacity: 0;
+      transform: translateY(12px) scale(0.992);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes tutorial-progress-glow {
+    0%,
+    100% {
+      filter: saturate(100%) brightness(1);
+    }
+    50% {
+      filter: saturate(130%) brightness(1.08);
+    }
+  }
+
   .brand-wordmark-tech {
     color: transparent;
     background-image: linear-gradient(
@@ -295,6 +316,13 @@
     .brand-wordmark-tech {
       animation: none;
       background-position: 35% 50%;
+    }
+
+    .motion-safe\:animate-\[tutorial-fade-up_480ms_cubic-bezier\(0\.22\,1\,0\.36\,1\)_both\],
+    .motion-safe\:animate-\[tutorial-fade-up_400ms_cubic-bezier\(0\.22\,1\,0\.36\,1\)_both\],
+    .motion-safe\:animate-\[tutorial-fade-up_320ms_cubic-bezier\(0\.22\,1\,0\.36\,1\)_both\],
+    .motion-safe\:animate-\[tutorial-progress-glow_2\.8s_ease-in-out_infinite\] {
+      animation: none !important;
     }
   }
 

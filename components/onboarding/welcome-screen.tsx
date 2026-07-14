@@ -34,27 +34,31 @@ export function WelcomeScreen({
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col items-center gap-8 py-4 text-center">
-      <div className="space-y-4">
-        <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-          {t("welcome.badge")}
-        </p>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-          {t("welcome.title")}
-        </h1>
-        <p className="max-w-lg text-sm leading-7 text-foreground/80 sm:text-base">
-          {t("welcome.description")}
-        </p>
+    <div className="mx-auto grid w-full max-w-5xl gap-7 py-4 lg:grid-cols-[minmax(0,1fr)_minmax(20rem,22rem)] lg:items-start lg:gap-10">
+      <div className="space-y-4 lg:space-y-5">
+        <div className="space-y-4 text-center lg:text-left">
+          <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
+            {t("welcome.badge")}
+          </p>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            {t("welcome.title")}
+          </h1>
+          <p className="max-w-xl text-sm leading-7 text-foreground/80 sm:text-base">
+            {t("welcome.description")}
+          </p>
+        </div>
+
+        <div className="rounded-[1.1rem] border border-primary/25 bg-primary/5 px-6 py-4 text-center lg:text-left">
+          <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+            {t("welcome.planActivated")}
+          </p>
+          <p className="mt-1 text-xl font-semibold text-foreground">
+            {planName}
+          </p>
+        </div>
       </div>
 
-      <div className="flex w-full max-w-xs flex-col items-center gap-1.5 rounded-[1.1rem] border border-primary/25 bg-primary/5 px-6 py-4">
-        <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-          {t("welcome.planActivated")}
-        </p>
-        <p className="text-xl font-semibold text-foreground">{planName}</p>
-      </div>
-
-      <div className="grid w-full max-w-xs gap-3">
+      <div className="grid w-full gap-3 lg:sticky lg:top-7">
         <Button
           type="button"
           className="h-11 w-full"

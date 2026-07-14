@@ -58,7 +58,7 @@ export default async function OnboardingWelcomePage({
   }
 
   return (
-    <div className="flex min-h-[60vh] w-full items-center justify-center px-4">
+    <div className="mx-auto flex w-full max-w-6xl flex-1 items-center justify-center px-2 py-4 sm:px-4">
       <WelcomeScreen
         planCode={planCode}
         locale={locale}

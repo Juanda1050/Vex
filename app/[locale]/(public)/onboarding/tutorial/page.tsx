@@ -44,17 +44,19 @@ export default async function OnboardingTutorialPage({
   }
 
   return (
-    <div className="mx-auto grid w-full max-w-368 gap-6 lg:gap-8">
-      <section className="space-y-2.5">
+    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-7 py-4 lg:gap-8">
+      <section className="mx-auto w-full max-w-3xl space-y-3 text-center">
         <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="max-w-xl text-sm leading-7 text-foreground/80 sm:text-base">
+        <p className="mx-auto max-w-2xl text-sm leading-7 text-foreground/80 sm:text-base">
           {t("description")}
         </p>
       </section>
 
-      <TutorialStepper onFinish={completeOnboarding} />
+      <div className="mx-auto w-full max-w-5xl">
+        <TutorialStepper onFinish={completeOnboarding} />
+      </div>
     </div>
   );
 }

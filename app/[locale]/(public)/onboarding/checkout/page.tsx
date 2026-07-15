@@ -51,7 +51,7 @@ export default async function OnboardingCheckoutPage({
   }
 
   return (
-    <div className="mx-auto grid w-full max-w-none gap-6 px-2 sm:px-4 lg:gap-8">
+    <div className="mx-auto grid w-full max-w-[116rem] gap-6 px-1.5 sm:px-3 lg:gap-8 xl:px-4">
       <EnhancedCheckoutForm
         planCode={planCode}
         locale={locale}

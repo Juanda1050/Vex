@@ -148,10 +148,10 @@ function EnhancedCheckoutFormContent({
             </p>
 
             <div className="space-y-2">
-              <h2 className="text-3xl font-semibold tracking-tight text-foreground">
+              <h2 className="text-3xl font-semibold tracking-tight text-foreground xl:text-[2.4rem]">
                 {t("checkout.freeFlow.title")}
               </h2>
-              <p className="text-sm leading-6 text-muted-foreground">
+              <p className="text-sm leading-6 text-muted-foreground dark:text-foreground/74 xl:text-[1.02rem] xl:leading-7">
                 {t("checkout.freeFlow.description")}
               </p>
             </div>
@@ -257,7 +257,7 @@ function EnhancedCheckoutFormContent({
               <Button
                 type="button"
                 variant="ghost"
-                className="h-10 w-full text-muted-foreground"
+                className="h-10 w-full text-muted-foreground dark:text-foreground/72"
                 onClick={() => router.push(`/${locale}/onboarding`)}
                 disabled={checkout.isPending}
               >
@@ -273,17 +273,17 @@ function EnhancedCheckoutFormContent({
 
   return (
     <div className="w-full rounded-[1.6rem] border border-border/70 bg-card/90 p-4 shadow-sm backdrop-blur sm:p-8">
-      <div className="grid gap-8 lg:grid-cols-[1.05fr_1fr]">
+      <div className="grid gap-8 xl:grid-cols-[1.05fr_1fr]">
         <section className="space-y-6">
           <p className="text-sm font-semibold tracking-tight text-primary">
             {t("checkout.brand")}
           </p>
 
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground xl:text-[2.15rem]">
               {t("checkout.cardHeaderTitle", { product: getPlanName(plan, t) })}
             </h2>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground dark:text-foreground/74 xl:text-[1.02rem]">
               {t("checkout.cardHeaderSubtitle")}
             </p>
           </div>
@@ -301,7 +301,7 @@ function EnhancedCheckoutFormContent({
                 type="button"
                 onClick={() => checkout.setSelectedInterval(option.interval)}
                 className={cn(
-                  "w-full rounded-xl border p-4 text-left transition-all",
+                  "w-full rounded-xl border p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-65",
                   checkout.selectedInterval === option.interval
                     ? "border-primary ring-1 ring-primary"
                     : "border-border/80 hover:border-primary/60",
@@ -439,7 +439,7 @@ function EnhancedCheckoutFormContent({
             <button
               type="button"
               className={cn(
-                "h-10 rounded-lg text-sm font-medium transition",
+                "h-10 rounded-lg text-sm font-medium transition focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30 disabled:opacity-65",
                 checkout.paymentMode === "card"
                   ? "bg-background text-foreground shadow-sm"
                   : "text-muted-foreground",
@@ -452,7 +452,7 @@ function EnhancedCheckoutFormContent({
             <button
               type="button"
               className={cn(
-                "h-10 rounded-lg text-sm font-medium transition",
+                "h-10 rounded-lg text-sm font-medium transition focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30",
                 "cursor-not-allowed text-muted-foreground/70",
               )}
               disabled
@@ -532,7 +532,7 @@ function EnhancedCheckoutFormContent({
                 : null}
             </div>
 
-            <div className="grid w-full max-w-76 grid-cols-[11rem_7rem] gap-3">
+            <div className="grid w-full grid-cols-2 gap-3 sm:max-w-76 sm:grid-cols-[11rem_7rem]">
               <div className="space-y-1">
                 <label className="text-xs font-semibold text-muted-foreground">
                   {t("checkout.cardExpiryLabel")}
@@ -635,7 +635,7 @@ function EnhancedCheckoutFormContent({
                     <button
                       type="button"
                       onClick={checkout.removePromoCode}
-                      className="inline-flex size-4 items-center justify-center rounded-full text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                      className="inline-flex size-4 items-center justify-center rounded-full text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/30"
                       aria-label={t("checkout.promo.remove")}
                     >
                       <X className="size-3" />
@@ -722,7 +722,7 @@ function EnhancedCheckoutFormContent({
             <Button
               type="button"
               variant="ghost"
-              className="h-10 w-full text-muted-foreground"
+              className="h-10 w-full text-muted-foreground dark:text-foreground/72"
               onClick={() => router.push(`/${locale}/onboarding`)}
               disabled={checkout.isPending}
             >

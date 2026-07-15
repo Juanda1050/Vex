@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { CheckCircle2, Sparkles } from "lucide-react";
+import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { PLANS } from "@/lib/payments/plans";
@@ -35,10 +35,9 @@ export function WelcomeScreen({
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl py-4">
-      <div className="relative overflow-hidden rounded-[1.4rem] border border-border/60 bg-linear-to-br from-card via-card to-muted/40 p-5 shadow-xl shadow-primary/10 sm:p-7">
-        <div className="pointer-events-none absolute -top-16 -right-20 h-44 w-44 rounded-full bg-primary/12 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 -left-16 h-40 w-40 rounded-full bg-accent/40 blur-3xl" />
+    <div className="mx-auto w-full max-w-5xl py-4">
+      <div className="relative overflow-hidden rounded-[1.4rem] border border-border/60 bg-linear-to-br from-card via-card to-muted/35 p-5 shadow-lg sm:p-7">
+        <div className="pointer-events-none absolute -bottom-20 -left-16 h-36 w-36 rounded-full bg-muted/60 blur-3xl" />
 
         <div className="relative space-y-5">
           <div className="space-y-3 text-center sm:text-left">
@@ -46,18 +45,18 @@ export function WelcomeScreen({
               <CheckCircle2 className="size-3.5" />
               {t("welcome.badge")}
             </p>
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-[2rem]">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-[2rem] xl:text-[2.5rem]">
               {t("welcome.title")}
             </h1>
-            <p className="text-sm leading-7 text-foreground/80 sm:max-w-2xl sm:text-base">
+            <p className="text-sm leading-7 text-foreground/80 dark:text-foreground/86 sm:max-w-2xl sm:text-base xl:max-w-3xl xl:text-[1.05rem]">
               {t("welcome.description")}
             </p>
           </div>
 
-          <div className="rounded-[1rem] border border-primary/20 bg-background/75 px-5 py-4 text-center backdrop-blur-sm sm:text-left">
+          <div className="rounded-[1rem] border border-border/60 bg-background/75 px-5 py-4 text-center backdrop-blur-sm sm:text-left">
             <div className="flex items-center justify-center gap-2 sm:justify-start">
-              <Sparkles className="size-4 text-primary" />
-              <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
+              <Sparkles className="size-4 text-muted-foreground" />
+              <p className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase dark:text-foreground/70">
                 {t("welcome.planActivated")}
               </p>
             </div>
@@ -66,21 +65,11 @@ export function WelcomeScreen({
             </p>
           </div>
 
-          <div className="grid w-full gap-3 sm:grid-cols-2">
-            <Button
-              type="button"
-              className="h-11 w-full font-medium"
-              onClick={() =>
-                router.push(`/${locale}/onboarding/tutorial?plan=${planCode}`)
-              }
-              disabled={isSkipping}
-            >
-              {t("welcome.startTutorial")}
-            </Button>
+          <div className="grid w-full gap-3 col-auto sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
             <Button
               type="button"
               variant="ghost"
-              className="h-11 w-full border border-border/60 bg-background/60 text-muted-foreground hover:bg-background"
+              className="h-10 w-full justify-center px-3 text-muted-foreground hover:bg-transparent hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/30 dark:text-foreground/72 dark:hover:text-foreground sm:w-auto sm:justify-start"
               onClick={handleSkip}
               disabled={isSkipping}
             >
@@ -92,6 +81,20 @@ export function WelcomeScreen({
               ) : (
                 t("welcome.skipTutorial")
               )}
+            </Button>
+
+            <Button
+              type="button"
+              className="h-11 w-full font-medium focus-visible:ring-3 focus-visible:ring-ring/30 sm:w-auto sm:min-w-56"
+              onClick={() =>
+                router.push(`/${locale}/onboarding/tutorial?plan=${planCode}`)
+              }
+              disabled={isSkipping}
+            >
+              <span className="inline-flex items-center gap-2">
+                {t("welcome.startTutorial")}
+                <ArrowRight className="size-4" />
+              </span>
             </Button>
           </div>
         </div>

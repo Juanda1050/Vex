@@ -50,7 +50,7 @@ export default async function RegisterModulePage({
 
   return (
     <section className="flex h-full w-full min-h-0 flex-1 flex-col">
-      <div className="grid h-full min-h-0 flex-1 items-stretch gap-3 sm:gap-4 xl:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] xl:gap-5 2xl:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)] 2xl:gap-6">
+      <div className="grid h-full min-h-0 flex-1 items-stretch gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-5 2xl:grid-cols-[minmax(0,1.04fr)_minmax(0,0.96fr)] 2xl:gap-6">
         <AuthShowcasePanel
           brandName={tRegister("brandName")}
           brandSlogan={tRegister("brandSlogan")}

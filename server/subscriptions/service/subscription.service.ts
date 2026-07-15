@@ -118,7 +118,7 @@ export class SubscriptionService {
     tenantId: string,
   ): Promise<TenantSubscriptionSummary | null> {
     const current =
-      await subscriptionRepository.ensureFreeSubscriptionForTenant(tenantId);
+      await subscriptionRepository.findCurrentByTenantId(tenantId);
     if (!current) return null;
 
     return toSummary(current);

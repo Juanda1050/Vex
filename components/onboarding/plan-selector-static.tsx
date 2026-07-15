@@ -62,7 +62,7 @@ function PlanCard({
 
   return (
     <Card
-      className={`h-full rounded-[1.35rem] shadow-none transition-colors ${containerClass}`}
+      className={`h-full rounded-[1.35rem] shadow-none transition-[border-color,background-color,box-shadow] ${containerClass} ${!isSelected ? "hover:border-border" : ""}`}
     >
       <CardContent className="flex h-full flex-col gap-4 p-5">
         <div className="space-y-2.5">
@@ -128,7 +128,7 @@ function PlanCard({
             onClick={onSelect}
             disabled={isSelected}
             variant={isSelected ? "outline" : "default"}
-            className="h-11 w-full"
+            className="h-11 w-full focus-visible:ring-3 focus-visible:ring-ring/30 disabled:opacity-60"
           >
             {isSelected ? (
               <span className="inline-flex items-center gap-1.5">
@@ -159,7 +159,7 @@ export function OnboardingPlanSelectorStatic({
 
   return (
     <div className="grid gap-5">
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {PLANS.map((plan) => (
           <PlanCard
             key={plan.code}

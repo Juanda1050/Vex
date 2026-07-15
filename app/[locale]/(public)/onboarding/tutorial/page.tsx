@@ -21,10 +21,6 @@ export default async function OnboardingTutorialPage({
     redirect(`/${locale}/login`);
   }
 
-  if (!onboarding.needsOnboarding) {
-    redirect(`/${locale}/dashboard`);
-  }
-
   const t = await getTranslations("onboarding.tutorial");
 
   async function completeOnboarding(): Promise<void> {
@@ -44,17 +40,17 @@ export default async function OnboardingTutorialPage({
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-7 py-4 lg:gap-8">
-      <section className="mx-auto w-full max-w-3xl space-y-3 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+    <div className="mx-auto flex w-full max-w-[116rem] flex-1 flex-col gap-7 py-4 lg:gap-8">
+      <section className="mx-auto w-full max-w-4xl space-y-3 text-center xl:max-w-5xl">
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl xl:text-[2.85rem]">
           {t("title")}
         </h1>
-        <p className="mx-auto max-w-2xl text-sm leading-7 text-foreground/80 sm:text-base">
+        <p className="mx-auto max-w-3xl text-sm leading-7 text-foreground/80 sm:text-base xl:text-[1.05rem]">
           {t("description")}
         </p>
       </section>
 
-      <div className="mx-auto w-full max-w-5xl">
+      <div className="mx-auto w-full max-w-6xl 2xl:max-w-7xl">
         <TutorialStepper onFinish={completeOnboarding} />
       </div>
     </div>

@@ -44,98 +44,100 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
   );
 
   return (
-    <form action={formAction} className="grid gap-3 sm:gap-4">
-      <div className="grid gap-1.5">
-        <label
-          htmlFor="orgName"
-          className="text-xs font-medium text-foreground sm:text-sm"
-        >
-          {t("register.orgName")}
-        </label>
-        <div className="relative">
-          <Building2 className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
-          <Input
-            id="orgName"
-            name="orgName"
-            type="text"
-            required
-            minLength={3}
-            placeholder={t("register.orgNamePlaceholder")}
-            value={orgName}
-            onChange={(event) => setOrgName(event.target.value)}
-            className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11"
-          />
+    <form action={formAction} className="grid gap-3 sm:gap-4 xl:gap-4.5">
+      <div className="grid gap-3 md:grid-cols-2 md:gap-4">
+        <div className="grid gap-1.5">
+          <label
+            htmlFor="orgName"
+            className="text-xs font-medium text-foreground sm:text-sm xl:text-[0.95rem]"
+          >
+            {t("register.orgName")}
+          </label>
+          <div className="relative">
+            <Building2 className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
+            <Input
+              id="orgName"
+              name="orgName"
+              type="text"
+              required
+              minLength={3}
+              placeholder={t("register.orgNamePlaceholder")}
+              value={orgName}
+              onChange={(event) => setOrgName(event.target.value)}
+              className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
+            />
+          </div>
         </div>
-      </div>
 
-      <div className="grid gap-1.5">
-        <label
-          htmlFor="email"
-          className="text-xs font-medium text-foreground sm:text-sm"
-        >
-          {t("login.email")}
-        </label>
-        <div className="relative">
-          <Mail className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            placeholder={t("register.emailPlaceholder")}
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11"
-          />
+        <div className="grid gap-1.5">
+          <label
+            htmlFor="email"
+            className="text-xs font-medium text-foreground sm:text-sm xl:text-[0.95rem]"
+          >
+            {t("login.email")}
+          </label>
+          <div className="relative">
+            <Mail className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder={t("register.emailPlaceholder")}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
+            />
+          </div>
         </div>
-      </div>
 
-      <div className="grid gap-1.5">
-        <label
-          htmlFor="password"
-          className="text-xs font-medium text-foreground sm:text-sm"
-        >
-          {t("login.password")}
-        </label>
-        <div className="relative">
-          <LockKeyhole className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            placeholder={t("register.passwordPlaceholder")}
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11"
-          />
+        <div className="grid gap-1.5">
+          <label
+            htmlFor="password"
+            className="text-xs font-medium text-foreground sm:text-sm xl:text-[0.95rem]"
+          >
+            {t("login.password")}
+          </label>
+          <div className="relative">
+            <LockKeyhole className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              placeholder={t("register.passwordPlaceholder")}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
+            />
+          </div>
         </div>
-      </div>
 
-      <div className="grid gap-1.5">
-        <label
-          htmlFor="confirmPassword"
-          className="text-xs font-medium text-foreground sm:text-sm"
-        >
-          {t("register.confirmPassword")}
-        </label>
-        <div className="relative">
-          <LockKeyhole className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
-          <Input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            placeholder={t("register.confirmPasswordPlaceholder")}
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11"
-          />
+        <div className="grid gap-1.5">
+          <label
+            htmlFor="confirmPassword"
+            className="text-xs font-medium text-foreground sm:text-sm xl:text-[0.95rem]"
+          >
+            {t("register.confirmPassword")}
+          </label>
+          <div className="relative">
+            <LockKeyhole className="pointer-events-none absolute top-1/2 left-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
+            <Input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              placeholder={t("register.confirmPasswordPlaceholder")}
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
+            />
+          </div>
         </div>
       </div>
 
@@ -149,7 +151,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
         type="submit"
         disabled={!canSubmit}
         pendingText={t("register.loading")}
-        className="h-10 w-full rounded-2xl text-sm sm:h-11 sm:text-[0.95rem]"
+        className="h-10 w-full rounded-2xl text-sm sm:h-11 sm:text-[0.95rem] xl:h-12 xl:text-[1rem]"
       >
         {t("register.submit")}
       </LoadingSubmitButton>
@@ -160,7 +162,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
         </p>
       ) : null}
 
-      <div className="flex items-center gap-3 py-0.5 text-xs text-muted-foreground">
+      <div className="flex items-center gap-3 py-0.5 text-xs text-muted-foreground dark:text-foreground/72">
         <span className="h-px flex-1 bg-border/80" />
         <span>{t("login.continueWith")}</span>
         <span className="h-px flex-1 bg-border/80" />
@@ -172,7 +174,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
         formNoValidate
         pendingText={t("login.loading")}
         variant="outline"
-        className="h-10 w-full rounded-2xl border-border/65 bg-background/60 text-sm backdrop-blur-sm sm:h-11"
+        className="h-10 w-full rounded-2xl border-border/65 bg-background/60 text-sm backdrop-blur-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
       >
         <svg viewBox="0 0 24 24" aria-hidden className="size-4">
           <path
@@ -196,7 +198,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
       </LoadingSubmitButton>
 
       {showFooter ? (
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-center text-sm text-muted-foreground dark:text-foreground/72">
           {t("register.hasAccount")}{" "}
           <Link
             href={`/${locale}/login`}

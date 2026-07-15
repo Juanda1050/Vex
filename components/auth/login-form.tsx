@@ -53,7 +53,7 @@ export function LoginForm({
   const formError = state.error ?? initialError ?? null;
 
   return (
-    <form action={formAction} className="grid gap-3 sm:gap-4">
+    <form action={formAction} className="grid gap-3 sm:gap-4 xl:gap-4.5">
       {redirectTo ? (
         <input type="hidden" name="redirectTo" value={redirectTo} />
       ) : null}
@@ -61,7 +61,7 @@ export function LoginForm({
       <div className="grid gap-1.5">
         <label
           htmlFor="email"
-          className="text-xs font-medium text-foreground sm:text-sm"
+          className="text-xs font-medium text-foreground sm:text-sm xl:text-[0.95rem]"
         >
           {t("login.email")}
         </label>
@@ -76,7 +76,7 @@ export function LoginForm({
             placeholder={emailPlaceholder}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="h-10 rounded-xl border-border/60 bg-background/65 pl-9 text-sm backdrop-blur-sm sm:h-11"
+            className="h-10 rounded-xl border-border/60 bg-background/65 pl-9 text-sm backdrop-blur-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
           />
         </div>
       </div>
@@ -84,7 +84,7 @@ export function LoginForm({
       <div className="grid gap-1.5">
         <label
           htmlFor="password"
-          className="text-xs font-medium text-foreground sm:text-sm"
+          className="text-xs font-medium text-foreground sm:text-sm xl:text-[0.95rem]"
         >
           {t("login.password")}
         </label>
@@ -99,20 +99,20 @@ export function LoginForm({
             placeholder={passwordPlaceholder}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="h-10 rounded-xl border-border/60 bg-background/65 pr-10 pl-9 text-sm backdrop-blur-sm sm:h-11"
+            className="h-10 rounded-xl border-border/60 bg-background/65 pr-10 pl-9 text-sm backdrop-blur-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
           />
           <EyeOff className="pointer-events-none absolute top-1/2 right-3 z-10 size-3.5 -translate-y-1/2 text-foreground/60 sm:size-4" />
         </div>
       </div>
 
       <div className="flex items-center justify-between gap-3 text-xs sm:gap-4 sm:text-sm max-[430px]:flex-col max-[430px]:items-start">
-        <label className="flex items-center gap-2 text-muted-foreground">
+        <label className="flex items-center gap-2 text-muted-foreground dark:text-foreground/72">
           <Checkbox name="remember" value="true" />
           {t("login.rememberMe")}
         </label>
         <Link
           href="#"
-          className="font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="font-medium text-muted-foreground transition-colors hover:text-foreground dark:text-foreground/72"
         >
           {t("login.forgotPassword")}
         </Link>
@@ -122,7 +122,7 @@ export function LoginForm({
         type="submit"
         disabled={!canSubmit}
         pendingText={t("login.loading")}
-        className="h-10 w-full rounded-2xl text-sm sm:h-11 sm:text-[0.95rem]"
+        className="h-10 w-full rounded-2xl text-sm sm:h-11 sm:text-[0.95rem] xl:h-12 xl:text-[1rem]"
       >
         {t("login.submit")}
       </LoadingSubmitButton>
@@ -133,7 +133,7 @@ export function LoginForm({
         </p>
       ) : null}
 
-      <div className="flex items-center gap-3 py-0.5 text-xs text-muted-foreground">
+      <div className="flex items-center gap-3 py-0.5 text-xs text-muted-foreground dark:text-foreground/72">
         <span className="h-px flex-1 bg-border/80" />
         <span>{t("login.continueWith")}</span>
         <span className="h-px flex-1 bg-border/80" />
@@ -145,7 +145,7 @@ export function LoginForm({
         formNoValidate
         pendingText={t("login.loading")}
         variant="outline"
-        className="h-10 w-full rounded-2xl border-border/65 bg-background/60 text-sm backdrop-blur-sm sm:h-11"
+        className="h-10 w-full rounded-2xl border-border/65 bg-background/60 text-sm backdrop-blur-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
       >
         <svg viewBox="0 0 24 24" aria-hidden className="size-4">
           <path
@@ -169,7 +169,7 @@ export function LoginForm({
       </LoadingSubmitButton>
 
       {showFooter ? (
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-center text-sm text-muted-foreground dark:text-foreground/72">
           {t("login.noAccount")}{" "}
           <Link
             href={`/${locale}/register`}

@@ -27,10 +27,6 @@ export default async function OnboardingWelcomePage({
     redirect(`/${locale}/login`);
   }
 
-  if (!onboarding.needsOnboarding) {
-    redirect(`/${locale}/dashboard`);
-  }
-
   // Verify the payment session before showing the welcome screen.
   if (!planCode || !sessionId || !getPlanByCode(planCode)) {
     redirect(`/${locale}/onboarding`);

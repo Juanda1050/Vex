@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { FREE_PLAN_CODE } from "../constants/subscription.constants";
 import type {
@@ -93,6 +93,38 @@ const subscriptionSummaryInclude = {
 };
 
 export class SubscriptionRepository {
+  private readonly isPostgres =
+    process.env.DATABASE_URL?.startsWith("postgres") ?? false;
+
+  private async lockTenantSubscriptionWrites(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+  ) {
+    if (!this.isPostgres) return;
+
+    // Avoid indefinite waits: fail fast if another transaction holds the tenant lock.
+    await tx.$executeRawUnsafe("SET LOCAL lock_timeout = '1500ms'");
+
+    // Serialize write operations per tenant to prevent duplicated current subscriptions.
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${tenantId}))`;
+  }
+
+  private async findCurrentByTenantIdTx(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+  ): Promise<TenantSubscriptionSummaryRecord | null> {
+    const subscription = await tx.tenantSubscription.findFirst({
+      where: {
+        tenantId,
+        isCurrent: true,
+      },
+      include: subscriptionSummaryInclude,
+      orderBy: [{ startedAt: "desc" }],
+    });
+
+    return subscription as TenantSubscriptionSummaryRecord | null;
+  }
+
   async listPublicPlans() {
     const plans = await prisma.subscriptionPlan.findMany({
       where: { isActive: true, isPublic: true },
@@ -219,6 +251,18 @@ export class SubscriptionRepository {
   }): Promise<TenantSubscriptionSummaryRecord> {
     const subscription = await prisma.$transaction(
       async (tx: Prisma.TransactionClient) => {
+        await this.lockTenantSubscriptionWrites(tx, data.tenantId);
+
+        const existing = await this.findCurrentByTenantIdTx(tx, data.tenantId);
+        if (
+          existing &&
+          existing.plan.id === data.planId &&
+          (existing.price?.id ?? null) === (data.priceId ?? null) &&
+          existing.status === (data.status ?? "ACTIVE")
+        ) {
+          return existing;
+        }
+
         await tx.tenantSubscription.updateMany({
           where: { tenantId: data.tenantId, isCurrent: true },
           data: {
@@ -278,24 +322,48 @@ export class SubscriptionRepository {
   async ensureFreeSubscriptionForTenant(
     tenantId: string,
   ): Promise<TenantSubscriptionSummaryRecord | null> {
-    const current = await this.findCurrentByTenantId(tenantId);
-    if (current) return current;
+    return prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      await this.lockTenantSubscriptionWrites(tx, tenantId);
 
-    const freePlan = await this.findPlanByCode(FREE_PLAN_CODE);
-    if (!freePlan) return null;
+      const current = await this.findCurrentByTenantIdTx(tx, tenantId);
+      if (current) return current;
 
-    const defaultPrice =
-      freePlan.prices.find((price) => price.interval === "MONTH") ??
-      freePlan.prices[0] ??
-      null;
+      const freePlan = await tx.subscriptionPlan.findFirst({
+        where: {
+          code: {
+            equals: FREE_PLAN_CODE,
+            mode: "insensitive",
+          },
+        },
+        include: {
+          prices: {
+            where: { isActive: true },
+            orderBy: [{ amount: "asc" }, { intervalCount: "asc" }],
+          },
+        },
+      });
 
-    return this.createSubscription({
-      tenantId,
-      planId: freePlan.id,
-      priceId: defaultPrice?.id,
-      status: "ACTIVE",
-      currentPeriodStart: new Date(),
-      currentPeriodEnd: null,
+      if (!freePlan) return null;
+
+      const defaultPrice =
+        freePlan.prices.find((price) => price.interval === "MONTH") ??
+        freePlan.prices[0] ??
+        null;
+
+      const created = await tx.tenantSubscription.create({
+        data: {
+          tenantId,
+          planId: freePlan.id,
+          priceId: defaultPrice?.id,
+          status: "ACTIVE",
+          isCurrent: true,
+          currentPeriodStart: new Date(),
+          currentPeriodEnd: null,
+        },
+        include: subscriptionSummaryInclude,
+      });
+
+      return created as TenantSubscriptionSummaryRecord;
     });
   }
 

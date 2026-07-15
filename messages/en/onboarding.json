@@ -251,6 +251,6 @@
     "description": "Your plan has been successfully activated. We will now walk you through the key features of the platform so you can start operating right away.",
     "planActivated": "Plan activated",
     "startTutorial": "View tutorial",
-    "skipTutorial": "Skip tutorial and go to dashboard"
+    "skipTutorial": "Go to dashboard"
   }
 }

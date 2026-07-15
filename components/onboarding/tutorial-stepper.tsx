@@ -83,8 +83,8 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
               className={`flex min-h-12 items-center gap-2 rounded-2xl border px-3 py-2 text-left text-xs transition-all duration-250 ${
                 isActive
                   ? "border-primary/45 bg-linear-to-br from-primary/14 via-info/8 to-card text-foreground shadow-sm"
-                  : "border-border/65 bg-card text-muted-foreground hover:border-border hover:bg-muted/35 hover:text-foreground"
-              }`}
+                  : "border-border/65 bg-card text-muted-foreground hover:border-border hover:bg-muted/35 hover:text-foreground dark:text-foreground/70"
+              } focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-60`}
             >
               <StepIcon className="size-3.5 shrink-0" strokeWidth={1.85} />
               <span className="truncate font-medium">
@@ -97,7 +97,7 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
 
       {/* Step card */}
       <Card className="overflow-hidden rounded-[1.5rem] border-border/70 bg-card/95 shadow-md ring-1 ring-black/5">
-        <CardContent className="grid min-h-80 gap-6 p-6 sm:p-8 lg:min-h-96 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:gap-8">
+        <CardContent className="grid min-h-80 gap-6 p-5 sm:p-7 lg:min-h-96 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-8">
           <div
             key={`content-${stepKey}`}
             className="flex min-w-0 flex-col gap-5 motion-safe:animate-[tutorial-fade-up_320ms_cubic-bezier(0.22,1,0.36,1)_both]"
@@ -107,10 +107,10 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
             </div>
 
             <div className="space-y-2.5">
-              <h2 className="text-xl font-semibold tracking-tight text-foreground">
+              <h2 className="text-xl font-semibold tracking-tight text-foreground sm:text-[1.55rem]">
                 {t(`steps.${stepKey}.title` as Parameters<typeof t>[0])}
               </h2>
-              <p className="max-w-prose text-sm leading-7 text-muted-foreground">
+              <p className="max-w-prose text-sm leading-7 text-muted-foreground xl:text-[1.02rem]">
                 {t(`steps.${stepKey}.description` as Parameters<typeof t>[0])}
               </p>
             </div>
@@ -124,7 +124,7 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
               <Button
                 type="button"
                 variant="ghost"
-                className="h-10 text-muted-foreground"
+                className="h-10 text-muted-foreground dark:text-foreground/72"
                 onClick={goPrev}
                 disabled={currentIndex === 0 || isFinishing}
               >

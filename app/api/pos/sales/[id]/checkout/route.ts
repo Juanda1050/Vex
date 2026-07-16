@@ -1,0 +1,70 @@
+import { PosPaymentMethod } from "@prisma/client";
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+
+import { requirePermission } from "@/server/auth";
+import { posService } from "@/server/pos";
+import { HTTP_STATUS } from "@/server/http-status";
+
+const paymentSchema = z.object({
+  method: z.nativeEnum(PosPaymentMethod),
+  amount: z.coerce.number().positive(),
+  reference: z.string().trim().max(120).optional(),
+});
+
+const checkoutSchema = z.object({
+  sessionId: z.string().uuid(),
+  locationId: z.string().uuid(),
+  clientTxnId: z.string().trim().min(8).max(96),
+  payments: z.array(paymentSchema).min(1),
+});
+
+export async function POST(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
+  try {
+    const ctx = await requirePermission("sales.create");
+    const { id } = await context.params;
+    const body = await request.json();
+    const parsed = checkoutSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "Payload invalido.",
+          status: HTTP_STATUS.BAD_REQUEST,
+        },
+        { status: HTTP_STATUS.BAD_REQUEST },
+      );
+    }
+
+    const sale = await posService.checkoutSale({
+      saleId: id,
+      tenantId: ctx.tenantId,
+      sessionId: parsed.data.sessionId,
+      locationId: parsed.data.locationId,
+      clientTxnId: parsed.data.clientTxnId,
+      payments: parsed.data.payments,
+      createdBy: ctx.userId,
+    });
+
+    return NextResponse.json({ ok: true, data: sale, status: HTTP_STATUS.OK });
+  } catch (error) {
+    const status =
+      error instanceof Error && error.message.includes("Stock insuficiente")
+        ? HTTP_STATUS.CONFLICT
+        : HTTP_STATUS.INTERNAL_SERVER_ERROR;
+
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          error instanceof Error ? error.message : "No se pudo hacer checkout.",
+        status,
+      },
+      { status },
+    );
+  }
+}

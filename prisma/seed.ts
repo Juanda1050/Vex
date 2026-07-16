@@ -11,6 +11,7 @@ import {
   seedTenantSubscription,
 } from "./seeds/subscription.seed";
 import { seedPromoCodes } from "./seeds/promo-code.seed";
+import { seedPosBilling } from "./seeds/pos-billing.seed";
 
 const prisma = new PrismaClient();
 
@@ -20,6 +21,7 @@ async function main() {
   await seedTenant(prisma);
   await seedSubscriptionCatalog(prisma);
   await seedTenantSubscription(prisma);
+  await seedPosBilling(prisma);
   await seedPromoCodes(prisma);
   await seedSettings(prisma);
   await seedBranch(prisma);

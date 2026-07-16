@@ -22,6 +22,10 @@ export default async function ProtectedLayout({
 
   const topNavigationItems = [
     { href: `/${locale}/dashboard`, label: tNav("dashboard") },
+    { href: `/${locale}/dashboard/pos`, label: "POS Analytics" },
+    { href: `/${locale}/pos`, label: "POS" },
+    { href: `/${locale}/pos/register`, label: "Caja" },
+    { href: `/${locale}/billing/features`, label: "Plan" },
     { href: `/${locale}/settings`, label: tNav("settings") },
   ];
 

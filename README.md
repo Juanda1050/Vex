@@ -99,6 +99,95 @@ Archivo clave de invalidación:
 
 Esto permite navegación más rápida sin mantener datos stale por largos periodos.
 
+## POS integrado (Fase inicial)
+
+Se agregó una primera implementación de POS + inventario + pricing + planes por features, sin reemplazar los módulos legacy de ventas/suscripciones.
+
+### Decisiones técnicas
+
+- Se mantiene `sales` y `sale_items` actuales, agregando campos POS (`clientTxnId`, `posSessionId`) para idempotencia y trazabilidad.
+- Se agrega una capa nueva para POS/inventario detallado:
+  - `cash_register_sessions`, `sale_payments`, `cash_movements`, `sale_documents`
+  - `locations`, `inventory_balances`, `inventory_movements`, `product_barcodes`
+  - `price_lists`, `product_prices`, `promotions`, `promotion_products`
+- Se agrega capa de planes por feature flag/límite con tablas nuevas:
+  - `plans`, `plan_features`, `subscriptions`
+- Compatibilidad: `server/plans/feature-flags.ts` lee primero tablas nuevas y hace fallback al esquema legacy (`tenant_subscriptions` + `subscription_plans.features`) cuando aplica.
+
+### Feature keys y limit keys
+
+- Features:
+  - `pos.enabled`, `pos.multi_register`, `pos.scanner_hid`, `pos.refunds`
+  - `inventory.multi_location`, `inventory.negative_stock_allowed`
+  - `pricing.price_lists`, `pricing.promotions_basic`, `pricing.promotions_advanced`
+- Limits:
+  - `limits.products.max`, `limits.monthly_sales.max`, `limits.locations.max`
+  - `limits.registers.max`, `limits.users.max`, `limits.price_lists.max`
+
+Helpers:
+
+- `requireFeature(featureKey)`
+- `enforceLimit(limitKey, currentUsage)`
+
+Archivo: `server/plans/feature-flags.ts`
+
+### Checkout POS atómico
+
+Implementado en `server/pos/pos.service.ts` con transacción Prisma:
+
+1. Valida feature del plan (`pos.enabled`).
+2. Valida stock por producto si `trackStock=true`.
+3. Guarda pagos (`sale_payments`).
+4. Descuenta `inventory_balances`.
+5. Registra `inventory_movements` tipo `SALE`.
+6. Registra `cash_movements` tipo `SALE_INCOME`.
+7. Marca la venta como completada (`SaleStatus.DELIVERED`).
+
+Incluye reversa para refund/cancel (stock + caja) y soporte de idempotencia con `clientTxnId` único por tenant.
+
+### Endpoints mínimos
+
+- `POST /api/pos/register/open`
+- `POST /api/pos/register/close`
+- `POST /api/pos/sales`
+- `POST /api/pos/sales/:id/items`
+- `POST /api/pos/sales/:id/checkout`
+- `POST /api/pos/sales/:id/refund`
+- `POST /api/pos/scan/resolve`
+- `GET /api/billing/features`
+
+### UI mínima
+
+- POS principal: `/[locale]/pos`
+- Caja (abrir/cerrar + resumen): `/[locale]/pos/register`
+- Billing features/límites: `/[locale]/billing/features`
+- Dashboard POS (ventas día, ticket promedio, utilidad, top productos): `/[locale]/dashboard/pos`
+
+### Migrar y seed
+
+1. Generar cliente y aplicar migraciones:
+
+   ```bash
+   npm run prisma:generate
+   npm run prisma:migrate
+   ```
+
+2. Ejecutar seed:
+
+   ```bash
+   npm run prisma:seed
+   ```
+
+3. Levantar app:
+
+   ```bash
+   npm run dev
+   ```
+
+Migración POS creada: `prisma/migrations/20260716054446_pos_phase1/migration.sql`
+
+Nota: la migración agrega constraints únicos para `products(tenantId, sku)`, `products(tenantId, barcode)` y `sales(tenantId, clientTxnId)`. Si hay datos duplicados existentes, limpia duplicados antes de aplicar en producción.
+
 ## Configurar Google OAuth en Supabase
 
 1. En Supabase, ve a `Authentication > Providers > Google` y activa el proveedor.

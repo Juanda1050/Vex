@@ -1,6 +1,12 @@
 import { requireAuth } from "@/server/auth";
 import { prisma } from "@/lib/prisma";
 
+interface PlanFeatureData {
+  enabled?: boolean;
+  limitValue?: number;
+  limit?: number;
+}
+
 export const FEATURE_KEYS = {
   POS_ENABLED: "pos.enabled",
   POS_MULTI_REGISTER: "pos.multi_register",
@@ -71,29 +77,29 @@ function toFeatureMapFromLegacy(features: unknown): PlanFeatureMap {
 }
 
 async function getTenantPlanContext(tenantId: string): Promise<PlanContext> {
-  const current = await prisma.subscription.findFirst({
+  const current = await prisma.tenantSubscription.findFirst({
     where: {
       tenantId,
       isCurrent: true,
     },
     include: {
-      plan: {
-        include: {
-          features: true,
-        },
-      },
+      plan: true,
     },
     orderBy: {
-      startsAt: "desc",
+      startedAt: "desc",
     },
   });
 
   if (current) {
     const features: PlanFeatureMap = {};
-    for (const feature of current.plan.features) {
-      features[feature.featureKey] = {
-        enabled: feature.enabled,
-        limit: feature.limitValue,
+    const planFeatures =
+      (current.plan.features as Record<string, PlanFeatureData>) || {};
+
+    for (const [featureKey, featureData] of Object.entries(planFeatures)) {
+      const data = featureData as PlanFeatureData;
+      features[featureKey] = {
+        enabled: data.enabled ?? true,
+        limit: data.limitValue ?? data.limit ?? null,
       };
     }
 

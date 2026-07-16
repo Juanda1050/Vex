@@ -1,9 +1,8 @@
 import {
   CashMovementType,
-  CashRegisterSessionStatus,
   InventoryMovementReason,
-  PosPaymentMethod,
   Prisma,
+  SalePayment,
   SaleStatus,
 } from "@prisma/client";
 
@@ -11,51 +10,13 @@ import { prisma } from "@/lib/prisma";
 import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
 import { FEATURE_KEYS } from "@/server/plans";
 import { getBillingFeaturesForTenant } from "@/server/plans/feature-flags";
-
-type PaymentInput = {
-  method: PosPaymentMethod;
-  amount: number;
-  reference?: string;
-};
-
-type CreateSaleInput = {
-  tenantId: string;
-  branchId: string;
-  warehouseId: string;
-  customerId?: string;
-  notes?: string;
-  createdBy?: string;
-};
-
-type AddSaleItemInput = {
-  saleId: string;
-  tenantId: string;
-  productId: string;
-  quantity: number;
-  unitPrice?: number;
-  discount?: number;
-  taxRate?: number;
-};
-
-type CheckoutSaleInput = {
-  saleId: string;
-  tenantId: string;
-  sessionId: string;
-  locationId: string;
-  clientTxnId: string;
-  payments: PaymentInput[];
-  createdBy?: string;
-};
-
-type RefundSaleInput = {
-  saleId: string;
-  tenantId: string;
-  sessionId?: string;
-  locationId: string;
-  reason?: string;
-  createdBy?: string;
-  mode?: "refund" | "cancel";
-};
+import type {
+  CreateSaleInput,
+  AddSaleItemInput,
+  CheckoutSaleInput,
+  RefundSaleInput,
+} from "../types/pos.types";
+import { posRepository } from "../repository/pos.repository";
 
 function asDecimal(value: number | string | Prisma.Decimal) {
   return new Prisma.Decimal(value);
@@ -92,26 +53,10 @@ export class PosService {
       throw new Error("POS no habilitado para el plan actual.");
     }
 
-    const existingOpen = await prisma.cashRegisterSession.findFirst({
-      where: {
-        tenantId: input.tenantId,
-        locationId: input.locationId,
-        registerName: input.registerName,
-        status: CashRegisterSessionStatus.OPEN,
-      },
-      select: { id: true },
-    });
-
-    if (existingOpen) {
-      throw new Error(
-        "Ya existe una caja abierta con este nombre en la ubicacion.",
-      );
-    }
-
     const openCount = await prisma.cashRegisterSession.count({
       where: {
         tenantId: input.tenantId,
-        status: CashRegisterSessionStatus.OPEN,
+        status: "OPEN",
       },
     });
 
@@ -127,31 +72,7 @@ export class PosService {
       throw new Error("Limite del plan alcanzado para limits.registers.max.");
     }
 
-    const session = await prisma.cashRegisterSession.create({
-      data: {
-        tenantId: input.tenantId,
-        locationId: input.locationId,
-        registerName: input.registerName,
-        openedBy: input.userId,
-        openingFloatAmount: input.openingFloatAmount ?? 0,
-        notes: input.notes,
-      },
-    });
-
-    if ((input.openingFloatAmount ?? 0) > 0) {
-      await prisma.cashMovement.create({
-        data: {
-          tenantId: input.tenantId,
-          sessionId: session.id,
-          type: CashMovementType.OPENING_FLOAT,
-          amount: asDecimal(input.openingFloatAmount ?? 0),
-          notes: "Apertura de caja",
-          createdBy: input.userId,
-        },
-      });
-    }
-
-    return session;
+    return posRepository.openRegister(input);
   }
 
   async closeRegister(input: {
@@ -161,50 +82,7 @@ export class PosService {
     closingAmount: number;
     notes?: string;
   }) {
-    const session = await prisma.cashRegisterSession.findFirst({
-      where: {
-        id: input.sessionId,
-        tenantId: input.tenantId,
-        status: CashRegisterSessionStatus.OPEN,
-      },
-    });
-
-    if (!session) {
-      throw new Error("Sesion de caja no encontrada o ya cerrada.");
-    }
-
-    const [summary] = await prisma.$queryRaw<Array<{ total: Prisma.Decimal }>>`
-      SELECT COALESCE(SUM(amount), 0) AS total
-      FROM cash_movements
-      WHERE "tenantId" = ${input.tenantId}::uuid
-        AND "sessionId" = ${input.sessionId}::uuid
-    `;
-
-    const expected = summary?.total ?? asDecimal(0);
-
-    const updated = await prisma.cashRegisterSession.update({
-      where: { id: input.sessionId },
-      data: {
-        status: CashRegisterSessionStatus.CLOSED,
-        closedBy: input.userId,
-        closedAt: new Date(),
-        closingAmount: asDecimal(input.closingAmount),
-        notes: input.notes,
-      },
-    });
-
-    await prisma.cashMovement.create({
-      data: {
-        tenantId: input.tenantId,
-        sessionId: input.sessionId,
-        type: CashMovementType.CLOSING_WITHDRAWAL,
-        amount: asDecimal(input.closingAmount).negated(),
-        notes: `Cierre de caja. Esperado ${expected.toString()}`,
-        createdBy: input.userId,
-      },
-    });
-
-    return updated;
+    return posRepository.closeRegister(input);
   }
 
   async createSaleDraft(input: CreateSaleInput) {
@@ -216,65 +94,25 @@ export class PosService {
       throw new Error("POS no habilitado para el plan actual.");
     }
 
-    const number = `POS-${Date.now()}`;
-
-    return prisma.sale.create({
-      data: {
-        tenantId: input.tenantId,
-        branchId: input.branchId,
-        warehouseId: input.warehouseId,
-        customerId: input.customerId,
-        number,
-        status: SaleStatus.PENDING,
-        notes: input.notes,
-        createdBy: input.createdBy,
-      },
-      include: {
-        items: true,
-      },
-    });
+    return posRepository.createSaleDraft(input);
   }
 
   private async resolveUnitPrice(tenantId: string, productId: string) {
-    const now = new Date();
-
-    const defaultList = await prisma.priceList.findFirst({
-      where: {
-        tenantId,
-        isDefault: true,
-        isActive: true,
-      },
-      select: { id: true },
-    });
+    const defaultList = await posRepository.getDefaultPriceList(tenantId);
 
     if (defaultList) {
-      const listPrice = await prisma.productPrice.findFirst({
-        where: {
-          tenantId,
-          productId,
-          priceListId: defaultList.id,
-          validFrom: { lte: now },
-          OR: [{ validTo: null }, { validTo: { gte: now } }],
-        },
-        orderBy: {
-          validFrom: "desc",
-        },
-      });
+      const listPrice = await posRepository.getProductPrice(
+        tenantId,
+        productId,
+        defaultList.id,
+      );
 
       if (listPrice) {
         return Number(listPrice.price);
       }
     }
 
-    const product = await prisma.product.findFirst({
-      where: {
-        id: productId,
-        tenantId,
-      },
-      select: {
-        basePrice: true,
-      },
-    });
+    const product = await posRepository.getProduct(tenantId, productId);
 
     if (!product) {
       throw new Error("Producto no encontrado.");
@@ -284,16 +122,7 @@ export class PosService {
   }
 
   async addSaleItem(input: AddSaleItemInput) {
-    const sale = await prisma.sale.findFirst({
-      where: {
-        id: input.saleId,
-        tenantId: input.tenantId,
-      },
-      select: {
-        id: true,
-        status: true,
-      },
-    });
+    const sale = await posRepository.getSaleBasic(input.tenantId, input.saleId);
 
     if (!sale) {
       throw new Error("Venta no encontrada.");
@@ -325,41 +154,17 @@ export class PosService {
       throw new Error("Producto no encontrado.");
     }
 
-    const qty = asDecimal(input.quantity);
-    const discount = asDecimal(input.discount ?? 0);
-    const taxRate = asDecimal(input.taxRate ?? 0);
-    const lineSubtotal = asDecimal(unitPrice)
-      .mul(qty)
-      .mul(asDecimal(1).minus(discount.div(100)));
+    const item = await posRepository.addSaleItem({
+      ...input,
+      unitPrice,
+    });
 
-    const item = await prisma.saleItem.create({
+    // Update item with description and cost
+    await prisma.saleItem.update({
+      where: { id: item.id },
       data: {
-        saleId: input.saleId,
-        productId: product.id,
         description: product.name,
-        quantity: qty,
-        unitPrice: asDecimal(unitPrice),
         cost: product.baseCost,
-        discount,
-        taxRate,
-        subtotal: lineSubtotal,
-      },
-    });
-
-    const aggregate = await prisma.saleItem.aggregate({
-      where: { saleId: input.saleId },
-      _sum: { subtotal: true },
-    });
-
-    const subtotal = aggregate._sum.subtotal ?? asDecimal(0);
-    const taxAmount = asDecimal(0);
-
-    await prisma.sale.update({
-      where: { id: input.saleId },
-      data: {
-        subtotal,
-        taxAmount,
-        total: subtotal.plus(taxAmount),
       },
     });
 
@@ -376,16 +181,7 @@ export class PosService {
     }
 
     const [existingByTxn, negativeAllowed] = await Promise.all([
-      prisma.sale.findFirst({
-        where: {
-          tenantId: input.tenantId,
-          clientTxnId: input.clientTxnId,
-        },
-        include: {
-          items: true,
-          payments: true,
-        },
-      }),
+      posRepository.getSaleByClientTxn(input.tenantId, input.clientTxnId),
       this.isNegativeStockAllowed(input.tenantId),
     ]);
 
@@ -426,7 +222,7 @@ export class PosService {
         where: {
           id: input.sessionId,
           tenantId: input.tenantId,
-          status: CashRegisterSessionStatus.OPEN,
+          status: "OPEN",
         },
       });
 
@@ -591,7 +387,10 @@ export class PosService {
         throw new Error("Venta no encontrada.");
       }
 
-      if (![SaleStatus.DELIVERED, SaleStatus.CONFIRMED].includes(sale.status)) {
+      if (
+        sale.status !== SaleStatus.DELIVERED &&
+        sale.status !== SaleStatus.CONFIRMED
+      ) {
         throw new Error("La venta no puede ser revertida en su estado actual.");
       }
 
@@ -667,8 +466,8 @@ export class PosService {
         });
       }
 
-      const totalPaid = sale.payments.reduce(
-        (acc, payment) => acc.plus(payment.amount),
+      const totalPaid = (sale.payments ?? []).reduce(
+        (acc: Prisma.Decimal, payment: SalePayment) => acc.plus(payment.amount),
         asDecimal(0),
       );
 
@@ -709,54 +508,7 @@ export class PosService {
   }
 
   async resolveScan(tenantId: string, code: string) {
-    const normalized = code.trim();
-    if (!normalized) {
-      throw new Error("Codigo vacio.");
-    }
-
-    const byProduct = await prisma.product.findFirst({
-      where: {
-        tenantId,
-        isActive: true,
-        OR: [
-          { sku: { equals: normalized, mode: "insensitive" } },
-          { barcode: { equals: normalized, mode: "insensitive" } },
-          { internalCode: { equals: normalized, mode: "insensitive" } },
-        ],
-      },
-      select: {
-        id: true,
-        name: true,
-        sku: true,
-        barcode: true,
-        basePrice: true,
-      },
-    });
-
-    if (byProduct) return byProduct;
-
-    const barcode = await prisma.productBarcode.findFirst({
-      where: {
-        tenantId,
-        barcode: {
-          equals: normalized,
-          mode: "insensitive",
-        },
-      },
-      include: {
-        product: {
-          select: {
-            id: true,
-            name: true,
-            sku: true,
-            barcode: true,
-            basePrice: true,
-          },
-        },
-      },
-    });
-
-    return barcode?.product ?? null;
+    return posRepository.resolveScan(tenantId, code);
   }
 }
 

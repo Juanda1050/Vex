@@ -198,7 +198,7 @@ export function TutorialStepper({ onFinish }: TutorialStepperProps) {
             <div className="mt-3 grid gap-2">
               {example.rows.map((row) => (
                 <div
-                  key={row.title}
+                  key={row.titleKey}
                   className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-xl border border-border/70 bg-card px-3 py-2.5 transition-colors duration-250 hover:bg-muted/25"
                 >
                   <div className="min-w-0">

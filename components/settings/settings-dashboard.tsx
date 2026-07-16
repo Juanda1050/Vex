@@ -619,6 +619,10 @@ function MemberRowForm({ member }: { member: MemberRow }) {
     if (state.error) toast.error(state.error);
   }, [state, t]);
 
+  const handleRoleChange = (value: string | null) => {
+    if (value) setRole(value);
+  };
+
   return (
     <tr className="border-b border-border/40 last:border-none">
       <td className="px-3 py-3">
@@ -645,7 +649,11 @@ function MemberRowForm({ member }: { member: MemberRow }) {
         <form action={action} className="flex items-center gap-2">
           <input type="hidden" name="memberId" value={member.id} />
           <input type="hidden" name="role" value={role} />
-          <Select value={role} onValueChange={setRole} disabled={pending}>
+          <Select
+            value={role}
+            onValueChange={handleRoleChange}
+            disabled={pending}
+          >
             <SelectTrigger className="min-w-36">
               <SelectValue />
             </SelectTrigger>

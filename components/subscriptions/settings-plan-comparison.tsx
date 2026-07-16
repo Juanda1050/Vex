@@ -44,6 +44,16 @@ const METRIC_MAP = [
   { key: "usersLimit", usageKey: "users" as const },
 ];
 
+const FEATURE_DISPLAY_ORDER = ["pos.enabled"];
+
+function getPosFeatureValue(plan: SubscriptionPlanSummary): boolean {
+  const raw = (plan.features ?? {})["pos.enabled"];
+
+  if (typeof raw === "boolean") return raw;
+
+  return plan.code.toUpperCase() !== "FREE";
+}
+
 function getLimit(plan: SubscriptionPlanSummary, key: string): number | null {
   const raw = (plan.features ?? {})[key];
   return typeof raw === "number" ? raw : raw === null ? null : null;
@@ -54,6 +64,23 @@ function formatLimit(
   t: ReturnType<typeof useTranslations>,
 ) {
   return limit === null ? t("subscriptions.unlimited") : String(limit);
+}
+
+function formatFeatureLabel(
+  key: string,
+  t: ReturnType<typeof useTranslations>,
+) {
+  const translationKey = `subscriptions.planFeatures.${key}.label`;
+
+  if (t.has(translationKey)) {
+    return t(translationKey);
+  }
+
+  return key
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/[_-]/g, " ")
+    .replace(/\./g, " ")
+    .replace(/^./, (char) => char.toUpperCase());
 }
 
 export function SettingsPlanComparison({
@@ -197,6 +224,30 @@ export function SettingsPlanComparison({
 
               <CardContent className="space-y-3">
                 <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="rounded-lg border border-border/60 bg-background px-3 py-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="space-y-0.5">
+                        <p className="font-medium text-foreground">
+                          {formatFeatureLabel("pos.enabled", t)}
+                        </p>
+                        {t.has(
+                          "subscriptions.planFeatures.pos.enabled.description",
+                        ) ? (
+                          <p className="text-xs leading-5 text-muted-foreground">
+                            {t(
+                              "subscriptions.planFeatures.pos.enabled.description",
+                            )}
+                          </p>
+                        ) : null}
+                      </div>
+                      <span className="shrink-0 rounded-full border border-border/70 bg-card px-2 py-0.5 text-xs font-semibold text-foreground">
+                        {getPosFeatureValue(plan)
+                          ? t("subscriptions.features.yes")
+                          : t("subscriptions.features.no")}
+                      </span>
+                    </div>
+                  </li>
+
                   {METRIC_MAP.map(({ key, usageKey }) => {
                     const used = usage[usageKey];
                     const planLimit = getLimit(plan, key);
@@ -217,6 +268,47 @@ export function SettingsPlanComparison({
                       </li>
                     );
                   })}
+
+                  {Object.keys(plan.features ?? {})
+                    .filter(
+                      (key) =>
+                        !METRIC_MAP.some((item) => item.key === key) &&
+                        !FEATURE_DISPLAY_ORDER.includes(key),
+                    )
+                    .map((key) => {
+                      const value = (plan.features ?? {})[key];
+                      const label = formatFeatureLabel(key, t);
+                      const descriptionKey = `subscriptions.planFeatures.${key}.description`;
+
+                      return (
+                        <li
+                          key={`${plan.code}-${key}`}
+                          className="rounded-lg border border-border/60 bg-background px-3 py-2"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="space-y-0.5">
+                              <p className="font-medium text-foreground">
+                                {label}
+                              </p>
+                              {t.has(descriptionKey) ? (
+                                <p className="text-xs leading-5 text-muted-foreground">
+                                  {t(descriptionKey)}
+                                </p>
+                              ) : null}
+                            </div>
+                            <span className="shrink-0 rounded-full border border-border/70 bg-card px-2 py-0.5 text-xs font-semibold text-foreground">
+                              {typeof value === "boolean"
+                                ? value
+                                  ? t("subscriptions.features.yes")
+                                  : t("subscriptions.features.no")
+                                : value === null
+                                  ? t("subscriptions.features.unlimited")
+                                  : String(value)}
+                            </span>
+                          </div>
+                        </li>
+                      );
+                    })}
                 </ul>
 
                 <form action={action} className="grid gap-2">

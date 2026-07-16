@@ -51,6 +51,12 @@
       "label": "Almacenes",
       "description": "Centros de almacenamiento disponibles para controlar inventario."
     },
+    "pos": {
+      "enabled": {
+        "label": "Punto de venta",
+        "description": "Permite vender y cobrar desde caja de una forma simple para tu equipo."
+      }
+    },
     "reports": {
       "label": "Reportes avanzados",
       "description": "Paneles y reportes para analizar desempeño comercial e inventario."

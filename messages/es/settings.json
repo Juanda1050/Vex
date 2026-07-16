@@ -124,6 +124,19 @@
     "wouldExceed": "excedería",
     "planChanged": "Plan actualizado correctamente.",
     "billingPermissionRequired": "Tu rol no tiene permisos de facturación para cambiar planes.",
+    "features": {
+      "unlimited": "Ilimitado",
+      "yes": "Sí",
+      "no": "No"
+    },
+    "planFeatures": {
+      "pos": {
+        "enabled": {
+          "label": "Punto de venta",
+          "description": "Activa la caja para vender y cobrar desde una computadora o tablet."
+        }
+      }
+    },
     "metrics": {
       "products": "Productos",
       "warehouses": "Almacenes",

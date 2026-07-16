@@ -51,6 +51,12 @@
       "label": "Warehouses",
       "description": "Storage locations available to control your inventory."
     },
+    "pos": {
+      "enabled": {
+        "label": "Point of sale",
+        "description": "Lets your team sell and take payments from the register in a simple way."
+      }
+    },
     "reports": {
       "label": "Advanced reports",
       "description": "Dashboards and reports to analyze sales and inventory performance."

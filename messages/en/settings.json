@@ -124,6 +124,19 @@
     "wouldExceed": "would exceed",
     "planChanged": "Plan updated successfully.",
     "billingPermissionRequired": "Your role does not have billing permissions to change plans.",
+    "features": {
+      "unlimited": "Unlimited",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "planFeatures": {
+      "pos": {
+        "enabled": {
+          "label": "Point of sale",
+          "description": "Turns on the register so your team can sell and take payments from a computer or tablet."
+        }
+      }
+    },
     "metrics": {
       "products": "Products",
       "warehouses": "Warehouses",

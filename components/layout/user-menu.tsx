@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { LogOut, Settings } from "lucide-react";
 
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,6 +48,7 @@ function UserMenu({
   const router = useRouter();
   const tNav = useTranslations("nav");
   const tDashboard = useTranslations("dashboard");
+  const tSettings = useTranslations("settings");
   const displayName = name?.trim() || email;
   const settingsPath = `/${locale}/settings`;
   const logoutSettingsPath = `${settingsPath}#account-security`;
@@ -89,6 +92,22 @@ function UserMenu({
             <p className="truncate text-xs text-muted-foreground">{email}</p>
           </DropdownMenuLabel>
         </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <div className="flex items-center justify-between gap-2 px-2 py-1.5">
+          <span className="text-xs font-medium text-muted-foreground">
+            {tSettings("language")}
+          </span>
+          <LanguageSwitcher
+            locale={locale}
+            className="rounded-full bg-muted p-0.5"
+          />
+        </div>
+        <div className="flex items-center justify-between gap-2 px-2 py-1.5">
+          <span className="text-xs font-medium text-muted-foreground">
+            {tSettings("theme")}
+          </span>
+          <ThemeToggle className="rounded-full border-0 bg-muted shadow-none hover:bg-accent" />
+        </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => router.push(settingsPath)}>
           <Settings className="size-4" />

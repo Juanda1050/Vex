@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/layout/page-header";
+import { getModuleIcon } from "@/lib/modules/module-icons";
 import { ModulePagination } from "@/components/modules/module-pagination";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +37,11 @@ export default async function ProductsPage({
   const page = Math.max(1, Number(query.page) || 1);
   const search = query.search?.trim() || undefined;
   const isActive =
-    query.status === "active" ? true : query.status === "inactive" ? false : undefined;
+    query.status === "active"
+      ? true
+      : query.status === "inactive"
+        ? false
+        : undefined;
 
   const { items, pagination } = await productService.listProducts(
     ctx.tenantId,
@@ -45,9 +50,13 @@ export default async function ProductsPage({
 
   return (
     <div className="space-y-6">
-      <PageHeader title={t("title")} description={t("description")} />
+      <PageHeader
+        title={t("title")}
+        description={t("description")}
+        icon={getModuleIcon("products")}
+      />
 
-      <Card className="space-y-5 rounded-[1.75rem] border-border/70 bg-card/72 p-5 shadow-none backdrop-blur-sm sm:p-6">
+      <Card className="space-y-5 rounded-[1.75rem] surface-1 p-5  sm:p-6">
         <ModuleToolbar
           searchPlaceholder={t("searchPlaceholder")}
           statusParamName="status"

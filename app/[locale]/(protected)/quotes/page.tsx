@@ -2,6 +2,7 @@ import { QuoteStatus } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/layout/page-header";
+import { getModuleIcon } from "@/lib/modules/module-icons";
 import { ModulePagination } from "@/components/modules/module-pagination";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
 import { Badge } from "@/components/ui/badge";
@@ -66,9 +67,13 @@ export default async function QuotesPage({
 
   return (
     <div className="space-y-6">
-      <PageHeader title={t("title")} description={t("description")} />
+      <PageHeader
+        title={t("title")}
+        description={t("description")}
+        icon={getModuleIcon("quotes")}
+      />
 
-      <Card className="space-y-5 rounded-[1.75rem] border-border/70 bg-card/72 p-5 shadow-none backdrop-blur-sm sm:p-6">
+      <Card className="space-y-5 rounded-[1.75rem] surface-1 p-5  sm:p-6">
         <ModuleToolbar
           searchPlaceholder={t("searchPlaceholder")}
           statusParamName="status"

@@ -37,11 +37,11 @@ function RecentSalesTable({
   salesStatusLabel,
 }: RecentSalesTableProps) {
   return (
-    <Card className="overflow-hidden rounded-[1.75rem] border-border/70 bg-card/72 shadow-none backdrop-blur-sm">
+    <Card className="overflow-hidden rounded-[1.75rem] surface-1 ">
       <CardContent className="p-5 sm:p-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <p className="text-lg font-semibold text-foreground">
+            <p className="text-h2 text-foreground">
               {tDashboard("recentSalesTitle")}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">

@@ -136,9 +136,7 @@ function Section({
   return (
     <section id={id} className="scroll-mt-6 space-y-4">
       <div>
-        <h3 className="text-xl font-semibold tracking-tight text-foreground">
-          {title}
-        </h3>
+        <h3 className="text-h2 text-foreground">{title}</h3>
         <p className="mt-1 text-sm text-muted-foreground">{description}</p>
       </div>
       {children}

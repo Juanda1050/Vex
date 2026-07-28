@@ -23,11 +23,11 @@ function QuotePipelineCard({
   tQuotes,
 }: QuotePipelineCardProps) {
   return (
-    <Card className="overflow-hidden rounded-[1.75rem] border-border/70 bg-card/72 shadow-none backdrop-blur-sm">
+    <Card className="overflow-hidden rounded-[1.75rem] surface-1 ">
       <CardContent className="p-5 sm:p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-lg font-semibold text-foreground">
+            <p className="text-h2 text-foreground">
               {tDashboard("quotePipelineTitle")}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -46,7 +46,7 @@ function QuotePipelineCard({
             <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
               {tQuotes("title")}
             </p>
-            <p className="mt-2 text-2xl font-semibold text-foreground">
+            <p className="mt-2 text-h1 text-foreground">
               {overview.quotes.total}
             </p>
           </div>
@@ -54,7 +54,7 @@ function QuotePipelineCard({
             <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">
               {tDashboard("stats.winRate")}
             </p>
-            <p className="mt-2 text-2xl font-semibold text-foreground">
+            <p className="mt-2 text-h1 text-foreground">
               {overview.quotes.winRate}%
             </p>
           </div>

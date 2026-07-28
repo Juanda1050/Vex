@@ -1,6 +1,7 @@
 import { requireAuth } from "@/server/auth";
 import { getBillingFeaturesForTenant } from "@/server/plans";
 import { PageHeader } from "@/components/layout/page-header";
+import { getModuleIcon } from "@/lib/modules/module-icons";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -13,9 +14,10 @@ export default async function BillingFeaturesPage() {
       <PageHeader
         title="Billing features"
         description={`Current plan: ${features.planCode}`}
+        icon={getModuleIcon("billing")}
       />
 
-      <Card className="rounded-[1.75rem] border-border/70 bg-card/72 p-1 shadow-none backdrop-blur-sm">
+      <Card className="rounded-[1.75rem] surface-1 p-1 ">
         <CardHeader>
           <CardTitle>Features &amp; limits</CardTitle>
         </CardHeader>

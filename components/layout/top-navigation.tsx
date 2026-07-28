@@ -10,11 +10,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getModuleIcon, type ModuleKey } from "@/lib/modules/module-icons";
 import { cn } from "@/lib/utils";
 
 type TopNavigationLink = {
   href: string;
   label: string;
+  icon?: ModuleKey;
 };
 
 type TopNavigationGroup = {
@@ -66,22 +68,32 @@ function TopNavigation({ items }: TopNavigationProps) {
                 <ChevronDown className="size-3.5 opacity-70" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="min-w-48">
-                {entry.items.map((item) => (
-                  <DropdownMenuItem
-                    key={item.href}
-                    render={<Link href={item.href} prefetch={false} />}
-                    data-active={isActiveHref(pathname, item.href) || undefined}
-                    className="data-[active]:bg-accent/60 data-[active]:text-foreground"
-                  >
-                    {item.label}
-                  </DropdownMenuItem>
-                ))}
+                {entry.items.map((item) => {
+                  const ItemIcon = item.icon ? getModuleIcon(item.icon) : null;
+
+                  return (
+                    <DropdownMenuItem
+                      key={item.href}
+                      render={<Link href={item.href} prefetch={false} />}
+                      data-active={
+                        isActiveHref(pathname, item.href) || undefined
+                      }
+                      className="gap-2 data-[active]:bg-accent/60 data-[active]:text-foreground"
+                    >
+                      {ItemIcon ? (
+                        <ItemIcon className="size-3.5 text-muted-foreground" />
+                      ) : null}
+                      {item.label}
+                    </DropdownMenuItem>
+                  );
+                })}
               </DropdownMenuContent>
             </DropdownMenu>
           );
         }
 
         const isActive = isActiveHref(pathname, entry.href);
+        const EntryIcon = entry.icon ? getModuleIcon(entry.icon) : null;
 
         return (
           <Link
@@ -89,12 +101,13 @@ function TopNavigation({ items }: TopNavigationProps) {
             href={entry.href}
             prefetch={false}
             className={cn(
-              "rounded-full px-3 py-1.5 text-sm font-medium transition",
+              "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition",
               isActive
                 ? "bg-primary/14 text-foreground"
                 : "text-muted-foreground hover:bg-accent/55 hover:text-foreground",
             )}
           >
+            {EntryIcon ? <EntryIcon className="size-3.5" /> : null}
             {entry.label}
           </Link>
         );

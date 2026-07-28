@@ -25,11 +25,11 @@ function RevenueChartCard({
   tDashboard,
 }: RevenueChartCardProps) {
   return (
-    <Card className="overflow-hidden rounded-[1.75rem] border-border/70 bg-card/72 shadow-none backdrop-blur-sm">
+    <Card className="overflow-hidden rounded-[1.75rem] surface-1 ">
       <CardContent className="p-5 sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <p className="text-lg font-semibold text-foreground">
+            <p className="text-h2 text-foreground">
               {tDashboard("periodRevenueTitle")}
             </p>
             <p className="mt-1 text-sm text-muted-foreground">
@@ -41,7 +41,7 @@ function RevenueChartCard({
             <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
               {tDashboard("totalRevenueTitle")}
             </p>
-            <p className="mt-1 text-lg font-semibold text-foreground">
+            <p className="mt-1 text-h1 text-foreground">
               {formatCurrency(
                 overview.revenue.totalRecorded,
                 locale,
@@ -94,7 +94,11 @@ function RevenueChartCard({
                     <div className="relative flex h-full w-full items-end justify-center">
                       {isHighlighted ? (
                         <div className="absolute -top-9 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow-lg">
-                          {formatCurrency(bucket.total, locale, overview.currency)}
+                          {formatCurrency(
+                            bucket.total,
+                            locale,
+                            overview.currency,
+                          )}
                         </div>
                       ) : null}
 

@@ -1,9 +1,7 @@
 import type { getTranslations } from "next-intl/server";
-import { DollarSign, FileText, TriangleAlert, Users } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 
-import {
-  DashboardCardLink,
-} from "@/components/dashboard/dashboard-toolbar";
+import { DashboardCardLink } from "@/components/dashboard/dashboard-toolbar";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   formatCurrency,
@@ -11,6 +9,7 @@ import {
   getMetricTone,
 } from "@/lib/dashboard/dashboard-formatters";
 import { getDashboardModuleRoute } from "@/lib/dashboard/dashboard-routes";
+import { getModuleIcon } from "@/lib/modules/module-icons";
 import type { getDashboardOverview } from "@/server/dashboard/get-dashboard-overview";
 
 type Translator = Awaited<ReturnType<typeof getTranslations>>;
@@ -46,7 +45,7 @@ function DashboardMetricCards({
         ),
       }),
       href: getDashboardModuleRoute("sales", locale),
-      icon: DollarSign,
+      icon: getModuleIcon("sales"),
     },
     {
       id: "customers",
@@ -58,7 +57,7 @@ function DashboardMetricCards({
         count: overview.customers.previous,
       }),
       href: getDashboardModuleRoute("sales", locale),
-      icon: Users,
+      icon: getModuleIcon("customers"),
     },
     {
       id: "inventory",
@@ -86,13 +85,15 @@ function DashboardMetricCards({
       value: String(overview.quotes.accepted),
       trendLabel: `${overview.quotes.winRate}%`,
       trendTone:
-        overview.quotes.winRate >= 50 ? ("positive" as const) : ("neutral" as const),
+        overview.quotes.winRate >= 50
+          ? ("positive" as const)
+          : ("neutral" as const),
       description:
         overview.quotes.total > 0
           ? tDashboard("quoteBaseLabel", { count: overview.quotes.total })
           : tDashboard("noQuotesYet"),
       href: getDashboardModuleRoute("quotes", locale),
-      icon: FileText,
+      icon: getModuleIcon("quotes"),
     },
   ];
 
@@ -110,7 +111,7 @@ function DashboardMetricCards({
         return (
           <Card
             key={metric.id}
-            className="overflow-hidden rounded-[1.5rem] border-border/70 bg-card/72 shadow-none backdrop-blur-sm"
+            className="overflow-hidden rounded-[1.5rem] surface-1 "
           >
             <CardContent className="p-5">
               <div className="flex items-start justify-between gap-4">
@@ -119,7 +120,7 @@ function DashboardMetricCards({
                     {metric.title}
                   </p>
                   <div className="space-y-2">
-                    <p className="text-3xl font-semibold tracking-tight text-foreground">
+                    <p className="text-h1 text-foreground">
                       {metric.value}
                     </p>
                     <span

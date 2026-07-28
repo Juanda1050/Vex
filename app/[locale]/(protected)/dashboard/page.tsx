@@ -9,6 +9,7 @@ import {
   DashboardToolbar,
 } from "@/components/dashboard/dashboard-toolbar";
 import { PageHeader } from "@/components/layout/page-header";
+import { getModuleIcon } from "@/lib/modules/module-icons";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   DASHBOARD_PERIOD_OPTIONS,
@@ -74,6 +75,7 @@ export default async function DashboardModulePage({
         <PageHeader
           title={tDashboard("title")}
           description={tDashboard("descriptionModern")}
+          icon={getModuleIcon("dashboard")}
         />
 
         <DashboardToolbar
@@ -93,7 +95,11 @@ export default async function DashboardModulePage({
         />
       </header>
 
-      <DashboardMetricCards overview={overview} locale={locale} tDashboard={tDashboard} />
+      <DashboardMetricCards
+        overview={overview}
+        locale={locale}
+        tDashboard={tDashboard}
+      />
 
       <section className="grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.95fr)]">
         <RevenueChartCard
@@ -119,13 +125,13 @@ export default async function DashboardModulePage({
       />
 
       <section className="grid gap-4 lg:grid-cols-3">
-        <Card className="rounded-[1.5rem] border-border/70 bg-card/72 shadow-none backdrop-blur-sm lg:col-span-2">
+        <Card className="rounded-[1.5rem] surface-1  lg:col-span-2">
           <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">
                 {tDashboard("totalRevenueTitle")}
               </p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">
+              <p className="mt-2 text-h1 text-foreground">
                 {formatCurrency(
                   overview.revenue.totalRecorded,
                   locale,
@@ -149,13 +155,13 @@ export default async function DashboardModulePage({
           </CardContent>
         </Card>
 
-        <Card className="rounded-[1.5rem] border-border/70 bg-card/72 shadow-none backdrop-blur-sm">
+        <Card className="rounded-[1.5rem] surface-1 ">
           <CardContent className="flex h-full items-center justify-between p-5">
             <div>
               <p className="text-sm font-medium text-muted-foreground">
                 {tDashboard("acceptedQuotesTitle")}
               </p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">
+              <p className="mt-2 text-h1 text-foreground">
                 {overview.quotes.accepted}
               </p>
             </div>

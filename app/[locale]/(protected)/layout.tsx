@@ -27,29 +27,75 @@ export default async function ProtectedLayout({
   const canViewUsers = permissionChecker.can(auth.role, "users.view");
 
   const topNavigationItems: TopNavigationEntry[] = [
-    { href: `/${locale}/dashboard`, label: tNav("dashboard") },
+    {
+      href: `/${locale}/dashboard`,
+      label: tNav("dashboard"),
+      icon: "dashboard" as const,
+    },
     {
       label: tNav("groups.sales"),
       items: [
-        { href: `/${locale}/pos`, label: tNav("posRegister") },
-        { href: `/${locale}/dashboard/pos`, label: tNav("posAnalytics") },
-        { href: `/${locale}/sales`, label: tNav("sales") },
-        { href: `/${locale}/quotes`, label: tNav("quotes") },
+        {
+          href: `/${locale}/pos`,
+          label: tNav("posRegister"),
+          icon: "pos" as const,
+        },
+        {
+          href: `/${locale}/dashboard/pos`,
+          label: tNav("posAnalytics"),
+          icon: "pos" as const,
+        },
+        {
+          href: `/${locale}/sales`,
+          label: tNav("sales"),
+          icon: "sales" as const,
+        },
+        {
+          href: `/${locale}/quotes`,
+          label: tNav("quotes"),
+          icon: "quotes" as const,
+        },
       ],
     },
-    { href: `/${locale}/customers`, label: tNav("customers") },
+    {
+      href: `/${locale}/customers`,
+      label: tNav("customers"),
+      icon: "customers" as const,
+    },
     {
       label: tNav("groups.catalog"),
       items: [
-        { href: `/${locale}/products`, label: tNav("products") },
-        { href: `/${locale}/inventory`, label: tNav("inventory") },
+        {
+          href: `/${locale}/products`,
+          label: tNav("products"),
+          icon: "products" as const,
+        },
+        {
+          href: `/${locale}/inventory`,
+          label: tNav("inventory"),
+          icon: "inventory" as const,
+        },
       ],
     },
     ...(canViewUsers
-      ? [{ href: `/${locale}/users`, label: tNav("users") }]
+      ? [
+          {
+            href: `/${locale}/users`,
+            label: tNav("users"),
+            icon: "users" as const,
+          },
+        ]
       : []),
-    { href: `/${locale}/billing/features`, label: tNav("billing") },
-    { href: `/${locale}/settings`, label: tNav("settings") },
+    {
+      href: `/${locale}/billing/features`,
+      label: tNav("billing"),
+      icon: "billing" as const,
+    },
+    {
+      href: `/${locale}/settings`,
+      label: tNav("settings"),
+      icon: "settings" as const,
+    },
   ];
 
   return (

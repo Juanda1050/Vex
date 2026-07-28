@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import type { TopNavigationEntry } from "@/components/layout/top-navigation";
+import { getModuleIcon } from "@/lib/modules/module-icons";
 
 type MobileNavSheetProps = {
   items: TopNavigationEntry[];
@@ -28,7 +29,11 @@ function isGroup(
   return "items" in entry;
 }
 
-function MobileNavSheet({ items, navLabel, triggerLabel }: MobileNavSheetProps) {
+function MobileNavSheet({
+  items,
+  navLabel,
+  triggerLabel,
+}: MobileNavSheetProps) {
   const pathname = usePathname();
 
   return (
@@ -63,18 +68,22 @@ function MobileNavSheet({ items, navLabel, triggerLabel }: MobileNavSheetProps) 
                     const isActive =
                       pathname === item.href ||
                       pathname?.startsWith(`${item.href}/`);
+                    const ItemIcon = item.icon
+                      ? getModuleIcon(item.icon)
+                      : null;
 
                     return (
                       <SheetClose
                         key={item.href}
                         render={<Link href={item.href} prefetch={false} />}
                         className={cn(
-                          "block rounded-md px-3 py-2 text-sm font-medium transition",
+                          "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
                           isActive
                             ? "bg-primary/14 text-foreground"
                             : "text-muted-foreground hover:bg-accent/55 hover:text-foreground",
                         )}
                       >
+                        {ItemIcon ? <ItemIcon className="size-4" /> : null}
                         {item.label}
                       </SheetClose>
                     );
@@ -85,18 +94,20 @@ function MobileNavSheet({ items, navLabel, triggerLabel }: MobileNavSheetProps) 
 
             const isActive =
               pathname === entry.href || pathname?.startsWith(`${entry.href}/`);
+            const EntryIcon = entry.icon ? getModuleIcon(entry.icon) : null;
 
             return (
               <SheetClose
                 key={entry.href}
                 render={<Link href={entry.href} prefetch={false} />}
                 className={cn(
-                  "rounded-md px-3 py-2 text-sm font-medium transition",
+                  "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition",
                   isActive
                     ? "bg-primary/14 text-foreground"
                     : "text-muted-foreground hover:bg-accent/55 hover:text-foreground",
                 )}
               >
+                {EntryIcon ? <EntryIcon className="size-4" /> : null}
                 {entry.label}
               </SheetClose>
             );

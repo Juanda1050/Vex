@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/layout/page-header";
+import { getModuleIcon } from "@/lib/modules/module-icons";
 import { ModulePagination } from "@/components/modules/module-pagination";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -51,6 +52,7 @@ export default async function InventoryPage({
       <PageHeader
         title={t("title")}
         description={t("description")}
+        icon={getModuleIcon("inventory")}
         actions={
           <Link
             href={toggleHref}
@@ -66,7 +68,7 @@ export default async function InventoryPage({
         }
       />
 
-      <Card className="space-y-5 rounded-[1.75rem] border-border/70 bg-card/72 p-5 shadow-none backdrop-blur-sm sm:p-6">
+      <Card className="space-y-5 rounded-[1.75rem] surface-1 p-5  sm:p-6">
         <Table>
           <TableHeader>
             <TableRow>
@@ -75,8 +77,12 @@ export default async function InventoryPage({
               <TableHead className="text-right">
                 {t("fields.quantityOnHand")}
               </TableHead>
-              <TableHead className="text-right">{t("fields.minStock")}</TableHead>
-              <TableHead className="text-right">{t("fields.maxStock")}</TableHead>
+              <TableHead className="text-right">
+                {t("fields.minStock")}
+              </TableHead>
+              <TableHead className="text-right">
+                {t("fields.maxStock")}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

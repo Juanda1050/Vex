@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { LanguageSwitcher } from "@/components/language-switcher";
 import { LocalePreferenceSync } from "@/components/layout/locale-preference-sync";
 import { MobileNavSheet } from "@/components/layout/mobile-nav-sheet";
 import { PageHeader } from "@/components/layout/page-header";
@@ -8,7 +7,6 @@ import {
   TopNavigation,
   type TopNavigationEntry,
 } from "@/components/layout/top-navigation";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/layout/user-menu";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -125,16 +123,6 @@ function AppShell({
                   avatarUrl={userAvatarUrl}
                   ariaLabel={userMenuAriaLabel}
                 />
-              </div>
-            </div>
-            <div className="flex justify-center">
-              <div className="glass-soft inline-flex items-center gap-1 rounded-full p-1.5">
-                <LanguageSwitcher
-                  locale={locale}
-                  className="rounded-full bg-transparent p-0"
-                />
-                <div className="h-5 w-px bg-border/70" />
-                <ThemeToggle className="rounded-full border-0 bg-transparent shadow-none" />
               </div>
             </div>
             {title || description || actions ? (

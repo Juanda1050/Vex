@@ -95,7 +95,7 @@ function UserMenu({
         <DropdownMenuSeparator />
         <div className="flex items-center justify-between gap-2 px-2 py-1.5">
           <span className="text-xs font-medium text-muted-foreground">
-            {tSettings("language")}
+            {tSettings("fields.language")}
           </span>
           <LanguageSwitcher
             locale={locale}
@@ -104,7 +104,7 @@ function UserMenu({
         </div>
         <div className="flex items-center justify-between gap-2 px-2 py-1.5">
           <span className="text-xs font-medium text-muted-foreground">
-            {tSettings("theme")}
+            {tSettings("preferences.theme")}
           </span>
           <ThemeToggle className="rounded-full border-0 bg-muted shadow-none hover:bg-accent" />
         </div>

@@ -21,6 +21,7 @@ type TopNavigationLink = {
 
 type TopNavigationGroup = {
   label: string;
+  icon?: ModuleKey;
   items: TopNavigationLink[];
 };
 
@@ -48,6 +49,7 @@ function TopNavigation({ items }: TopNavigationProps) {
           const isGroupActive = entry.items.some((item) =>
             isActiveHref(pathname, item.href),
           );
+          const GroupIcon = entry.icon ? getModuleIcon(entry.icon) : null;
 
           return (
             <DropdownMenu key={entry.label}>
@@ -56,7 +58,7 @@ function TopNavigation({ items }: TopNavigationProps) {
                   <button
                     type="button"
                     className={cn(
-                      "inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium transition",
+                      "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition",
                       isGroupActive
                         ? "bg-primary/14 text-foreground"
                         : "text-muted-foreground hover:bg-accent/55 hover:text-foreground",
@@ -64,6 +66,7 @@ function TopNavigation({ items }: TopNavigationProps) {
                   />
                 }
               >
+                {GroupIcon ? <GroupIcon className="size-3.5" /> : null}
                 {entry.label}
                 <ChevronDown className="size-3.5 opacity-70" />
               </DropdownMenuTrigger>

@@ -126,7 +126,12 @@ function DashboardToolbar({
               disabled={isPending}
             >
               <SelectTrigger className="min-w-40 rounded-full bg-card/70">
-                <SelectValue />
+                <SelectValue>
+                  {(value: DashboardPeriod | null) =>
+                    periodOptions.find((option) => option.value === value)
+                      ?.label
+                  }
+                </SelectValue>
               </SelectTrigger>
               <SelectContent align="end">
                 {periodOptions.map((option) => (
@@ -148,7 +153,12 @@ function DashboardToolbar({
               disabled={isPending}
             >
               <SelectTrigger className="min-w-44 rounded-full bg-card/70">
-                <SelectValue />
+                <SelectValue>
+                  {(value: DashboardSalesStatusFilter | null) =>
+                    salesStatusOptions.find((option) => option.value === value)
+                      ?.label
+                  }
+                </SelectValue>
               </SelectTrigger>
               <SelectContent align="end">
                 {salesStatusOptions.map((option) => (

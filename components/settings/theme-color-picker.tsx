@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useSyncExternalStore } from "react";
+import { startTransition, useActionState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 import { CheckIcon } from "lucide-react";
 
@@ -50,7 +50,9 @@ function ThemeColorPicker() {
 
     const formData = new FormData();
     formData.set("themeColor", key);
-    submitThemeColor(formData);
+    startTransition(() => {
+      submitThemeColor(formData);
+    });
   };
 
   return (

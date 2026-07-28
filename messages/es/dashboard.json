@@ -3,6 +3,8 @@
   "title": "Dashboard de negocio",
   "description": "Módulos de dominio existentes en server listos para consumir desde UI o API.",
   "descriptionModern": "Monitorea inventario, ventas, productos y cotizaciones desde una vista operativa más limpia y enfocada.",
+  "greeting": "Hola, {name}",
+  "greetingSubtitle": "{date} · Aquí tienes el resumen de tu operación.",
   "dateRangeLabel": "Rango activo",
   "weeklyRevenueTitle": "Ingresos de la semana",
   "weeklyRevenueDescription": "Comportamiento diario de ventas durante la ventana operativa actual.",

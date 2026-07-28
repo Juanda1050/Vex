@@ -69,12 +69,22 @@ export default async function DashboardModulePage({
     (option) => option.value === salesStatus,
   )?.label;
 
+  const firstName = (auth.fullName?.trim() || auth.email.split("@")[0]).split(
+    /\s+/,
+  )[0];
+  const todayRaw = new Intl.DateTimeFormat(locale, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  }).format(new Date());
+  const today = todayRaw.charAt(0).toUpperCase() + todayRaw.slice(1);
+
   return (
     <div className="space-y-8">
       <header className="space-y-4 border-b border-border/70 pb-5">
         <PageHeader
-          title={tDashboard("title")}
-          description={tDashboard("descriptionModern")}
+          title={tDashboard("greeting", { name: firstName })}
+          description={tDashboard("greetingSubtitle", { date: today })}
           icon={getModuleIcon("dashboard")}
         />
 

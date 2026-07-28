@@ -34,6 +34,7 @@ export default async function ProtectedLayout({
     },
     {
       label: tNav("groups.sales"),
+      icon: "sales" as const,
       items: [
         {
           href: `/${locale}/pos`,
@@ -64,6 +65,7 @@ export default async function ProtectedLayout({
     },
     {
       label: tNav("groups.catalog"),
+      icon: "products" as const,
       items: [
         {
           href: `/${locale}/products`,

@@ -59,9 +59,12 @@ function MobileNavSheet({
         <nav className="flex flex-col gap-1 overflow-y-auto p-3">
           {items.map((entry) => {
             if (isGroup(entry)) {
+              const GroupIcon = entry.icon ? getModuleIcon(entry.icon) : null;
+
               return (
                 <div key={entry.label} className="py-1.5">
-                  <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <p className="flex items-center gap-1.5 px-3 pb-1 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
+                    {GroupIcon ? <GroupIcon className="size-3.5" /> : null}
                     {entry.label}
                   </p>
                   {entry.items.map((item) => {

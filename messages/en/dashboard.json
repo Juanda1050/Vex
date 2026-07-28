@@ -3,6 +3,8 @@
   "title": "Business dashboard",
   "description": "Domain modules already present in server, ready to consume from UI or API.",
   "descriptionModern": "Track inventory, sales, products and quotes from a cleaner operational workspace.",
+  "greeting": "Hi, {name}",
+  "greetingSubtitle": "{date} · Here's your operations summary.",
   "dateRangeLabel": "Active range",
   "weeklyRevenueTitle": "Weekly revenue",
   "weeklyRevenueDescription": "Daily sales behavior across the current operating window.",

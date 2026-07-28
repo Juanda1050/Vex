@@ -96,7 +96,12 @@ function PreferencesPanel({ locale }: PreferencesPanelProps) {
             </p>
             <Select value={selectedLocale} onValueChange={onLanguageChange}>
               <SelectTrigger>
-                <SelectValue />
+                <SelectValue>
+                  {(value: string | null) =>
+                    languageOptions.find((option) => option.value === value)
+                      ?.label
+                  }
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {languageOptions.map((option) => (

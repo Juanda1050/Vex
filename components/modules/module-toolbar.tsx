@@ -112,7 +112,13 @@ function ModuleToolbar({
             }
           >
             <SelectTrigger className="min-w-44 rounded-full bg-card/70">
-              <SelectValue />
+              <SelectValue>
+                {(value: string | null) =>
+                  statusOptions.find(
+                    (option) => (option.value || "__all__") === value,
+                  )?.label
+                }
+              </SelectValue>
             </SelectTrigger>
             <SelectContent align="end">
               {statusOptions.map((option) => (

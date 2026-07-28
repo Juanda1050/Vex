@@ -7,5 +7,14 @@
   "quotes": "Cotizaciones",
   "purchases": "Compras",
   "settings": "Configuración",
-  "logout": "Cerrar sesión"
+  "logout": "Cerrar sesión",
+  "pos": "Punto de venta",
+  "posRegister": "Caja",
+  "posAnalytics": "Analítica POS",
+  "users": "Usuarios",
+  "billing": "Facturación",
+  "groups": {
+    "sales": "Ventas",
+    "catalog": "Catálogo"
+  }
 }

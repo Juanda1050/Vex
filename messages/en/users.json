@@ -1,5 +1,15 @@
 {
   "title": "Users",
+  "description": "Manage tenant members and their roles.",
+  "searchPlaceholder": "Search by email or role",
+  "empty": "No users found.",
+  "fields": {
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "branch": "Branch",
+    "status": "Status"
+  },
   "errors": {
     "generic": "Could not process users request.",
     "invalidPayload": "The payload is invalid.",

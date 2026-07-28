@@ -4,6 +4,9 @@
   "edit": "Editar producto",
   "delete": "Eliminar producto",
   "deleteConfirm": "¿Estás seguro de eliminar este producto?",
+  "description": "Catálogo de productos, precios y atributos.",
+  "searchPlaceholder": "Buscar por nombre, SKU o código interno",
+  "empty": "No se encontraron productos.",
   "fields": {
     "name": "Nombre",
     "sku": "SKU",

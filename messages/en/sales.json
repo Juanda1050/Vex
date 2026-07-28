@@ -1,7 +1,13 @@
 {
   "title": "Sales",
   "new": "New sale",
+  "description": "Orders recorded across every branch.",
+  "searchPlaceholder": "Search by number, customer or notes",
+  "empty": "No sales found.",
   "fields": {
+    "number": "Number",
+    "branch": "Branch",
+    "items": "Items",
     "customer": "Customer",
     "date": "Date",
     "total": "Total",
@@ -17,6 +23,9 @@
     "completed": "Completed",
     "cancelled": "Cancelled",
     "refunded": "Refunded"
+  },
+  "filters": {
+    "allStatuses": "All statuses"
   },
   "paymentMethods": {
     "cash": "Cash",

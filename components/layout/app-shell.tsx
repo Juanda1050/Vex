@@ -4,7 +4,7 @@ import { LanguageSwitcher } from "@/components/language-switcher";
 import { LocalePreferenceSync } from "@/components/layout/locale-preference-sync";
 import {
   TopNavigation,
-  type TopNavigationItem,
+  type TopNavigationEntry,
 } from "@/components/layout/top-navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/layout/user-menu";
@@ -23,7 +23,7 @@ type AppShellProps = {
   userEmail: string;
   userAvatarUrl?: string | null;
   userMenuAriaLabel?: string;
-  topNavigationItems?: TopNavigationItem[];
+  topNavigationItems?: TopNavigationEntry[];
 };
 
 function AppShell({

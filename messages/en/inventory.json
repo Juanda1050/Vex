@@ -15,8 +15,15 @@
     "warehouse": "Warehouse",
     "reason": "Reason",
     "date": "Date",
-    "reference": "Reference"
+    "reference": "Reference",
+    "quantityOnHand": "On hand",
+    "minStock": "Min stock",
+    "maxStock": "Max stock"
   },
+  "description": "Stock positions across warehouses.",
+  "empty": "No inventory positions found.",
+  "lowStockOnly": "Low stock only",
+  "lowStockBadge": "Low stock",
   "errors": {
     "generic": "Could not process inventory request.",
     "invalidPayload": "The payload is invalid.",

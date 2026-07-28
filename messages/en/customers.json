@@ -1,5 +1,17 @@
 {
   "title": "Customers",
+  "description": "Manage customer records and their commercial relationship.",
+  "searchPlaceholder": "Search by name, email or phone",
+  "empty": "No customers found.",
+  "fields": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "taxId": "Tax ID",
+    "rfc": "RFC",
+    "creditLimit": "Credit limit",
+    "status": "Status"
+  },
   "errors": {
     "generic": "Could not process customers request.",
     "invalidPayload": "The payload is invalid.",

@@ -1,5 +1,21 @@
 {
   "title": "Quotes",
+  "description": "Track quotes across the sales pipeline.",
+  "searchPlaceholder": "Search by number, customer or notes",
+  "empty": "No quotes found.",
+  "fields": {
+    "number": "Number",
+    "customer": "Customer",
+    "status": "Status",
+    "total": "Total",
+    "validUntil": "Valid until",
+    "createdAt": "Created",
+    "items": "Items"
+  },
+  "filters": {
+    "status": "Status",
+    "allStatuses": "All statuses"
+  },
   "errors": {
     "generic": "Could not process quotes request.",
     "invalidPayload": "The payload is invalid.",

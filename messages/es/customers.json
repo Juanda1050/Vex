@@ -1,5 +1,17 @@
 {
   "title": "Clientes",
+  "description": "Administra los clientes y su relación comercial.",
+  "searchPlaceholder": "Buscar por nombre, correo o teléfono",
+  "empty": "No se encontraron clientes.",
+  "fields": {
+    "name": "Nombre",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "taxId": "RFC/Tax ID",
+    "rfc": "RFC",
+    "creditLimit": "Límite de crédito",
+    "status": "Estado"
+  },
   "errors": {
     "generic": "No se pudo procesar la solicitud de clientes.",
     "invalidPayload": "El payload enviado es invalido.",

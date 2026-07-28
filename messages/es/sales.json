@@ -1,7 +1,13 @@
 {
   "title": "Ventas",
   "new": "Nueva venta",
+  "description": "Órdenes registradas en todas las sucursales.",
+  "searchPlaceholder": "Buscar por número, cliente o notas",
+  "empty": "No se encontraron ventas.",
   "fields": {
+    "number": "Número",
+    "branch": "Sucursal",
+    "items": "Artículos",
     "customer": "Cliente",
     "date": "Fecha",
     "total": "Total",
@@ -17,6 +23,9 @@
     "completed": "Completada",
     "cancelled": "Cancelada",
     "refunded": "Reembolsada"
+  },
+  "filters": {
+    "allStatuses": "Todos los estados"
   },
   "paymentMethods": {
     "cash": "Efectivo",

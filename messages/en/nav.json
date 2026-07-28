@@ -7,5 +7,14 @@
   "quotes": "Quotes",
   "purchases": "Purchases",
   "settings": "Settings",
-  "logout": "Sign out"
+  "logout": "Sign out",
+  "pos": "POS",
+  "posRegister": "Register",
+  "posAnalytics": "POS Analytics",
+  "users": "Users",
+  "billing": "Billing",
+  "groups": {
+    "sales": "Sales",
+    "catalog": "Catalog"
+  }
 }

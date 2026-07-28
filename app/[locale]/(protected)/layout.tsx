@@ -1,7 +1,8 @@
 import { getTranslations } from "next-intl/server";
-import { requireAuth } from "@/server/auth";
+import { permissionChecker, requireAuth } from "@/server/auth";
 
 import { AppShell } from "@/components/layout/app-shell";
+import type { TopNavigationEntry } from "@/components/layout/top-navigation";
 
 export default async function ProtectedLayout({
   children,
@@ -20,12 +21,31 @@ export default async function ProtectedLayout({
   const displayName = auth.fullName?.trim() || auth.email;
   const avatarUrl = auth.avatarUrl ?? null;
 
-  const topNavigationItems = [
+  const canViewUsers = permissionChecker.can(auth.role, "users.view");
+
+  const topNavigationItems: TopNavigationEntry[] = [
     { href: `/${locale}/dashboard`, label: tNav("dashboard") },
-    { href: `/${locale}/dashboard/pos`, label: "POS Analytics" },
-    { href: `/${locale}/pos`, label: "POS" },
-    { href: `/${locale}/pos/register`, label: "Caja" },
-    { href: `/${locale}/billing/features`, label: "Plan" },
+    {
+      label: tNav("groups.sales"),
+      items: [
+        { href: `/${locale}/pos`, label: tNav("posRegister") },
+        { href: `/${locale}/dashboard/pos`, label: tNav("posAnalytics") },
+        { href: `/${locale}/sales`, label: tNav("sales") },
+        { href: `/${locale}/quotes`, label: tNav("quotes") },
+      ],
+    },
+    { href: `/${locale}/customers`, label: tNav("customers") },
+    {
+      label: tNav("groups.catalog"),
+      items: [
+        { href: `/${locale}/products`, label: tNav("products") },
+        { href: `/${locale}/inventory`, label: tNav("inventory") },
+      ],
+    },
+    ...(canViewUsers
+      ? [{ href: `/${locale}/users`, label: tNav("users") }]
+      : []),
+    { href: `/${locale}/billing/features`, label: tNav("billing") },
     { href: `/${locale}/settings`, label: tNav("settings") },
   ];
 

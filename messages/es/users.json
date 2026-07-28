@@ -1,5 +1,15 @@
 {
   "title": "Usuarios",
+  "description": "Administra los miembros del tenant y sus roles.",
+  "searchPlaceholder": "Buscar por correo o rol",
+  "empty": "No se encontraron usuarios.",
+  "fields": {
+    "name": "Nombre",
+    "email": "Correo",
+    "role": "Rol",
+    "branch": "Sucursal",
+    "status": "Estado"
+  },
   "errors": {
     "generic": "No se pudo procesar la solicitud de usuarios.",
     "invalidPayload": "El payload enviado es invalido.",

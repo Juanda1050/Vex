@@ -15,8 +15,15 @@
     "warehouse": "Almacén",
     "reason": "Motivo",
     "date": "Fecha",
-    "reference": "Referencia"
+    "reference": "Referencia",
+    "quantityOnHand": "Disponible",
+    "minStock": "Stock mín.",
+    "maxStock": "Stock máx."
   },
+  "description": "Posiciones de stock por almacén.",
+  "empty": "No se encontraron posiciones de inventario.",
+  "lowStockOnly": "Solo stock bajo",
+  "lowStockBadge": "Stock bajo",
   "errors": {
     "generic": "No se pudo procesar la solicitud de inventario.",
     "invalidPayload": "El payload enviado es invalido.",

@@ -1,5 +1,21 @@
 {
   "title": "Cotizaciones",
+  "description": "Da seguimiento a las cotizaciones del embudo comercial.",
+  "searchPlaceholder": "Buscar por número, cliente o notas",
+  "empty": "No se encontraron cotizaciones.",
+  "fields": {
+    "number": "Número",
+    "customer": "Cliente",
+    "status": "Estado",
+    "total": "Total",
+    "validUntil": "Vigencia",
+    "createdAt": "Creada",
+    "items": "Artículos"
+  },
+  "filters": {
+    "status": "Estado",
+    "allStatuses": "Todos los estados"
+  },
   "errors": {
     "generic": "No se pudo procesar la solicitud de cotizaciones.",
     "invalidPayload": "El payload enviado es invalido.",

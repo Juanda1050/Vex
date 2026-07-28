@@ -94,7 +94,7 @@ export default async function DashboardModulePage({
           overview.currency,
         ),
       }),
-      href: getDashboardModuleRoute("sales"),
+      href: getDashboardModuleRoute("sales", locale),
       icon: DollarSign,
     },
     {
@@ -106,7 +106,7 @@ export default async function DashboardModulePage({
       description: tDashboard("previousPeriodCustomers", {
         count: overview.customers.previous,
       }),
-      href: getDashboardModuleRoute("sales"),
+      href: getDashboardModuleRoute("sales", locale),
       icon: Users,
     },
     {
@@ -126,7 +126,7 @@ export default async function DashboardModulePage({
               count: overview.inventory.positions,
             })
           : tDashboard("noData"),
-      href: getDashboardModuleRoute("inventory"),
+      href: getDashboardModuleRoute("inventory", locale),
       icon: TriangleAlert,
     },
     {
@@ -139,7 +139,7 @@ export default async function DashboardModulePage({
         overview.quotes.total > 0
           ? tDashboard("quoteBaseLabel", { count: overview.quotes.total })
           : tDashboard("noQuotesYet"),
-      href: getDashboardModuleRoute("quotes"),
+      href: getDashboardModuleRoute("quotes", locale),
       icon: FileText,
     },
   ] as const;
@@ -339,7 +339,7 @@ export default async function DashboardModulePage({
               </div>
 
               <DashboardCardLink
-                href={getDashboardModuleRoute("quotes")}
+                href={getDashboardModuleRoute("quotes", locale)}
                 label={tDashboard("viewModule", { module: tQuotes("title") })}
               />
             </div>
@@ -552,7 +552,7 @@ export default async function DashboardModulePage({
               </p>
             </div>
             <DashboardCardLink
-              href={getDashboardModuleRoute("quotes")}
+              href={getDashboardModuleRoute("quotes", locale)}
               label={tDashboard("viewModule", { module: tQuotes("title") })}
             />
           </CardContent>

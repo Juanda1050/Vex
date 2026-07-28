@@ -3,6 +3,7 @@
 import { useEffect, useMemo } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { AlertTriangle } from "lucide-react";
 
 import { logoutAction } from "@/server/auth/actions/logout.action";
 import { ThemeColorPicker } from "@/components/settings/theme-color-picker";
@@ -137,9 +138,15 @@ function PreferencesPanel({ locale }: PreferencesPanelProps) {
         </CardContent>
       </Card>
 
-      <Card id="account-security" className="border-border/80 bg-card/95">
+      <Card
+        id="account-security"
+        className="border-destructive/30 bg-destructive/5"
+      >
         <CardHeader>
-          <CardTitle>{t("account.title")}</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-destructive">
+            <AlertTriangle className="size-4" />
+            {t("account.dangerZone")}
+          </CardTitle>
           <CardDescription>{t("account.description")}</CardDescription>
         </CardHeader>
         <CardContent>

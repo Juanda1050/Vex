@@ -22,6 +22,7 @@
   },
   "description": "Stock positions across warehouses.",
   "empty": "No inventory positions found.",
+  "emptyNoData": "You don't have any inventory positions yet.",
   "lowStockOnly": "Low stock only",
   "lowStockBadge": "Low stock",
   "errors": {

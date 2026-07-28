@@ -4,6 +4,7 @@
   "description": "Órdenes registradas en todas las sucursales.",
   "searchPlaceholder": "Buscar por número, cliente o notas",
   "empty": "No se encontraron ventas.",
+  "emptyNoData": "Aún no tienes ventas registradas.",
   "fields": {
     "number": "Número",
     "branch": "Sucursal",

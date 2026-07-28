@@ -4,7 +4,10 @@ import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { getModuleIcon } from "@/lib/modules/module-icons";
 import { ModulePagination } from "@/components/modules/module-pagination";
+import { ModuleEmptyState } from "@/components/modules/module-empty-state";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
+import { RowActionHint } from "@/components/modules/row-action-hint";
+import { SortableTableHead } from "@/components/modules/sortable-table-head";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -19,6 +22,10 @@ import {
   formatCurrency,
   formatShortDate,
 } from "@/lib/dashboard/dashboard-formatters";
+import {
+  resolveSortDirection,
+  resolveSortKey,
+} from "@/lib/modules/sort-params";
 import { requirePermission } from "@/server/auth";
 import { quoteService } from "@/server/quotes/service/quote.service";
 
@@ -57,12 +64,21 @@ export default async function QuotesPage({
     query.status && query.status in QuoteStatus
       ? (query.status as QuoteStatus)
       : undefined;
+  const hasFilters = Boolean(search) || Boolean(query.status);
+  const sort = resolveSortKey(query.sort, [
+    "total",
+    "validUntil",
+    "createdAt",
+  ] as const);
+  const dir = resolveSortDirection(query.dir);
 
   const { items, pagination } = await quoteService.listQuotes(ctx.tenantId, {
     page,
     pageSize: 20,
     search,
     status,
+    sort,
+    dir,
   });
 
   return (
@@ -93,19 +109,39 @@ export default async function QuotesPage({
               <TableHead>{t("fields.number")}</TableHead>
               <TableHead>{t("fields.customer")}</TableHead>
               <TableHead>{t("fields.status")}</TableHead>
-              <TableHead className="text-right">{t("fields.total")}</TableHead>
-              <TableHead>{t("fields.validUntil")}</TableHead>
-              <TableHead>{t("fields.createdAt")}</TableHead>
+              <SortableTableHead
+                sortKey="total"
+                currentSort={sort}
+                currentDir={dir}
+                align="right"
+              >
+                {t("fields.total")}
+              </SortableTableHead>
+              <SortableTableHead
+                sortKey="validUntil"
+                currentSort={sort}
+                currentDir={dir}
+              >
+                {t("fields.validUntil")}
+              </SortableTableHead>
+              <SortableTableHead
+                sortKey="createdAt"
+                currentSort={sort}
+                currentDir={dir}
+              >
+                {t("fields.createdAt")}
+              </SortableTableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="py-10 text-center text-sm text-muted-foreground"
-                >
-                  {t("empty")}
+                <TableCell colSpan={6}>
+                  <ModuleEmptyState
+                    hasFilters={hasFilters}
+                    emptyText={t("emptyNoData")}
+                    noResultsText={t("empty")}
+                  />
                 </TableCell>
               </TableRow>
             ) : (
@@ -130,8 +166,9 @@ export default async function QuotesPage({
                       ? formatShortDate(quote.validUntil, locale)
                       : "-"}
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
+                  <TableCell className="relative pr-6 text-muted-foreground">
                     {formatShortDate(quote.createdAt, locale)}
+                    <RowActionHint />
                   </TableCell>
                 </TableRow>
               ))

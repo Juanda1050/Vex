@@ -3,7 +3,9 @@ import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { getModuleIcon } from "@/lib/modules/module-icons";
 import { ModulePagination } from "@/components/modules/module-pagination";
+import { ModuleEmptyState } from "@/components/modules/module-empty-state";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
+import { RowActionHint } from "@/components/modules/row-action-hint";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -42,6 +44,7 @@ export default async function UsersPage({
       : query.status === "inactive"
         ? false
         : undefined;
+  const hasFilters = Boolean(search) || Boolean(query.status);
 
   const { items, pagination } = await userService.listUsers(ctx.tenantId, {
     page,
@@ -83,11 +86,12 @@ export default async function UsersPage({
           <TableBody>
             {items.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="py-10 text-center text-sm text-muted-foreground"
-                >
-                  {t("empty")}
+                <TableCell colSpan={5}>
+                  <ModuleEmptyState
+                    hasFilters={hasFilters}
+                    emptyText={t("emptyNoData")}
+                    noResultsText={t("empty")}
+                  />
                 </TableCell>
               </TableRow>
             ) : (
@@ -107,12 +111,13 @@ export default async function UsersPage({
                   <TableCell className="text-muted-foreground">
                     {member.branch?.name ?? "-"}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="relative pr-6">
                     <Badge variant={member.isActive ? "success" : "secondary"}>
                       {member.isActive
                         ? tCommon("status.active")
                         : tCommon("status.inactive")}
                     </Badge>
+                    <RowActionHint />
                   </TableCell>
                 </TableRow>
               ))

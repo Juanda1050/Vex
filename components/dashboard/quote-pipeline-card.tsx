@@ -1,9 +1,13 @@
+import Link from "next/link";
 import { QuoteStatus } from "@prisma/client";
 import type { getTranslations } from "next-intl/server";
+import { FileText } from "lucide-react";
 
 import { DashboardCardLink } from "@/components/dashboard/dashboard-toolbar";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getDashboardModuleRoute } from "@/lib/dashboard/dashboard-routes";
+import { cn } from "@/lib/utils";
 import type { getDashboardOverview } from "@/server/dashboard/get-dashboard-overview";
 
 type Translator = Awaited<ReturnType<typeof getTranslations>>;
@@ -61,11 +65,34 @@ function QuotePipelineCard({
         </div>
 
         {overview.quotes.maxStatusValue === 0 ? (
-          <div className="mt-8 rounded-3xl border border-dashed border-border/80 bg-muted/35 px-5 py-12 text-center text-sm text-muted-foreground">
-            {tDashboard("noQuotesYet")}
+          <div className="mt-8 flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border/80 bg-muted/35 px-5 py-12 text-center">
+            <FileText className="size-6 text-muted-foreground/70" />
+            <p className="text-sm text-muted-foreground">
+              {tDashboard("noQuotesYet")}
+            </p>
+            <Link
+              href={getDashboardModuleRoute("quotes", locale)}
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+            >
+              {tDashboard("viewModule", { module: tQuotes("title") })}
+            </Link>
           </div>
         ) : (
           <div className="mt-8">
+            <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1.5">
+              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="size-2 rounded-full bg-primary" />
+                {tDashboard("pipelineLegend.positive")}
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="size-2 rounded-full bg-info/85" />
+                {tDashboard("pipelineLegend.neutral")}
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="size-2 rounded-full bg-destructive/85" />
+                {tDashboard("pipelineLegend.negative")}
+              </span>
+            </div>
             <div className="flex h-64 items-end gap-3 rounded-[1.5rem] bg-muted/25 px-4 pb-4 pt-8">
               {overview.quotes.statusDistribution.map((item) => {
                 const height = Math.max(

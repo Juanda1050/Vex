@@ -58,17 +58,22 @@ function TopNavigation({ items }: TopNavigationProps) {
                   <button
                     type="button"
                     className={cn(
-                      "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition",
+                      "group inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition",
                       isGroupActive
-                        ? "bg-primary/14 text-foreground"
+                        ? "bg-primary/12 text-foreground ring-1 ring-primary/20"
                         : "text-muted-foreground hover:bg-accent/55 hover:text-foreground",
+                      "data-popup-open:bg-accent/55 data-popup-open:text-foreground",
                     )}
                   />
                 }
               >
-                {GroupIcon ? <GroupIcon className="size-3.5" /> : null}
+                {GroupIcon ? (
+                  <GroupIcon
+                    className={cn("size-3.5", isGroupActive && "text-primary")}
+                  />
+                ) : null}
                 {entry.label}
-                <ChevronDown className="size-3.5 opacity-70" />
+                <ChevronDown className="size-3.5 opacity-70 transition-transform duration-150 ease-out group-data-popup-open:rotate-180" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="min-w-48">
                 {entry.items.map((item) => {
@@ -104,13 +109,17 @@ function TopNavigation({ items }: TopNavigationProps) {
             href={entry.href}
             prefetch={false}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition",
+              "inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition",
               isActive
-                ? "bg-primary/14 text-foreground"
+                ? "bg-primary/12 text-foreground ring-1 ring-primary/20"
                 : "text-muted-foreground hover:bg-accent/55 hover:text-foreground",
             )}
           >
-            {EntryIcon ? <EntryIcon className="size-3.5" /> : null}
+            {EntryIcon ? (
+              <EntryIcon
+                className={cn("size-3.5", isActive && "text-primary")}
+              />
+            ) : null}
             {entry.label}
           </Link>
         );

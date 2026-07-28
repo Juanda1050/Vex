@@ -3,7 +3,10 @@ import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/layout/page-header";
 import { getModuleIcon } from "@/lib/modules/module-icons";
+import { ModuleEmptyState } from "@/components/modules/module-empty-state";
 import { ModulePagination } from "@/components/modules/module-pagination";
+import { RowActionHint } from "@/components/modules/row-action-hint";
+import { SortableTableHead } from "@/components/modules/sortable-table-head";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -15,6 +18,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  resolveSortDirection,
+  resolveSortKey,
+} from "@/lib/modules/sort-params";
 import { cn } from "@/lib/utils";
 import { requirePermission } from "@/server/auth";
 import { inventoryService } from "@/server/inventory/service/inventory.service";
@@ -37,10 +44,12 @@ export default async function InventoryPage({
 
   const page = Math.max(1, Number(query.page) || 1);
   const lowStockOnly = query.lowStockOnly === "true";
+  const sort = resolveSortKey(query.sort, ["quantityOnHand"] as const);
+  const dir = resolveSortDirection(query.dir);
 
   const { items, pagination } = await inventoryService.listInventory(
     ctx.tenantId,
-    { page, pageSize: 20, lowStockOnly },
+    { page, pageSize: 20, lowStockOnly, sort, dir },
   );
 
   const toggleHref = lowStockOnly
@@ -70,13 +79,18 @@ export default async function InventoryPage({
 
       <Card className="space-y-5 rounded-[1.75rem] surface-1 p-5  sm:p-6">
         <Table>
-          <TableHeader>
+          <TableHeader className="sticky top-20 z-10 bg-card">
             <TableRow>
               <TableHead>{t("fields.product")}</TableHead>
               <TableHead>{t("fields.warehouse")}</TableHead>
-              <TableHead className="text-right">
+              <SortableTableHead
+                sortKey="quantityOnHand"
+                currentSort={sort}
+                currentDir={dir}
+                align="right"
+              >
                 {t("fields.quantityOnHand")}
-              </TableHead>
+              </SortableTableHead>
               <TableHead className="text-right">
                 {t("fields.minStock")}
               </TableHead>
@@ -88,11 +102,12 @@ export default async function InventoryPage({
           <TableBody>
             {items.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="py-10 text-center text-sm text-muted-foreground"
-                >
-                  {t("empty")}
+                <TableCell colSpan={5}>
+                  <ModuleEmptyState
+                    hasFilters={lowStockOnly}
+                    emptyText={t("emptyNoData")}
+                    noResultsText={t("empty")}
+                  />
                 </TableCell>
               </TableRow>
             ) : (
@@ -122,8 +137,9 @@ export default async function InventoryPage({
                     <TableCell className="text-right text-muted-foreground">
                       {minStock}
                     </TableCell>
-                    <TableCell className="text-right text-muted-foreground">
+                    <TableCell className="relative pr-6 text-right text-muted-foreground">
                       {Number(position.maxStock ?? 0)}
+                      <RowActionHint />
                     </TableCell>
                   </TableRow>
                 );

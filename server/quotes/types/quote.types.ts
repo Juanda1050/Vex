@@ -25,6 +25,8 @@ export interface QuoteFilters {
   status?: "DRAFT" | "SENT" | "ACCEPTED" | "REJECTED" | "EXPIRED" | "CONVERTED";
   customerId?: string;
   branchId?: string;
+  sort?: "total" | "validUntil" | "createdAt";
+  dir?: "asc" | "desc";
 }
 
 export interface ConvertQuoteToSaleInput {

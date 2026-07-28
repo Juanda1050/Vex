@@ -3,7 +3,10 @@ import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { getModuleIcon } from "@/lib/modules/module-icons";
 import { ModulePagination } from "@/components/modules/module-pagination";
+import { ModuleEmptyState } from "@/components/modules/module-empty-state";
+import { RowActionHint } from "@/components/modules/row-action-hint";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
+import { SortableTableHead } from "@/components/modules/sortable-table-head";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -15,6 +18,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/dashboard/dashboard-formatters";
+import {
+  resolveSortDirection,
+  resolveSortKey,
+} from "@/lib/modules/sort-params";
 import { requirePermission } from "@/server/auth";
 import { customerService } from "@/server/customers/service/customer.service";
 
@@ -42,10 +49,13 @@ export default async function CustomersPage({
       : query.status === "inactive"
         ? false
         : undefined;
+  const hasFilters = Boolean(search) || Boolean(query.status);
+  const sort = resolveSortKey(query.sort, ["name", "creditLimit"] as const);
+  const dir = resolveSortDirection(query.dir);
 
   const { items, pagination } = await customerService.listCustomers(
     ctx.tenantId,
-    { page, pageSize: 20, search, isActive },
+    { page, pageSize: 20, search, isActive, sort, dir },
   );
 
   return (
@@ -71,24 +81,36 @@ export default async function CustomersPage({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t("fields.name")}</TableHead>
+              <SortableTableHead
+                sortKey="name"
+                currentSort={sort}
+                currentDir={dir}
+              >
+                {t("fields.name")}
+              </SortableTableHead>
               <TableHead>{t("fields.email")}</TableHead>
               <TableHead>{t("fields.phone")}</TableHead>
               <TableHead>{t("fields.taxId")}</TableHead>
-              <TableHead className="text-right">
+              <SortableTableHead
+                sortKey="creditLimit"
+                currentSort={sort}
+                currentDir={dir}
+                align="right"
+              >
                 {t("fields.creditLimit")}
-              </TableHead>
+              </SortableTableHead>
               <TableHead>{t("fields.status")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={6}
-                  className="py-10 text-center text-sm text-muted-foreground"
-                >
-                  {t("empty")}
+                <TableCell colSpan={6}>
+                  <ModuleEmptyState
+                    hasFilters={hasFilters}
+                    emptyText={t("emptyNoData")}
+                    noResultsText={t("empty")}
+                  />
                 </TableCell>
               </TableRow>
             ) : (
@@ -109,7 +131,7 @@ export default async function CustomersPage({
                   <TableCell className="text-right text-foreground">
                     {formatCurrency(Number(customer.creditLimit ?? 0), locale)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="relative pr-6">
                     <Badge
                       variant={customer.isActive ? "success" : "secondary"}
                     >
@@ -117,6 +139,7 @@ export default async function CustomersPage({
                         ? tCommon("status.active")
                         : tCommon("status.inactive")}
                     </Badge>
+                    <RowActionHint />
                   </TableCell>
                 </TableRow>
               ))

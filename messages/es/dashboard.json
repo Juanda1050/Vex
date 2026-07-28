@@ -47,8 +47,14 @@
   "units": "unidades",
   "noData": "Aún no hay datos disponibles",
   "noSalesInRange": "No se registraron ventas en el rango seleccionado.",
+  "goToPos": "Ir a caja",
   "quoteStatusTitle": "Distribución por estado de cotizaciones",
   "noQuotesYet": "Aún no hay cotizaciones.",
+  "pipelineLegend": {
+    "positive": "Aceptada / convertida",
+    "neutral": "En curso",
+    "negative": "Rechazada / vencida"
+  },
   "totalSalesLabel": "Ventas totales registradas: {amount}",
   "filters": {
     "period": {

@@ -4,7 +4,10 @@ import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { getModuleIcon } from "@/lib/modules/module-icons";
 import { ModulePagination } from "@/components/modules/module-pagination";
+import { ModuleEmptyState } from "@/components/modules/module-empty-state";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
+import { RowActionHint } from "@/components/modules/row-action-hint";
+import { SortableTableHead } from "@/components/modules/sortable-table-head";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -20,6 +23,10 @@ import {
   formatShortDate,
   getSaleStatusVariant,
 } from "@/lib/dashboard/dashboard-formatters";
+import {
+  resolveSortDirection,
+  resolveSortKey,
+} from "@/lib/modules/sort-params";
 import { prisma } from "@/lib/prisma";
 import { requirePermission } from "@/server/auth";
 import { createPaginationMeta } from "@/server/pagination";
@@ -48,6 +55,9 @@ export default async function SalesPage({
     query.status && query.status in SaleStatus
       ? (query.status as SaleStatus)
       : undefined;
+  const hasFilters = Boolean(search) || Boolean(query.status);
+  const sort = resolveSortKey(query.sort, ["saleDate", "total"] as const);
+  const dir = resolveSortDirection(query.dir);
 
   const where: Prisma.SaleWhereInput = {
     tenantId: ctx.tenantId,
@@ -70,7 +80,7 @@ export default async function SalesPage({
         branch: { select: { id: true, name: true } },
         _count: { select: { items: true } },
       },
-      orderBy: [{ saleDate: "desc" }],
+      orderBy: [sort === "total" ? { total: dir } : { saleDate: dir }],
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),
@@ -101,25 +111,39 @@ export default async function SalesPage({
         />
 
         <Table>
-          <TableHeader>
+          <TableHeader className="sticky top-20 z-10 bg-card">
             <TableRow>
               <TableHead>{t("fields.number")}</TableHead>
-              <TableHead>{t("fields.date")}</TableHead>
+              <SortableTableHead
+                sortKey="saleDate"
+                currentSort={sort}
+                currentDir={dir}
+              >
+                {t("fields.date")}
+              </SortableTableHead>
               <TableHead>{t("fields.customer")}</TableHead>
               <TableHead>{t("fields.branch")}</TableHead>
               <TableHead>{t("fields.status")}</TableHead>
               <TableHead>{t("fields.items")}</TableHead>
-              <TableHead className="text-right">{t("fields.total")}</TableHead>
+              <SortableTableHead
+                sortKey="total"
+                currentSort={sort}
+                currentDir={dir}
+                align="right"
+              >
+                {t("fields.total")}
+              </SortableTableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="py-10 text-center text-sm text-muted-foreground"
-                >
-                  {t("empty")}
+                <TableCell colSpan={7}>
+                  <ModuleEmptyState
+                    hasFilters={hasFilters}
+                    emptyText={t("emptyNoData")}
+                    noResultsText={t("empty")}
+                  />
                 </TableCell>
               </TableRow>
             ) : (
@@ -145,8 +169,9 @@ export default async function SalesPage({
                   <TableCell className="text-muted-foreground">
                     {sale._count.items}
                   </TableCell>
-                  <TableCell className="text-right text-foreground">
+                  <TableCell className="relative pr-6 text-right text-foreground">
                     {formatCurrency(Number(sale.total ?? 0), locale)}
+                    <RowActionHint />
                   </TableCell>
                 </TableRow>
               ))

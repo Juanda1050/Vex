@@ -8,7 +8,7 @@ import {
   DashboardCardLink,
   DashboardToolbar,
 } from "@/components/dashboard/dashboard-toolbar";
-import { PageHeader } from "@/components/layout/page-header";
+import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { getModuleIcon } from "@/lib/modules/module-icons";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -80,11 +80,12 @@ export default async function DashboardModulePage({
   const today = todayRaw.charAt(0).toUpperCase() + todayRaw.slice(1);
 
   return (
-    <div className="space-y-8">
+    <div>
       <header className="space-y-4 border-b border-border/70 pb-5">
-        <PageHeader
+        <DashboardHeader
           title={tDashboard("greeting", { name: firstName })}
           description={tDashboard("greetingSubtitle", { date: today })}
+          badge={tDashboard("badge")}
           icon={getModuleIcon("dashboard")}
         />
 
@@ -105,13 +106,15 @@ export default async function DashboardModulePage({
         />
       </header>
 
-      <DashboardMetricCards
-        overview={overview}
-        locale={locale}
-        tDashboard={tDashboard}
-      />
+      <div className="mt-5">
+        <DashboardMetricCards
+          overview={overview}
+          locale={locale}
+          tDashboard={tDashboard}
+        />
+      </div>
 
-      <section className="grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.95fr)]">
+      <section className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(320px,0.95fr)]">
         <RevenueChartCard
           overview={overview}
           locale={locale}
@@ -126,15 +129,17 @@ export default async function DashboardModulePage({
         />
       </section>
 
-      <RecentSalesTable
-        overview={overview}
-        locale={locale}
-        tDashboard={tDashboard}
-        tNav={tNav}
-        salesStatusLabel={salesStatusLabel}
-      />
+      <div className="mt-12">
+        <RecentSalesTable
+          overview={overview}
+          locale={locale}
+          tDashboard={tDashboard}
+          tNav={tNav}
+          salesStatusLabel={salesStatusLabel}
+        />
+      </div>
 
-      <section className="grid gap-4 lg:grid-cols-3">
+      <section className="mt-8 grid gap-4 lg:grid-cols-3">
         <Card className="rounded-[1.5rem] surface-1  lg:col-span-2">
           <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>

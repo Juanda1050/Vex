@@ -3,7 +3,10 @@ import { getTranslations } from "next-intl/server";
 import { PageHeader } from "@/components/layout/page-header";
 import { getModuleIcon } from "@/lib/modules/module-icons";
 import { ModulePagination } from "@/components/modules/module-pagination";
+import { ModuleEmptyState } from "@/components/modules/module-empty-state";
+import { RowActionHint } from "@/components/modules/row-action-hint";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
+import { SortableTableHead } from "@/components/modules/sortable-table-head";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -15,6 +18,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatCurrency } from "@/lib/dashboard/dashboard-formatters";
+import {
+  resolveSortDirection,
+  resolveSortKey,
+} from "@/lib/modules/sort-params";
 import { requirePermission } from "@/server/auth";
 import { productService } from "@/server/products/service/product.service";
 
@@ -42,10 +49,17 @@ export default async function ProductsPage({
       : query.status === "inactive"
         ? false
         : undefined;
+  const hasFilters = Boolean(search) || Boolean(query.status);
+  const sort = resolveSortKey(query.sort, [
+    "name",
+    "basePrice",
+    "baseCost",
+  ] as const);
+  const dir = resolveSortDirection(query.dir);
 
   const { items, pagination } = await productService.listProducts(
     ctx.tenantId,
-    { page, pageSize: 20, search, isActive },
+    { page, pageSize: 20, search, isActive, sort, dir },
   );
 
   return (
@@ -71,21 +85,42 @@ export default async function ProductsPage({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t("fields.name")}</TableHead>
+              <SortableTableHead
+                sortKey="name"
+                currentSort={sort}
+                currentDir={dir}
+              >
+                {t("fields.name")}
+              </SortableTableHead>
               <TableHead>{t("fields.sku")}</TableHead>
-              <TableHead className="text-right">{t("fields.price")}</TableHead>
-              <TableHead className="text-right">{t("fields.cost")}</TableHead>
+              <SortableTableHead
+                sortKey="basePrice"
+                currentSort={sort}
+                currentDir={dir}
+                align="right"
+              >
+                {t("fields.price")}
+              </SortableTableHead>
+              <SortableTableHead
+                sortKey="baseCost"
+                currentSort={sort}
+                currentDir={dir}
+                align="right"
+              >
+                {t("fields.cost")}
+              </SortableTableHead>
               <TableHead>{t("fields.status")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {items.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="py-10 text-center text-sm text-muted-foreground"
-                >
-                  {t("empty")}
+                <TableCell colSpan={5}>
+                  <ModuleEmptyState
+                    hasFilters={hasFilters}
+                    emptyText={t("emptyNoData")}
+                    noResultsText={t("empty")}
+                  />
                 </TableCell>
               </TableRow>
             ) : (
@@ -103,12 +138,13 @@ export default async function ProductsPage({
                   <TableCell className="text-right text-muted-foreground">
                     {formatCurrency(Number(product.baseCost ?? 0), locale)}
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="relative pr-6">
                     <Badge variant={product.isActive ? "success" : "secondary"}>
                       {product.isActive
                         ? tCommon("status.active")
                         : tCommon("status.inactive")}
                     </Badge>
+                    <RowActionHint />
                   </TableCell>
                 </TableRow>
               ))

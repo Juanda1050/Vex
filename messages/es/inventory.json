@@ -22,6 +22,7 @@
   },
   "description": "Posiciones de stock por almacén.",
   "empty": "No se encontraron posiciones de inventario.",
+  "emptyNoData": "Aún no hay posiciones de inventario registradas.",
   "lowStockOnly": "Solo stock bajo",
   "lowStockBadge": "Stock bajo",
   "errors": {

@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { LogOut, Settings } from "lucide-react";
+import { ChevronDown, LogOut, Settings } from "lucide-react";
 
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -61,12 +61,12 @@ function UserMenu({
         render={
           <button
             type="button"
-            className="inline-flex items-center gap-2 px-1 py-1 transition hover:opacity-85"
+            className="group inline-flex items-center gap-2 rounded-full py-1 pr-2 pl-1 transition hover:bg-accent/55 data-popup-open:bg-accent/55"
             aria-label={ariaLabel ?? tDashboard("openUserMenu")}
           />
         }
       >
-        <span className="inline-flex size-7 items-center justify-center overflow-hidden rounded-full border border-primary/25 bg-primary/10 text-xs font-semibold text-primary">
+        <span className="inline-flex size-8 items-center justify-center overflow-hidden rounded-full border border-primary/25 bg-primary/10 text-xs font-semibold text-primary">
           {avatarUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -82,6 +82,7 @@ function UserMenu({
         <span className="hidden max-w-32 truncate text-left text-xs font-medium text-foreground sm:inline">
           {displayName}
         </span>
+        <ChevronDown className="hidden size-3.5 text-muted-foreground transition-transform duration-150 ease-out group-data-popup-open:rotate-180 sm:inline" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-64">
         <DropdownMenuGroup>
@@ -93,20 +94,25 @@ function UserMenu({
           </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <div className="flex items-center justify-between gap-2 px-2 py-1.5">
-          <span className="text-xs font-medium text-muted-foreground">
-            {tSettings("fields.language")}
-          </span>
-          <LanguageSwitcher
-            locale={locale}
-            className="rounded-full bg-muted p-0.5"
-          />
-        </div>
-        <div className="flex items-center justify-between gap-2 px-2 py-1.5">
-          <span className="text-xs font-medium text-muted-foreground">
-            {tSettings("preferences.theme")}
-          </span>
-          <ThemeToggle className="rounded-full border-0 bg-muted shadow-none hover:bg-accent" />
+        <div className="space-y-2 px-2 py-1.5">
+          <p className="text-caption text-muted-foreground">
+            {tSettings("sections.preferences")}
+          </p>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs text-muted-foreground">
+              {tSettings("fields.language")}
+            </span>
+            <LanguageSwitcher
+              locale={locale}
+              className="rounded-full bg-muted p-0.5"
+            />
+          </div>
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs text-muted-foreground">
+              {tSettings("preferences.theme")}
+            </span>
+            <ThemeToggle className="rounded-full border-0 bg-muted shadow-none hover:bg-accent" />
+          </div>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => router.push(settingsPath)}>

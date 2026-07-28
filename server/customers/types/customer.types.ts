@@ -3,6 +3,8 @@ export interface CustomerFilters {
   pageSize: number;
   search?: string;
   isActive?: boolean;
+  sort?: "name" | "creditLimit";
+  dir?: "asc" | "desc";
 }
 
 export interface CreateCustomerInput {

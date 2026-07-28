@@ -33,6 +33,12 @@ export class InventoryRepository {
       variantId: filters.variantId,
     };
 
+    const dir = filters.dir ?? "desc";
+    const orderBy =
+      filters.sort === "quantityOnHand"
+        ? [{ quantityOnHand: dir }]
+        : [{ updatedAt: "desc" as const }];
+
     if (!filters.lowStockOnly) {
       const [total, items] = await prisma.$transaction([
         prisma.inventory.count({ where: baseWhere }),
@@ -43,7 +49,7 @@ export class InventoryRepository {
             product: true,
             variant: true,
           },
-          orderBy: [{ updatedAt: "desc" }],
+          orderBy,
           skip,
           take: filters.pageSize,
         }),
@@ -78,6 +84,10 @@ export class InventoryRepository {
     }
 
     const whereClause = Prisma.join(sqlConditions, " AND ");
+    const rawOrderBy =
+      filters.sort === "quantityOnHand"
+        ? Prisma.sql`i."quantityOnHand" ${dir === "asc" ? Prisma.sql`ASC` : Prisma.sql`DESC`}`
+        : Prisma.sql`i."updatedAt" DESC`;
 
     const [countRows, lowStockIdRows] = await Promise.all([
       prisma.$queryRaw<Array<{ count: number }>>`
@@ -91,7 +101,7 @@ export class InventoryRepository {
         FROM inventory i
         WHERE ${whereClause}
           AND i."quantityOnHand" <= i."minStock"
-        ORDER BY i."updatedAt" DESC
+        ORDER BY ${rawOrderBy}
         LIMIT ${filters.pageSize}
         OFFSET ${skip}
       `,

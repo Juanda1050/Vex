@@ -2,6 +2,7 @@ import type { getTranslations } from "next-intl/server";
 import { TriangleAlert } from "lucide-react";
 
 import { DashboardCardLink } from "@/components/dashboard/dashboard-toolbar";
+import { Sparkline } from "@/components/dashboard/sparkline";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   formatCurrency,
@@ -46,6 +47,7 @@ function DashboardMetricCards({
       }),
       href: getDashboardModuleRoute("sales", locale),
       icon: getModuleIcon("sales"),
+      sparklineValues: overview.revenue.buckets.map((bucket) => bucket.total),
     },
     {
       id: "customers",
@@ -58,6 +60,10 @@ function DashboardMetricCards({
       }),
       href: getDashboardModuleRoute("sales", locale),
       icon: getModuleIcon("customers"),
+      sparklineValues: [
+        overview.customers.previous,
+        overview.customers.current,
+      ],
     },
     {
       id: "inventory",
@@ -78,6 +84,7 @@ function DashboardMetricCards({
           : tDashboard("noData"),
       href: getDashboardModuleRoute("inventory", locale),
       icon: TriangleAlert,
+      sparklineValues: undefined as number[] | undefined,
     },
     {
       id: "quotes",
@@ -94,6 +101,7 @@ function DashboardMetricCards({
           : tDashboard("noQuotesYet"),
       href: getDashboardModuleRoute("quotes", locale),
       icon: getModuleIcon("quotes"),
+      sparklineValues: undefined as number[] | undefined,
     },
   ];
 
@@ -107,6 +115,12 @@ function DashboardMetricCards({
             : metric.trendTone === "negative"
               ? "bg-destructive/12 text-destructive"
               : "bg-muted text-muted-foreground";
+        const sparklineToneClass =
+          metric.trendTone === "positive"
+            ? "text-success"
+            : metric.trendTone === "negative"
+              ? "text-destructive"
+              : "text-muted-foreground";
 
         return (
           <Card
@@ -120,9 +134,7 @@ function DashboardMetricCards({
                     {metric.title}
                   </p>
                   <div className="space-y-2">
-                    <p className="text-h1 text-foreground">
-                      {metric.value}
-                    </p>
+                    <p className="text-h1 text-foreground">{metric.value}</p>
                     <span
                       className={`rounded-full px-2 py-1 text-xs font-medium ${toneClass}`}
                     >
@@ -131,8 +143,16 @@ function DashboardMetricCards({
                   </div>
                 </div>
 
-                <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  <Icon className="size-5" />
+                <div className="flex flex-col items-end gap-2">
+                  <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <Icon className="size-5" />
+                  </div>
+                  {metric.sparklineValues ? (
+                    <Sparkline
+                      values={metric.sparklineValues}
+                      className={sparklineToneClass}
+                    />
+                  ) : null}
                 </div>
               </div>
 

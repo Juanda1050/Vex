@@ -3,6 +3,7 @@
   "description": "Manage tenant members and their roles.",
   "searchPlaceholder": "Search by email or role",
   "empty": "No users found.",
+  "emptyNoData": "You don't have any users yet.",
   "fields": {
     "name": "Name",
     "email": "Email",

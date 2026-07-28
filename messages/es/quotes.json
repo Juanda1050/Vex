@@ -3,6 +3,7 @@
   "description": "Da seguimiento a las cotizaciones del embudo comercial.",
   "searchPlaceholder": "Buscar por número, cliente o notas",
   "empty": "No se encontraron cotizaciones.",
+  "emptyNoData": "Aún no tienes cotizaciones registradas.",
   "fields": {
     "number": "Número",
     "customer": "Cliente",

@@ -1,11 +1,15 @@
+import Link from "next/link";
 import type { getTranslations } from "next-intl/server";
+import { TrendingUp } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
 import {
   formatChartBucketLabel,
   formatCurrency,
 } from "@/lib/dashboard/dashboard-formatters";
 import type { DashboardPeriod } from "@/lib/dashboard/dashboard-filters";
+import { cn } from "@/lib/utils";
 import type { getDashboardOverview } from "@/server/dashboard/get-dashboard-overview";
 
 type Translator = Awaited<ReturnType<typeof getTranslations>>;
@@ -52,8 +56,17 @@ function RevenueChartCard({
         </div>
 
         {overview.revenue.maxBucketTotal === 0 ? (
-          <div className="mt-8 rounded-3xl border border-dashed border-border/80 bg-muted/35 px-5 py-12 text-center text-sm text-muted-foreground">
-            {tDashboard("noSalesInRange")}
+          <div className="mt-8 flex flex-col items-center gap-3 rounded-3xl border border-dashed border-border/80 bg-muted/35 px-5 py-12 text-center">
+            <TrendingUp className="size-6 text-muted-foreground/70" />
+            <p className="text-sm text-muted-foreground">
+              {tDashboard("noSalesInRange")}
+            </p>
+            <Link
+              href={`/${locale}/pos`}
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+            >
+              {tDashboard("goToPos")}
+            </Link>
           </div>
         ) : (
           <div className="mt-8 grid gap-4 lg:grid-cols-[44px_minmax(0,1fr)]">
@@ -85,35 +98,50 @@ function RevenueChartCard({
                 );
                 const isHighlighted =
                   index === overview.revenue.highlightedBucketIndex;
+                const bucketLabel = formatChartBucketLabel(
+                  bucket,
+                  locale,
+                  period,
+                );
 
                 return (
                   <div
                     key={`${bucket.start.toISOString()}-${index}`}
-                    className="relative z-10 flex flex-1 flex-col items-center justify-end gap-3"
+                    className="group relative z-10 flex flex-1 flex-col items-center justify-end gap-3"
                   >
                     <div className="relative flex h-full w-full items-end justify-center">
-                      {isHighlighted ? (
-                        <div className="absolute -top-9 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground shadow-lg">
+                      <div
+                        className={[
+                          "pointer-events-none absolute -top-10 z-20 flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-xs whitespace-nowrap shadow-lg transition-opacity duration-150 ease-out",
+                          isHighlighted
+                            ? "bg-primary text-primary-foreground opacity-100"
+                            : "bg-foreground text-background opacity-0 group-hover:opacity-100",
+                        ].join(" ")}
+                      >
+                        <span className="font-medium">
                           {formatCurrency(
                             bucket.total,
                             locale,
                             overview.currency,
                           )}
-                        </div>
-                      ) : null}
+                        </span>
+                        <span className="text-[10px] opacity-80">
+                          {bucketLabel}
+                        </span>
+                      </div>
 
                       <div
                         className={[
                           "w-full rounded-[999px] transition-all",
                           isHighlighted
                             ? "bg-linear-to-b from-primary to-primary/85 shadow-[0_16px_32px_hsl(var(--primary)/0.28)]"
-                            : "bg-linear-to-b from-primary/80 to-primary/60",
+                            : "bg-linear-to-b from-primary/80 to-primary/60 group-hover:from-primary/90 group-hover:to-primary/70",
                         ].join(" ")}
                         style={{ height: `${height}%` }}
                       />
                     </div>
-                    <span className="text-center text-[11px] font-medium leading-4 text-muted-foreground">
-                      {formatChartBucketLabel(bucket, locale, period)}
+                    <span className="text-center text-[11px] leading-4 font-medium text-muted-foreground">
+                      {bucketLabel}
                     </span>
                   </div>
                 );

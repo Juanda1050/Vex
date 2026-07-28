@@ -5,6 +5,8 @@ export interface InventoryFilters {
   productId?: string;
   variantId?: string;
   lowStockOnly?: boolean;
+  sort?: "quantityOnHand";
+  dir?: "asc" | "desc";
 }
 
 export interface RegisterStockMovementInput {

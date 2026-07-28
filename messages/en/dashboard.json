@@ -47,8 +47,14 @@
   "units": "units",
   "noData": "No data available yet",
   "noSalesInRange": "No sales were recorded in the selected range.",
+  "goToPos": "Go to register",
   "quoteStatusTitle": "Quote status distribution",
   "noQuotesYet": "No quotes yet.",
+  "pipelineLegend": {
+    "positive": "Accepted / converted",
+    "neutral": "In progress",
+    "negative": "Rejected / expired"
+  },
   "totalSalesLabel": "Total sales recorded: {amount}",
   "filters": {
     "period": {

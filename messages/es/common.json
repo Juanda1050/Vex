@@ -8,6 +8,8 @@
   "loading": "Cargando...",
   "noResults": "Sin resultados",
   "all": "Todos",
+  "clearFilter": "Limpiar",
+  "activeFilters": "Filtros activos",
   "confirm": "Confirmar",
   "back": "Regresar",
   "actions": "Acciones",

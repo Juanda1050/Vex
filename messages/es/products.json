@@ -7,6 +7,7 @@
   "description": "Catálogo de productos, precios y atributos.",
   "searchPlaceholder": "Buscar por nombre, SKU o código interno",
   "empty": "No se encontraron productos.",
+  "emptyNoData": "Aún no tienes productos registrados.",
   "fields": {
     "name": "Nombre",
     "sku": "SKU",

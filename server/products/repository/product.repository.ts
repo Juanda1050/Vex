@@ -70,12 +70,21 @@ export class ProductRepository {
     };
 
     const skip = (filters.page - 1) * filters.pageSize;
+    const dir = filters.dir ?? "desc";
+    const orderBy =
+      filters.sort === "name"
+        ? [{ name: dir }]
+        : filters.sort === "basePrice"
+          ? [{ basePrice: dir }]
+          : filters.sort === "baseCost"
+            ? [{ baseCost: dir }]
+            : [{ createdAt: "desc" as const }];
 
     const [total, items] = await prisma.$transaction([
       prisma.product.count({ where }),
       prisma.product.findMany({
         where,
-        orderBy: [{ createdAt: "desc" }],
+        orderBy,
         skip,
         take: filters.pageSize,
       }),

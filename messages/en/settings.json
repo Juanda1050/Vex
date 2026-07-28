@@ -13,7 +13,16 @@
     "companyData": "Company Data",
     "companyDataDescription": "Update the corporate profile shown across the workspace.",
     "preferences": "Preferences",
-    "preferencesDescription": "Theme and language are kept in sync with the current session."
+    "preferencesDescription": "Theme and language are kept in sync with the current session.",
+    "groups": {
+      "account": "Account",
+      "workspace": "Workspace"
+    },
+    "companyGroups": {
+      "identity": "Identity",
+      "contact": "Contact",
+      "branding": "Branding"
+    }
   },
   "security": {
     "changePassword": "Change password",
@@ -40,6 +49,7 @@
   },
   "messages": {
     "saved": "Settings saved",
+    "saving": "Saving...",
     "profileSaved": "Profile updated successfully.",
     "passwordUpdated": "Password updated successfully.",
     "companySaved": "Company data updated successfully.",
@@ -69,6 +79,9 @@
     "hint": "Applies instantly and syncs to every device you sign into.",
     "saving": "Saving...",
     "saved": "Saved",
+    "previewLabel": "Preview",
+    "previewButton": "Button",
+    "previewBadge": "Badge",
     "colors": {
       "blue": "Blue",
       "cyan": "Cyan",
@@ -121,7 +134,8 @@
   "account": {
     "title": "Account & access",
     "description": "Log out securely from your current workspace session.",
-    "logout": "Log out"
+    "logout": "Log out",
+    "dangerZone": "Danger zone"
   },
   "subscriptions": {
     "badge": "Plan management",

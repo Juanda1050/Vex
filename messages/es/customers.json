@@ -3,6 +3,7 @@
   "description": "Administra los clientes y su relación comercial.",
   "searchPlaceholder": "Buscar por nombre, correo o teléfono",
   "empty": "No se encontraron clientes.",
+  "emptyNoData": "Aún no tienes clientes registrados.",
   "fields": {
     "name": "Nombre",
     "email": "Correo",

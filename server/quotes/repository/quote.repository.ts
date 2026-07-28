@@ -335,6 +335,15 @@ export class QuoteRepository {
     };
 
     const skip = (filters.page - 1) * filters.pageSize;
+    const dir = filters.dir ?? "desc";
+    const orderBy =
+      filters.sort === "total"
+        ? [{ total: dir }]
+        : filters.sort === "validUntil"
+          ? [{ validUntil: dir }]
+          : filters.sort === "createdAt"
+            ? [{ createdAt: dir }]
+            : [{ createdAt: "desc" as const }];
 
     const [total, items] = await prisma.$transaction([
       prisma.quote.count({ where }),
@@ -359,7 +368,7 @@ export class QuoteRepository {
             },
           },
         },
-        orderBy: [{ createdAt: "desc" }],
+        orderBy,
         skip,
         take: filters.pageSize,
       }),

@@ -3,6 +3,7 @@
   "description": "Track quotes across the sales pipeline.",
   "searchPlaceholder": "Search by number, customer or notes",
   "empty": "No quotes found.",
+  "emptyNoData": "You don't have any quotes yet.",
   "fields": {
     "number": "Number",
     "customer": "Customer",

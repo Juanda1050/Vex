@@ -3,6 +3,7 @@
   "description": "Manage customer records and their commercial relationship.",
   "searchPlaceholder": "Search by name, email or phone",
   "empty": "No customers found.",
+  "emptyNoData": "You don't have any customers yet.",
   "fields": {
     "name": "Name",
     "email": "Email",

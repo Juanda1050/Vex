@@ -24,6 +24,7 @@ import {
   updateProfileAction,
   type ActionResult,
 } from "@/app/actions/settings";
+import { InlineSaveStatus } from "@/components/settings/inline-save-status";
 import { PreferencesPanel } from "@/components/settings/preferences-panel";
 import { SettingsPlanComparison } from "@/components/subscriptions/settings-plan-comparison";
 import { Badge } from "@/components/ui/badge";
@@ -304,9 +305,15 @@ function ProfileSecurityCard({
             </p>
           ) : null}
 
-          <Button type="submit" disabled={profilePending} className="w-fit">
-            {t("actions.saveProfile")}
-          </Button>
+          <div className="flex items-center gap-3">
+            <Button type="submit" disabled={profilePending} className="w-fit">
+              {t("actions.saveProfile")}
+            </Button>
+            <InlineSaveStatus
+              pending={profilePending}
+              success={profileState.success}
+            />
+          </div>
         </form>
 
         {!isOAuthLocked ? (
@@ -348,14 +355,20 @@ function ProfileSecurityCard({
                 />
               </div>
             </div>
-            <Button
-              type="submit"
-              variant="outline"
-              disabled={passwordPending}
-              className="w-fit"
-            >
-              {t("actions.updatePassword")}
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button
+                type="submit"
+                variant="outline"
+                disabled={passwordPending}
+                className="w-fit"
+              >
+                {t("actions.updatePassword")}
+              </Button>
+              <InlineSaveStatus
+                pending={passwordPending}
+                success={passwordState.success}
+              />
+            </div>
           </form>
         ) : null}
       </CardContent>
@@ -387,74 +400,98 @@ function CompanyCard({ tenant }: { tenant: TenantSnapshot }) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form action={companyAction} className="grid gap-4 sm:grid-cols-2">
-          <div className="grid gap-2 sm:col-span-2">
-            <Label htmlFor="company-name">{t("fields.companyName")}</Label>
-            <Input
-              id="company-name"
-              name="name"
-              defaultValue={tenant.name}
-              disabled={companyPending}
-              required
+        <form action={companyAction} className="space-y-6">
+          <fieldset className="grid gap-4 sm:grid-cols-2">
+            <legend className="text-caption col-span-full mb-1 text-muted-foreground">
+              {t("sections.companyGroups.identity")}
+            </legend>
+            <div className="grid gap-2 sm:col-span-2">
+              <Label htmlFor="company-name">{t("fields.companyName")}</Label>
+              <Input
+                id="company-name"
+                name="name"
+                defaultValue={tenant.name}
+                disabled={companyPending}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="legalName">{t("fields.legalName")}</Label>
+              <Input
+                id="legalName"
+                name="legalName"
+                defaultValue={tenant.legalName ?? ""}
+                disabled={companyPending}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="industry">{t("fields.industry")}</Label>
+              <Input
+                id="industry"
+                name="industry"
+                defaultValue={tenant.industry ?? ""}
+                disabled={companyPending}
+              />
+            </div>
+          </fieldset>
+
+          <fieldset className="grid gap-4 sm:grid-cols-2">
+            <legend className="text-caption col-span-full mb-1 text-muted-foreground">
+              {t("sections.companyGroups.contact")}
+            </legend>
+            <div className="grid gap-2">
+              <Label htmlFor="countryCode">{t("fields.countryCode")}</Label>
+              <Input
+                id="countryCode"
+                name="countryCode"
+                defaultValue={tenant.countryCode ?? ""}
+                disabled={companyPending}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="phone">{t("fields.phone")}</Label>
+              <Input
+                id="phone"
+                name="phone"
+                defaultValue={tenant.phone ?? ""}
+                disabled={companyPending}
+              />
+            </div>
+            <div className="grid gap-2 sm:col-span-2">
+              <Label htmlFor="address">{t("fields.address")}</Label>
+              <Textarea
+                id="address"
+                name="address"
+                defaultValue={tenant.address ?? ""}
+                disabled={companyPending}
+              />
+            </div>
+          </fieldset>
+
+          <fieldset className="grid gap-4">
+            <legend className="text-caption mb-1 text-muted-foreground">
+              {t("sections.companyGroups.branding")}
+            </legend>
+            <div className="grid gap-2">
+              <Label htmlFor="logoUrl">{t("fields.logoUrl")}</Label>
+              <Input
+                id="logoUrl"
+                name="logoUrl"
+                defaultValue={tenant.logoUrl ?? ""}
+                disabled={companyPending}
+              />
+            </div>
+          </fieldset>
+
+          <div className="flex items-center gap-3">
+            <Button type="submit" className="w-fit" disabled={companyPending}>
+              {t("actions.saveCompany")}
+            </Button>
+            <InlineSaveStatus
+              pending={companyPending}
+              success={companyState.success}
             />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="legalName">{t("fields.legalName")}</Label>
-            <Input
-              id="legalName"
-              name="legalName"
-              defaultValue={tenant.legalName ?? ""}
-              disabled={companyPending}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="industry">{t("fields.industry")}</Label>
-            <Input
-              id="industry"
-              name="industry"
-              defaultValue={tenant.industry ?? ""}
-              disabled={companyPending}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="countryCode">{t("fields.countryCode")}</Label>
-            <Input
-              id="countryCode"
-              name="countryCode"
-              defaultValue={tenant.countryCode ?? ""}
-              disabled={companyPending}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="phone">{t("fields.phone")}</Label>
-            <Input
-              id="phone"
-              name="phone"
-              defaultValue={tenant.phone ?? ""}
-              disabled={companyPending}
-            />
-          </div>
-          <div className="grid gap-2 sm:col-span-2">
-            <Label htmlFor="address">{t("fields.address")}</Label>
-            <Textarea
-              id="address"
-              name="address"
-              defaultValue={tenant.address ?? ""}
-              disabled={companyPending}
-            />
-          </div>
-          <div className="grid gap-2 sm:col-span-2">
-            <Label htmlFor="logoUrl">{t("fields.logoUrl")}</Label>
-            <Input
-              id="logoUrl"
-              name="logoUrl"
-              defaultValue={tenant.logoUrl ?? ""}
-              disabled={companyPending}
-            />
-          </div>
-          <Button type="submit" className="w-fit" disabled={companyPending}>
-            {t("actions.saveCompany")}
-          </Button>
         </form>
       </CardContent>
     </Card>
@@ -781,34 +818,62 @@ export function SettingsDashboard({
         id: "profile-security",
         label: t("sections.profileSecurity"),
         visible: true,
-      },
-      {
-        id: "company-members",
-        label: t("sections.companyMembers"),
-        visible: canManageCompanySections,
-      },
-      {
-        id: "billing-section",
-        label: t("sections.billing"),
-        visible: canManageCompanySections,
-      },
-      {
-        id: "company-data",
-        label: t("sections.companyData"),
-        visible: canManageCompanySections,
+        group: "account" as const,
       },
       {
         id: "preferences-section",
         label: t("sections.preferences"),
         visible: true,
+        group: "account" as const,
+      },
+      {
+        id: "company-members",
+        label: t("sections.companyMembers"),
+        visible: canManageCompanySections,
+        group: "workspace" as const,
+      },
+      {
+        id: "billing-section",
+        label: t("sections.billing"),
+        visible: canManageCompanySections,
+        group: "workspace" as const,
+      },
+      {
+        id: "company-data",
+        label: t("sections.companyData"),
+        visible: canManageCompanySections,
+        group: "workspace" as const,
       },
     ],
     [canManageCompanySections, t],
   );
 
+  const visibleSidebarItems = sidebarItems.filter((item) => item.visible);
+  const accountItems = visibleSidebarItems.filter(
+    (item) => item.group === "account",
+  );
+  const workspaceItems = visibleSidebarItems.filter(
+    (item) => item.group === "workspace",
+  );
+
   return (
     <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="lg:sticky lg:top-6 lg:self-start">
+      <nav
+        aria-label={t("title")}
+        className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-1 lg:hidden"
+      >
+        {visibleSidebarItems.map((item) => (
+          <a
+            key={item.id}
+            href={`#${item.id}`}
+            className="shrink-0 rounded-full border border-border/80 bg-card/70 px-3.5 py-1.5 text-xs font-medium whitespace-nowrap text-foreground transition hover:border-border"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      <aside className="hidden lg:sticky lg:top-6 lg:block lg:self-start">
         <Card className="border-border/80 bg-card/90">
           <CardHeader className="space-y-3">
             <Badge variant="info" className="w-fit">
@@ -819,21 +884,46 @@ export function SettingsDashboard({
               <CardDescription>{tenant.name}</CardDescription>
             </div>
           </CardHeader>
-          <CardContent className="space-y-2">
-            {sidebarItems
-              .filter((item) => item.visible)
-              .map((item) => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  className={cn(
-                    buttonVariants({ variant: "ghost", size: "sm" }),
-                    "w-full justify-start",
-                  )}
-                >
-                  {item.label}
-                </a>
-              ))}
+          <CardContent className="space-y-4">
+            {accountItems.length > 0 ? (
+              <div className="space-y-1">
+                <p className="text-caption px-2.5 text-muted-foreground">
+                  {t("sections.groups.account")}
+                </p>
+                {accountItems.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "sm" }),
+                      "w-full justify-start",
+                    )}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            ) : null}
+
+            {workspaceItems.length > 0 ? (
+              <div className="space-y-1">
+                <p className="text-caption px-2.5 text-muted-foreground">
+                  {t("sections.groups.workspace")}
+                </p>
+                {workspaceItems.map((item) => (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "sm" }),
+                      "w-full justify-start",
+                    )}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            ) : null}
           </CardContent>
         </Card>
       </aside>

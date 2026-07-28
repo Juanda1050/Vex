@@ -28,6 +28,19 @@ type AppShellProps = {
   mobileNavTriggerLabel?: string;
 };
 
+function BrandMark({ className }: { className?: string }) {
+  return (
+    <div className={cn("flex items-center gap-2.5", className)}>
+      <div className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-primary text-sm font-bold text-primary-foreground shadow-sm">
+        V
+      </div>
+      <p className="brand-wordmark text-xs tracking-[0.24em] text-foreground/90">
+        Vex
+      </p>
+    </div>
+  );
+}
+
 function AppShell({
   children,
   sidebar,
@@ -73,15 +86,16 @@ function AppShell({
 
         <main className="min-w-0">
           <div className="flex min-w-0 flex-col gap-4 animate-in fade-in-0 slide-in-from-bottom-2 duration-500 md:gap-6">
-            <div className="glass-soft flex items-center justify-between gap-3 rounded-xl px-4 py-3 lg:hidden">
-              <div className="min-w-0">
-                <p className="brand-wordmark text-xs tracking-[0.26em] text-muted-foreground">
-                  Vex
-                </p>
+            <div className="glass-soft sticky top-4 z-40 flex items-center justify-between gap-3 rounded-xl px-4 py-3 lg:hidden">
+              <div className="flex min-w-0 items-center gap-3">
+                <BrandMark />
                 {title ? (
-                  <p className="truncate text-sm font-medium text-foreground">
-                    {title}
-                  </p>
+                  <>
+                    <div className="h-6 w-px shrink-0 bg-border/70" />
+                    <p className="truncate text-sm font-medium text-foreground">
+                      {title}
+                    </p>
+                  </>
                 ) : null}
               </div>
               <div className="flex items-center gap-2">
@@ -101,21 +115,23 @@ function AppShell({
                 />
               </div>
             </div>
-            <div className="glass-panel hidden items-center justify-between gap-3 rounded-2xl px-5 py-4 lg:flex">
-              <div className="flex min-w-0 items-center gap-5">
-                <div>
-                  <p className="brand-wordmark text-xs tracking-[0.24em] text-primary/90 uppercase">
-                    Vex
-                  </p>
-                  {title ? (
-                    <p className="text-sm text-muted-foreground">{title}</p>
-                  ) : null}
-                </div>
+            <div className="glass-panel sticky top-4 z-40 hidden items-center justify-between gap-4 rounded-2xl px-5 py-3.5 lg:flex">
+              <div className="flex min-w-0 items-center gap-4">
+                <BrandMark />
+                <div className="h-7 w-px shrink-0 bg-border/70" />
                 {topNavigationItems && topNavigationItems.length > 0 ? (
                   <TopNavigation items={topNavigationItems} />
                 ) : null}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
+                {title ? (
+                  <>
+                    <p className="max-w-48 truncate text-sm text-muted-foreground">
+                      {title}
+                    </p>
+                    <div className="h-6 w-px shrink-0 bg-border/70" />
+                  </>
+                ) : null}
                 <UserMenu
                   locale={locale}
                   name={userName}

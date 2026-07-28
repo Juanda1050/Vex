@@ -6,6 +6,8 @@ export interface ProductFilters {
   brandId?: string;
   unitId?: string;
   isActive?: boolean;
+  sort?: "name" | "basePrice" | "baseCost";
+  dir?: "asc" | "desc";
 }
 
 export interface CreateProductInput {

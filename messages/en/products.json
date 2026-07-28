@@ -7,6 +7,7 @@
   "description": "Catalog of products, pricing and attributes.",
   "searchPlaceholder": "Search by name, SKU or internal code",
   "empty": "No products found.",
+  "emptyNoData": "You don't have any products yet.",
   "fields": {
     "name": "Name",
     "sku": "SKU",

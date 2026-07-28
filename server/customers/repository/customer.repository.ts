@@ -67,12 +67,19 @@ export class CustomerRepository {
     };
 
     const skip = (filters.page - 1) * filters.pageSize;
+    const dir = filters.dir ?? "desc";
+    const orderBy =
+      filters.sort === "name"
+        ? [{ name: dir }]
+        : filters.sort === "creditLimit"
+          ? [{ creditLimit: dir }]
+          : [{ createdAt: "desc" as const }];
 
     const [total, items] = await prisma.$transaction([
       prisma.customer.count({ where }),
       prisma.customer.findMany({
         where,
-        orderBy: [{ createdAt: "desc" }],
+        orderBy,
         skip,
         take: filters.pageSize,
       }),

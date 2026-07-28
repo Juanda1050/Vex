@@ -4,6 +4,7 @@
   "description": "Orders recorded across every branch.",
   "searchPlaceholder": "Search by number, customer or notes",
   "empty": "No sales found.",
+  "emptyNoData": "You don't have any sales yet.",
   "fields": {
     "number": "Number",
     "branch": "Branch",

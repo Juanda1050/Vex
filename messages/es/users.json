@@ -3,6 +3,7 @@
   "description": "Administra los miembros del tenant y sus roles.",
   "searchPlaceholder": "Buscar por correo o rol",
   "empty": "No se encontraron usuarios.",
+  "emptyNoData": "Aún no tienes usuarios registrados.",
   "fields": {
     "name": "Nombre",
     "email": "Correo",

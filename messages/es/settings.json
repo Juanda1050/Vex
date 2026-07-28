@@ -13,7 +13,16 @@
     "companyData": "Datos de empresa",
     "companyDataDescription": "Actualiza el perfil corporativo que se muestra en todo el workspace.",
     "preferences": "Preferencias",
-    "preferencesDescription": "Tema e idioma sincronizados con la sesión actual."
+    "preferencesDescription": "Tema e idioma sincronizados con la sesión actual.",
+    "groups": {
+      "account": "Cuenta",
+      "workspace": "Workspace"
+    },
+    "companyGroups": {
+      "identity": "Identidad",
+      "contact": "Contacto",
+      "branding": "Branding"
+    }
   },
   "security": {
     "changePassword": "Cambiar contraseña",
@@ -40,6 +49,7 @@
   },
   "messages": {
     "saved": "Configuración guardada",
+    "saving": "Guardando...",
     "profileSaved": "Perfil actualizado correctamente.",
     "passwordUpdated": "Contraseña actualizada correctamente.",
     "companySaved": "Datos de empresa actualizados correctamente.",
@@ -69,6 +79,9 @@
     "hint": "Se aplica al instante y se sincroniza en cada dispositivo donde inicies sesión.",
     "saving": "Guardando...",
     "saved": "Guardado",
+    "previewLabel": "Vista previa",
+    "previewButton": "Botón",
+    "previewBadge": "Insignia",
     "colors": {
       "blue": "Azul",
       "cyan": "Cian",
@@ -121,7 +134,8 @@
   "account": {
     "title": "Cuenta y acceso",
     "description": "Cierra sesión de forma segura en tu espacio de trabajo actual.",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "dangerZone": "Zona de peligro"
   },
   "subscriptions": {
     "badge": "Gestión de plan",

@@ -1,10 +1,18 @@
 "use client";
 
-import { startTransition, useActionState, useSyncExternalStore } from "react";
+import {
+  startTransition,
+  useActionState,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { useTranslations } from "next-intl";
 import { CheckIcon } from "lucide-react";
 
-import { updateThemeColorAction, type ActionResult } from "@/app/actions/settings";
+import {
+  updateThemeColorAction,
+  type ActionResult,
+} from "@/app/actions/settings";
 import { cn } from "@/lib/utils";
 import {
   ACCENT_COLOR_KEYS,
@@ -42,6 +50,8 @@ function ThemeColorPicker() {
     updateThemeColorAction,
     initialState,
   );
+  const [previewKey, setPreviewKey] = useState<AccentColorKey | null>(null);
+  const previewedKey = previewKey ?? selected;
 
   const applyColor = (key: AccentColorKey) => {
     document.documentElement.setAttribute("data-accent", key);
@@ -56,7 +66,7 @@ function ThemeColorPicker() {
   };
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
         {ACCENT_COLOR_KEYS.map((key) => {
           const isSelected = key === selected;
@@ -66,6 +76,10 @@ function ThemeColorPicker() {
               key={key}
               type="button"
               onClick={() => applyColor(key)}
+              onMouseEnter={() => setPreviewKey(key)}
+              onMouseLeave={() => setPreviewKey(null)}
+              onFocus={() => setPreviewKey(key)}
+              onBlur={() => setPreviewKey(null)}
               aria-pressed={isSelected}
               aria-label={t(`appearance.colors.${key}`)}
               title={t(`appearance.colors.${key}`)}
@@ -94,6 +108,28 @@ function ThemeColorPicker() {
             </button>
           );
         })}
+      </div>
+
+      <div className="flex items-center gap-3 rounded-lg border border-border/70 bg-muted/30 px-3.5 py-3">
+        <span className="text-xs font-medium text-muted-foreground">
+          {t("appearance.previewLabel")}
+        </span>
+        <button
+          type="button"
+          tabIndex={-1}
+          className="rounded-md px-3 py-1.5 text-xs font-medium text-white shadow-sm transition"
+          style={{ background: `hsl(var(--accent-swatch-${previewedKey}))` }}
+        >
+          {t("appearance.previewButton")}
+        </button>
+        <span
+          className="rounded-full px-2.5 py-1 text-xs font-medium text-white transition"
+          style={{
+            background: `hsl(var(--accent-swatch-${previewedKey}) / 0.85)`,
+          }}
+        >
+          {t("appearance.previewBadge")}
+        </span>
       </div>
 
       <p className="text-xs text-muted-foreground" aria-live="polite">

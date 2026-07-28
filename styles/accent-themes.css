@@ -1,0 +1,161 @@
+/* Per-user accent color overrides, applied via html[data-accent="<key>"].
+   Only --primary/--accent/--ring (+ foregrounds) need overriding — chart-1,
+   chart-2, sidebar-primary and sidebar-ring already alias them in tokens.css. */
+
+:root {
+  /* Static swatch-preview colors, independent of the currently active accent —
+     used by the settings color picker to render all options at once. */
+  --accent-swatch-blue: 214 88% 47%;
+  --accent-swatch-cyan: 190 82% 42%;
+  --accent-swatch-teal: 173 72% 34%;
+  --accent-swatch-green: 142 68% 36%;
+  --accent-swatch-orange: 25 88% 48%;
+  --accent-swatch-red: 0 78% 50%;
+  --accent-swatch-pink: 330 78% 50%;
+  --accent-swatch-fuchsia: 292 72% 48%;
+  --accent-swatch-purple: 262 72% 52%;
+}
+
+html[data-accent="blue"] {
+  --primary: 214 88% 47%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 193 79% 90%;
+  --accent-foreground: 198 68% 22%;
+  --ring: 214 88% 52%;
+}
+
+html[data-accent="blue"].dark {
+  --primary: 224 76% 58%;
+  --primary-foreground: 210 40% 98%;
+  --accent: 223 46% 19%;
+  --accent-foreground: 214 48% 90%;
+  --ring: 224 76% 58%;
+}
+
+html[data-accent="cyan"] {
+  --primary: 190 82% 42%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 190 70% 92%;
+  --accent-foreground: 190 60% 22%;
+  --ring: 190 82% 46%;
+}
+
+html[data-accent="cyan"].dark {
+  --primary: 190 74% 54%;
+  --primary-foreground: 210 40% 8%;
+  --accent: 190 40% 18%;
+  --accent-foreground: 190 55% 86%;
+  --ring: 190 74% 54%;
+}
+
+html[data-accent="teal"] {
+  --primary: 173 72% 34%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 173 60% 90%;
+  --accent-foreground: 173 60% 20%;
+  --ring: 173 72% 38%;
+}
+
+html[data-accent="teal"].dark {
+  --primary: 173 60% 50%;
+  --primary-foreground: 173 60% 8%;
+  --accent: 173 40% 17%;
+  --accent-foreground: 173 55% 86%;
+  --ring: 173 60% 50%;
+}
+
+html[data-accent="green"] {
+  --primary: 142 68% 36%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 142 55% 91%;
+  --accent-foreground: 142 55% 20%;
+  --ring: 142 68% 40%;
+}
+
+html[data-accent="green"].dark {
+  --primary: 142 55% 50%;
+  --primary-foreground: 142 40% 8%;
+  --accent: 142 35% 17%;
+  --accent-foreground: 142 50% 86%;
+  --ring: 142 55% 50%;
+}
+
+html[data-accent="orange"] {
+  --primary: 25 88% 48%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 25 80% 92%;
+  --accent-foreground: 25 65% 24%;
+  --ring: 25 88% 52%;
+}
+
+html[data-accent="orange"].dark {
+  --primary: 25 80% 58%;
+  --primary-foreground: 25 40% 8%;
+  --accent: 25 45% 19%;
+  --accent-foreground: 25 65% 87%;
+  --ring: 25 80% 58%;
+}
+
+html[data-accent="red"] {
+  --primary: 0 78% 50%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 0 75% 93%;
+  --accent-foreground: 0 60% 26%;
+  --ring: 0 78% 54%;
+}
+
+html[data-accent="red"].dark {
+  --primary: 0 70% 60%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 0 40% 19%;
+  --accent-foreground: 0 65% 88%;
+  --ring: 0 70% 60%;
+}
+
+html[data-accent="pink"] {
+  --primary: 330 78% 50%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 330 75% 93%;
+  --accent-foreground: 330 60% 26%;
+  --ring: 330 78% 54%;
+}
+
+html[data-accent="pink"].dark {
+  --primary: 330 70% 62%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 330 40% 19%;
+  --accent-foreground: 330 65% 88%;
+  --ring: 330 70% 62%;
+}
+
+html[data-accent="fuchsia"] {
+  --primary: 292 72% 48%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 292 70% 93%;
+  --accent-foreground: 292 55% 26%;
+  --ring: 292 72% 52%;
+}
+
+html[data-accent="fuchsia"].dark {
+  --primary: 292 64% 62%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 292 38% 20%;
+  --accent-foreground: 292 60% 88%;
+  --ring: 292 64% 62%;
+}
+
+html[data-accent="purple"] {
+  --primary: 262 72% 52%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 262 68% 93%;
+  --accent-foreground: 262 55% 28%;
+  --ring: 262 72% 56%;
+}
+
+html[data-accent="purple"].dark {
+  --primary: 262 64% 64%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 262 38% 21%;
+  --accent-foreground: 262 60% 88%;
+  --ring: 262 64% 64%;
+}

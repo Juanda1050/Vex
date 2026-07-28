@@ -63,6 +63,24 @@
       "en": "English"
     }
   },
+  "appearance": {
+    "title": "Appearance",
+    "description": "Pick the accent color used across buttons, links and highlights.",
+    "hint": "Applies instantly and syncs to every device you sign into.",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "colors": {
+      "blue": "Blue",
+      "cyan": "Cyan",
+      "teal": "Teal",
+      "green": "Green",
+      "orange": "Orange",
+      "red": "Red",
+      "pink": "Pink",
+      "fuchsia": "Fuchsia",
+      "purple": "Purple"
+    }
+  },
   "table": {
     "member": "Member",
     "branch": "Branch",

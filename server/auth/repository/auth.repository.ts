@@ -58,6 +58,17 @@ export const authRepository = {
     });
   },
 
+  async updateThemeColor(userId: string, themeColor: string) {
+    return prisma.userProfile.upsert({
+      where: { userId },
+      update: { themeColor },
+      create: {
+        userId,
+        themeColor,
+      },
+    });
+  },
+
   async findMemberByUserId(userId: string) {
     return prisma.tenantMember.findFirst({
       where: { userId },

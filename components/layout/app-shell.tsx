@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { LocalePreferenceSync } from "@/components/layout/locale-preference-sync";
+import { MobileNavSheet } from "@/components/layout/mobile-nav-sheet";
+import { PageHeader } from "@/components/layout/page-header";
 import {
   TopNavigation,
   type TopNavigationEntry,
@@ -24,6 +26,8 @@ type AppShellProps = {
   userAvatarUrl?: string | null;
   userMenuAriaLabel?: string;
   topNavigationItems?: TopNavigationEntry[];
+  mobileNavLabel?: string;
+  mobileNavTriggerLabel?: string;
 };
 
 function AppShell({
@@ -39,6 +43,8 @@ function AppShell({
   userAvatarUrl,
   userMenuAriaLabel,
   topNavigationItems,
+  mobileNavLabel = "Menu",
+  mobileNavTriggerLabel = "Open navigation menu",
 }: AppShellProps) {
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -81,6 +87,13 @@ function AppShell({
                 ) : null}
               </div>
               <div className="flex items-center gap-2">
+                {topNavigationItems && topNavigationItems.length > 0 ? (
+                  <MobileNavSheet
+                    items={topNavigationItems}
+                    navLabel={mobileNavLabel}
+                    triggerLabel={mobileNavTriggerLabel}
+                  />
+                ) : null}
                 <UserMenu
                   locale={locale}
                   name={userName}
@@ -124,31 +137,12 @@ function AppShell({
                 <ThemeToggle className="rounded-full border-0 bg-transparent shadow-none" />
               </div>
             </div>
-            {topNavigationItems && topNavigationItems.length > 0 ? (
-              <div className="glass-soft rounded-xl px-4 py-3 lg:hidden">
-                <TopNavigation items={topNavigationItems} />
-              </div>
-            ) : null}
             {title || description || actions ? (
-              <div className="flex min-w-0 flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                <div className="min-w-0 space-y-1">
-                  {title ? (
-                    <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-                      {title}
-                    </h2>
-                  ) : null}
-                  {description ? (
-                    <p className="max-w-3xl text-sm text-muted-foreground md:text-base">
-                      {description}
-                    </p>
-                  ) : null}
-                </div>
-                {actions ? (
-                  <div className="flex shrink-0 flex-wrap items-center gap-2">
-                    {actions}
-                  </div>
-                ) : null}
-              </div>
+              <PageHeader
+                title={title}
+                description={description}
+                actions={actions}
+              />
             ) : null}
             <div
               className={cn(

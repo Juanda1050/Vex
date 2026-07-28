@@ -1,7 +1,9 @@
 import { getTranslations } from "next-intl/server";
 import { permissionChecker, requireAuth } from "@/server/auth";
+import { authRepository } from "@/server/auth/repository/auth.repository";
 
 import { AppShell } from "@/components/layout/app-shell";
+import { ThemeColorSync } from "@/components/layout/theme-color-sync";
 import type { TopNavigationEntry } from "@/components/layout/top-navigation";
 
 export default async function ProtectedLayout({
@@ -13,9 +15,10 @@ export default async function ProtectedLayout({
 }) {
   const { locale } = await params;
   const auth = await requireAuth();
-  const [tDashboard, tNav] = await Promise.all([
+  const [tDashboard, tNav, profile] = await Promise.all([
     getTranslations("dashboard"),
     getTranslations("nav"),
+    authRepository.getOrCreateUserProfile(auth.userId),
   ]);
 
   const displayName = auth.fullName?.trim() || auth.email;
@@ -50,16 +53,21 @@ export default async function ProtectedLayout({
   ];
 
   return (
-    <AppShell
-      locale={locale}
-      userName={displayName}
-      userEmail={auth.email}
-      userAvatarUrl={avatarUrl}
-      userMenuAriaLabel={tDashboard("openUserMenu")}
-      topNavigationItems={topNavigationItems}
-      contentFrameless
-    >
-      {children}
-    </AppShell>
+    <>
+      <ThemeColorSync accent={profile.themeColor} />
+      <AppShell
+        locale={locale}
+        userName={displayName}
+        userEmail={auth.email}
+        userAvatarUrl={avatarUrl}
+        userMenuAriaLabel={tDashboard("openUserMenu")}
+        topNavigationItems={topNavigationItems}
+        mobileNavLabel={tNav("menu")}
+        mobileNavTriggerLabel={tNav("openMenu")}
+        contentFrameless
+      >
+        {children}
+      </AppShell>
+    </>
   );
 }

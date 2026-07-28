@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import { logoutAction } from "@/server/auth/actions/logout.action";
+import { ThemeColorPicker } from "@/components/settings/theme-color-picker";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import {
@@ -118,6 +119,16 @@ function PreferencesPanel({ locale }: PreferencesPanelProps) {
               </span>
             </div>
           </div>
+        </CardContent>
+      </Card>
+
+      <Card id="preferences-appearance" className="border-border/80 bg-card/95">
+        <CardHeader>
+          <CardTitle>{t("appearance.title")}</CardTitle>
+          <CardDescription>{t("appearance.description")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ThemeColorPicker />
         </CardContent>
       </Card>
 

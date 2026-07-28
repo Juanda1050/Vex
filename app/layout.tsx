@@ -5,11 +5,16 @@ import "./globals.css";
 
 const themeScript = `(() => {
   const storageKey = "vex-theme";
+  const accentKey = "vex-accent";
   const root = document.documentElement;
   const storedTheme = localStorage.getItem(storageKey);
   const isDark = storedTheme === "dark";
   root.classList.toggle("dark", isDark);
   root.style.colorScheme = isDark ? "dark" : "light";
+  const storedAccent = localStorage.getItem(accentKey);
+  if (storedAccent) {
+    root.setAttribute("data-accent", storedAccent);
+  }
 })();`;
 
 const robotoSans = Roboto({

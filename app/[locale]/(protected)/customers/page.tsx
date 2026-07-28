@@ -1,8 +1,10 @@
 import { getTranslations } from "next-intl/server";
 
+import { PageHeader } from "@/components/layout/page-header";
 import { ModulePagination } from "@/components/modules/module-pagination";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -43,27 +45,21 @@ export default async function CustomersPage({
 
   return (
     <div className="space-y-6">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          {t("title")}
-        </h1>
-        <p className="max-w-3xl text-sm text-muted-foreground">
-          {t("description")}
-        </p>
-      </header>
+      <PageHeader title={t("title")} description={t("description")} />
 
-      <ModuleToolbar
-        searchPlaceholder={t("searchPlaceholder")}
-        statusParamName="status"
-        statusLabel={t("fields.status")}
-        statusOptions={[
-          { value: "", label: tCommon("all") },
-          { value: "active", label: tCommon("status.active") },
-          { value: "inactive", label: tCommon("status.inactive") },
-        ]}
-      />
+      <Card className="space-y-5 rounded-[1.75rem] border-border/70 bg-card/72 p-5 shadow-none backdrop-blur-sm sm:p-6">
+        <ModuleToolbar
+          searchPlaceholder={t("searchPlaceholder")}
+          statusParamName="status"
+          statusLabel={t("fields.status")}
+          statusOptions={[
+            { value: "", label: tCommon("all") },
+            { value: "active", label: tCommon("status.active") },
+            { value: "inactive", label: tCommon("status.inactive") },
+          ]}
+        />
 
-      <Table>
+        <Table>
           <TableHeader>
             <TableRow>
               <TableHead>{t("fields.name")}</TableHead>
@@ -117,16 +113,17 @@ export default async function CustomersPage({
           </TableBody>
         </Table>
 
-      <ModulePagination
-        pagination={pagination}
-        basePath={`/${locale}/customers`}
-        searchParams={query}
-        labels={{
-          previous: tCommon("pagination.previous"),
-          next: tCommon("pagination.next"),
-          of: tCommon("pagination.of"),
-        }}
-      />
+        <ModulePagination
+          pagination={pagination}
+          basePath={`/${locale}/customers`}
+          searchParams={query}
+          labels={{
+            previous: tCommon("pagination.previous"),
+            next: tCommon("pagination.next"),
+            of: tCommon("pagination.of"),
+          }}
+        />
+      </Card>
     </div>
   );
 }

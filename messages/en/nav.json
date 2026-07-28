@@ -13,6 +13,8 @@
   "posAnalytics": "POS Analytics",
   "users": "Users",
   "billing": "Billing",
+  "menu": "Menu",
+  "openMenu": "Open navigation menu",
   "groups": {
     "sales": "Sales",
     "catalog": "Catalog"

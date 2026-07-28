@@ -2,24 +2,19 @@
 
 import { useMemo, useState } from "react";
 import { PosPaymentMethod } from "@prisma/client";
+import { ShoppingCartIcon } from "lucide-react";
 
+import { PosCartPanel, type CartRow, type ProductRow } from "@/components/pos/pos-cart-panel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-
-type ProductRow = {
-  id: string;
-  name: string;
-  sku: string | null;
-  barcode: string | null;
-  basePrice: string | number;
-};
-
-type CartRow = {
-  product: ProductRow;
-  quantity: number;
-  unitPrice: number;
-};
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 type PosScreenProps = {
   locationId: string;
@@ -166,7 +161,7 @@ export function PosScreen({ locationId, sessionId }: PosScreenProps) {
   }
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+    <div className="grid gap-5 pb-20 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:pb-0">
       <Card>
         <CardHeader>
           <CardTitle>POS</CardTitle>
@@ -205,43 +200,40 @@ export function PosScreen({ locationId, sessionId }: PosScreenProps) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Carrito</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="max-h-80 space-y-2 overflow-auto pr-2">
-            {cart.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Sin productos.</p>
-            ) : (
-              cart.map((row) => (
-                <div
-                  key={row.product.id}
-                  className="rounded-lg border border-border/70 p-3 text-sm"
-                >
-                  <p className="font-medium">{row.product.name}</p>
-                  <p className="text-muted-foreground">
-                    {row.quantity} x ${row.unitPrice.toFixed(2)}
-                  </p>
-                </div>
-              ))
-            )}
-          </div>
+      <div className="hidden lg:block">
+        <PosCartPanel
+          cart={cart}
+          total={total}
+          busy={busy}
+          onCheckout={() => void checkout()}
+        />
+      </div>
 
-          <div className="rounded-lg border border-border/70 p-3">
-            <p className="text-sm text-muted-foreground">Total</p>
-            <p className="text-2xl font-semibold">${total.toFixed(2)}</p>
+      <Sheet>
+        <SheetTrigger
+          render={
+            <Button className="fixed inset-x-4 bottom-4 z-40 shadow-lg lg:hidden" />
+          }
+        >
+          <ShoppingCartIcon className="size-4" />
+          {cart.length > 0
+            ? `Carrito (${cart.length}) · $${total.toFixed(2)}`
+            : "Carrito"}
+        </SheetTrigger>
+        <SheetContent side="bottom" className="max-h-[85vh] overflow-y-auto lg:hidden">
+          <SheetHeader>
+            <SheetTitle>Carrito</SheetTitle>
+          </SheetHeader>
+          <div className="px-4 pb-4">
+            <PosCartPanel
+              cart={cart}
+              total={total}
+              busy={busy}
+              onCheckout={() => void checkout()}
+            />
           </div>
-
-          <Button
-            className="w-full"
-            onClick={() => void checkout()}
-            disabled={busy || cart.length === 0}
-          >
-            Checkout
-          </Button>
-        </CardContent>
-      </Card>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

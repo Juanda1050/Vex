@@ -1,9 +1,11 @@
 import { QuoteStatus } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 
+import { PageHeader } from "@/components/layout/page-header";
 import { ModulePagination } from "@/components/modules/module-pagination";
 import { ModuleToolbar } from "@/components/modules/module-toolbar";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -64,90 +66,85 @@ export default async function QuotesPage({
 
   return (
     <div className="space-y-6">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          {t("title")}
-        </h1>
-        <p className="max-w-3xl text-sm text-muted-foreground">
-          {t("description")}
-        </p>
-      </header>
+      <PageHeader title={t("title")} description={t("description")} />
 
-      <ModuleToolbar
-        searchPlaceholder={t("searchPlaceholder")}
-        statusParamName="status"
-        statusLabel={t("filters.status")}
-        statusOptions={[
-          { value: "", label: t("filters.allStatuses") },
-          ...Object.values(QuoteStatus).map((value) => ({
-            value,
-            label: tDashboard(`quoteStatus.${value.toLowerCase()}`),
-          })),
-        ]}
-      />
+      <Card className="space-y-5 rounded-[1.75rem] border-border/70 bg-card/72 p-5 shadow-none backdrop-blur-sm sm:p-6">
+        <ModuleToolbar
+          searchPlaceholder={t("searchPlaceholder")}
+          statusParamName="status"
+          statusLabel={t("filters.status")}
+          statusOptions={[
+            { value: "", label: t("filters.allStatuses") },
+            ...Object.values(QuoteStatus).map((value) => ({
+              value,
+              label: tDashboard(`quoteStatus.${value.toLowerCase()}`),
+            })),
+          ]}
+        />
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{t("fields.number")}</TableHead>
-            <TableHead>{t("fields.customer")}</TableHead>
-            <TableHead>{t("fields.status")}</TableHead>
-            <TableHead className="text-right">{t("fields.total")}</TableHead>
-            <TableHead>{t("fields.validUntil")}</TableHead>
-            <TableHead>{t("fields.createdAt")}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.length === 0 ? (
+        <Table>
+          <TableHeader>
             <TableRow>
-              <TableCell
-                colSpan={6}
-                className="py-10 text-center text-sm text-muted-foreground"
-              >
-                {t("empty")}
-              </TableCell>
+              <TableHead>{t("fields.number")}</TableHead>
+              <TableHead>{t("fields.customer")}</TableHead>
+              <TableHead>{t("fields.status")}</TableHead>
+              <TableHead className="text-right">{t("fields.total")}</TableHead>
+              <TableHead>{t("fields.validUntil")}</TableHead>
+              <TableHead>{t("fields.createdAt")}</TableHead>
             </TableRow>
-          ) : (
-            items.map((quote) => (
-              <TableRow key={quote.id}>
-                <TableCell className="font-medium text-foreground">
-                  #{quote.number}
-                </TableCell>
-                <TableCell className="text-foreground">
-                  {quote.customer?.name ?? "-"}
-                </TableCell>
-                <TableCell>
-                  <Badge variant={QUOTE_STATUS_VARIANTS[quote.status]}>
-                    {tDashboard(`quoteStatus.${quote.status.toLowerCase()}`)}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right text-foreground">
-                  {formatCurrency(Number(quote.total ?? 0), locale)}
-                </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {quote.validUntil
-                    ? formatShortDate(quote.validUntil, locale)
-                    : "-"}
-                </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {formatShortDate(quote.createdAt, locale)}
+          </TableHeader>
+          <TableBody>
+            {items.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  className="py-10 text-center text-sm text-muted-foreground"
+                >
+                  {t("empty")}
                 </TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+            ) : (
+              items.map((quote) => (
+                <TableRow key={quote.id}>
+                  <TableCell className="font-medium text-foreground">
+                    #{quote.number}
+                  </TableCell>
+                  <TableCell className="text-foreground">
+                    {quote.customer?.name ?? "-"}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={QUOTE_STATUS_VARIANTS[quote.status]}>
+                      {tDashboard(`quoteStatus.${quote.status.toLowerCase()}`)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right text-foreground">
+                    {formatCurrency(Number(quote.total ?? 0), locale)}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {quote.validUntil
+                      ? formatShortDate(quote.validUntil, locale)
+                      : "-"}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {formatShortDate(quote.createdAt, locale)}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
 
-      <ModulePagination
-        pagination={pagination}
-        basePath={`/${locale}/quotes`}
-        searchParams={query}
-        labels={{
-          previous: tCommon("pagination.previous"),
-          next: tCommon("pagination.next"),
-          of: tCommon("pagination.of"),
-        }}
-      />
+        <ModulePagination
+          pagination={pagination}
+          basePath={`/${locale}/quotes`}
+          searchParams={query}
+          labels={{
+            previous: tCommon("pagination.previous"),
+            next: tCommon("pagination.next"),
+            of: tCommon("pagination.of"),
+          }}
+        />
+      </Card>
     </div>
   );
 }

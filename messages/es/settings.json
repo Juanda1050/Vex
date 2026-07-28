@@ -63,6 +63,24 @@
       "en": "Inglés"
     }
   },
+  "appearance": {
+    "title": "Apariencia",
+    "description": "Elige el color de acento usado en botones, enlaces y resaltados.",
+    "hint": "Se aplica al instante y se sincroniza en cada dispositivo donde inicies sesión.",
+    "saving": "Guardando...",
+    "saved": "Guardado",
+    "colors": {
+      "blue": "Azul",
+      "cyan": "Cian",
+      "teal": "Verde azulado",
+      "green": "Verde",
+      "orange": "Naranja",
+      "red": "Rojo",
+      "pink": "Rosa",
+      "fuchsia": "Fucsia",
+      "purple": "Morado"
+    }
+  },
   "table": {
     "member": "Miembro",
     "branch": "Sucursal",

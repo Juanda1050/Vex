@@ -150,6 +150,7 @@ model UserProfile {
   email               String?
   fullName            String?
   avatarUrl           String?
+  themeColor          String?
   authProvider        String?
   onboardingCompleted Boolean  @default(false)
   createdAt           DateTime @default(now())

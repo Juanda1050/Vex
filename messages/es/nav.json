@@ -13,6 +13,8 @@
   "posAnalytics": "Analítica POS",
   "users": "Usuarios",
   "billing": "Facturación",
+  "menu": "Menú",
+  "openMenu": "Abrir menú de navegación",
   "groups": {
     "sales": "Ventas",
     "catalog": "Catálogo"

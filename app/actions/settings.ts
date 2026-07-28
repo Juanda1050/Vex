@@ -9,6 +9,7 @@ import { z } from "zod";
 import { routing } from "@/i18n/routing";
 import { HTTP_STATUS } from "@/server/http-status";
 import { prisma } from "@/lib/prisma";
+import { ACCENT_COLOR_KEYS } from "@/lib/theme/accent-palettes";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { requireAuth } from "@/server/auth";
 import { sessionManager } from "@/server/auth/session/session.manager";
@@ -32,6 +33,12 @@ const profileSchema = z.object({
   email: z.string().email().optional(),
   fullName: z.string().trim().min(2).max(120),
   avatarDataUrl: z.string().trim().optional(),
+});
+
+const themeColorSchema = z.object({
+  themeColor: z.enum(
+    ACCENT_COLOR_KEYS as [string, ...string[]],
+  ),
 });
 
 const passwordSchema = z.object({
@@ -179,6 +186,37 @@ export async function updateProfileAction(
       avatarUrl: avatarDataUrl,
       authProvider: ctx.authProvider ?? null,
     });
+
+    return {
+      success: true,
+      error: null,
+      status: HTTP_STATUS.OK,
+    };
+  } catch (error) {
+    return toErrorResult(error);
+  }
+}
+
+export async function updateThemeColorAction(
+  _prevState: ActionResult,
+  formData: FormData,
+): Promise<ActionResult> {
+  try {
+    const ctx = await getCurrentUser();
+    const parsed = themeColorSchema.safeParse({
+      themeColor: formData.get("themeColor")?.toString() ?? "",
+    });
+
+    if (!parsed.success) {
+      return {
+        success: false,
+        error: "Invalid theme color.",
+        errorKey: "invalidPayload",
+        status: HTTP_STATUS.BAD_REQUEST,
+      };
+    }
+
+    await authRepository.updateThemeColor(ctx.userId, parsed.data.themeColor);
 
     return {
       success: true,

@@ -75,6 +75,7 @@ export function LoginForm({
             autoComplete="email"
             placeholder={emailPlaceholder}
             value={email}
+            disabled={!canSubmit}
             onChange={(event) => setEmail(event.target.value)}
             className="h-10 rounded-xl border-border/60 bg-background/65 pl-9 text-sm backdrop-blur-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
           />
@@ -98,6 +99,7 @@ export function LoginForm({
             autoComplete="current-password"
             placeholder={passwordPlaceholder}
             value={password}
+            disabled={!canSubmit}
             onChange={(event) => setPassword(event.target.value)}
             className="h-10 rounded-xl border-border/60 bg-background/65 pr-10 pl-9 text-sm backdrop-blur-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
           />

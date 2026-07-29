@@ -45,7 +45,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
 
   return (
     <form action={formAction} className="grid gap-3 sm:gap-4 xl:gap-4.5">
-      <div className="grid gap-3 md:grid-cols-2 md:gap-4">
+      <div className="grid gap-3 md:gap-4">
         <div className="grid gap-1.5">
           <label
             htmlFor="orgName"
@@ -64,6 +64,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
               placeholder={t("register.orgNamePlaceholder")}
               value={orgName}
               onChange={(event) => setOrgName(event.target.value)}
+              disabled={!canSubmit}
               className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
             />
           </div>
@@ -87,6 +88,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
               placeholder={t("register.emailPlaceholder")}
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              disabled={!canSubmit}
               className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
             />
           </div>
@@ -111,6 +113,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
               placeholder={t("register.passwordPlaceholder")}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              disabled={!canSubmit}
               className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
             />
           </div>
@@ -135,6 +138,7 @@ export function RegisterForm({ locale, showFooter = true }: RegisterFormProps) {
               placeholder={t("register.confirmPasswordPlaceholder")}
               value={confirmPassword}
               onChange={(event) => setConfirmPassword(event.target.value)}
+              disabled={!canSubmit}
               className="h-10 rounded-xl border-border/70 bg-background/90 pl-9 text-sm sm:h-11 xl:h-12 xl:text-[0.98rem]"
             />
           </div>

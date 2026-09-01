@@ -1,11 +1,11 @@
-export { getAuth, can } from "./get-auth";
-export { getOnboardingState } from "./get-onboarding-state";
+export { getAuth, can } from "./getAuth";
+export { getOnboardingState } from "./getOnboardingState";
 
-export { requireAuth } from "./guards/require-auth";
-export { requireRole } from "./guards/require-role";
-export { requirePermission } from "./guards/require-permission";
-export { requireAuthApi } from "./guards/require-auth-api";
-export { requirePermissionApi } from "./guards/require-permission-api";
+export { requireAuth } from "./guards/requireAuth";
+export { requireRole } from "./guards/requireRole";
+export { requirePermission } from "./guards/requirePermission";
+export { requireAuthApi } from "./guards/requireAuthApi";
+export { requirePermissionApi } from "./guards/requirePermissionApi";
 
 export { sessionManager } from "./session/session.manager";
 export { cookieManager } from "./cookies/cookie.manager";

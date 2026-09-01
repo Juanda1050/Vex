@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 
-import { OnboardingPlanSelectorStatic } from "@/components/onboarding/plan-selector-static";
+import { OnboardingPlanSelectorStatic } from "@/components/onboarding/planSelectorStatic";
 import { getOnboardingState } from "@/server/auth";
 
 export default async function OnboardingPage({

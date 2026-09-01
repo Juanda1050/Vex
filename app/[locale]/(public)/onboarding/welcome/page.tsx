@@ -2,9 +2,9 @@ import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 
-import { WelcomeScreen } from "@/components/onboarding/welcome-screen";
+import { WelcomeScreen } from "@/components/onboarding/welcomeScreen";
 import { getOnboardingState } from "@/server/auth";
-import { invalidateAuthStateCache } from "@/server/auth/cache/auth-state-cache";
+import { invalidateAuthStateCache } from "@/server/auth/cache/authStateCache";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { subscriptionService } from "@/server/subscriptions";
 import { getPlanByCode } from "@/lib/payments/plans";

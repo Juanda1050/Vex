@@ -9,8 +9,8 @@ import {
   getInventoryApiErrorTranslator,
   getInventoryErrorStatus,
   mapInventoryErrorToKey,
-} from "@/server/inventory/api/error-translator";
-import { HTTP_STATUS } from "@/server/http-status";
+} from "@/server/inventory/api/errorTranslator";
+import { HTTP_STATUS } from "@/server/httpStatus";
 
 export async function GET(request: NextRequest) {
   const translator = await getInventoryApiErrorTranslator(request);

@@ -1,7 +1,7 @@
 import { requireAuth } from "@/server/auth";
 import { getBillingFeaturesForTenant } from "@/server/plans";
-import { PageHeader } from "@/components/layout/page-header";
-import { getModuleIcon } from "@/lib/modules/module-icons";
+import { PageHeader } from "@/components/layout/pageHeader";
+import { getModuleIcon } from "@/lib/modules/moduleIcons";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 

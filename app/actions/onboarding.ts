@@ -4,17 +4,17 @@ import { getLocale } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { getOnboardingState } from "@/server/auth/get-onboarding-state";
-import { invalidateAuthStateCache } from "@/server/auth/cache/auth-state-cache";
+import { getOnboardingState } from "@/server/auth/getOnboardingState";
+import { invalidateAuthStateCache } from "@/server/auth/cache/authStateCache";
 import { authRepository } from "@/server/auth/repository/auth.repository";
-import { HTTP_STATUS, type HttpStatusCode } from "@/server/http-status";
+import { HTTP_STATUS, type HttpStatusCode } from "@/server/httpStatus";
 import { subscriptionService } from "@/server/subscriptions";
 import {
   getSubscriptionErrorStatus,
   getSubscriptionErrorTranslatorByLocale,
   mapSubscriptionErrorToKey,
   type SubscriptionApiErrorKey,
-} from "@/server/subscriptions/api/error-translator";
+} from "@/server/subscriptions/api/errorTranslator";
 import { changePlanSchema } from "@/server/subscriptions/validations/subscription.schema";
 
 export interface OnboardingActionResult {

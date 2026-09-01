@@ -1,2 +1,2 @@
-export { requireBillingAccess } from "./require-billing-access";
-export { requirePremiumSubscription } from "./require-premium-subscription";
+export { requireBillingAccess } from "./requireBillingAccess";
+export { requirePremiumSubscription } from "./requirePremiumSubscription";

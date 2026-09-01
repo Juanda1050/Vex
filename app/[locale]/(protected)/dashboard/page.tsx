@@ -1,30 +1,30 @@
 import { getTranslations } from "next-intl/server";
 
-import { DashboardMetricCards } from "@/components/dashboard/metric-cards";
-import { QuotePipelineCard } from "@/components/dashboard/quote-pipeline-card";
-import { RecentSalesTable } from "@/components/dashboard/recent-sales-table";
-import { RevenueChartCard } from "@/components/dashboard/revenue-chart-card";
+import { DashboardMetricCards } from "@/components/dashboard/metricCards";
+import { QuotePipelineCard } from "@/components/dashboard/quotePipelineCard";
+import { RecentSalesTable } from "@/components/dashboard/recentSalesTable";
+import { RevenueChartCard } from "@/components/dashboard/revenueChartCard";
 import {
   DashboardCardLink,
   DashboardToolbar,
-} from "@/components/dashboard/dashboard-toolbar";
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { getModuleIcon } from "@/lib/modules/module-icons";
+} from "@/components/dashboard/dashboardToolbar";
+import { DashboardHeader } from "@/components/dashboard/dashboardHeader";
+import { getModuleIcon } from "@/lib/modules/moduleIcons";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   DASHBOARD_PERIOD_OPTIONS,
   DASHBOARD_SALES_STATUS_OPTIONS,
   resolveDashboardPeriod,
   resolveDashboardSalesStatus,
-} from "@/lib/dashboard/dashboard-filters";
+} from "@/lib/dashboard/dashboardFilters";
 import {
   formatCompactNumber,
   formatCurrency,
   formatDateRange,
-} from "@/lib/dashboard/dashboard-formatters";
-import { getDashboardModuleRoute } from "@/lib/dashboard/dashboard-routes";
+} from "@/lib/dashboard/dashboardFormatters";
+import { getDashboardModuleRoute } from "@/lib/dashboard/dashboardRoutes";
 import { requireAuth } from "@/server/auth";
-import { getDashboardOverview } from "@/server/dashboard/get-dashboard-overview";
+import { getDashboardOverview } from "@/server/dashboard/getDashboardOverview";
 
 export default async function DashboardModulePage({
   params,

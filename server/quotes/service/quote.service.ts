@@ -1,5 +1,5 @@
 import { quoteRepository } from "../repository/quote.repository";
-import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
+import { invalidateTenantOperationalCaches } from "@/server/cache/tenantCacheInvalidation";
 import type {
   ConvertQuoteToSaleInput,
   CreateQuoteInput,

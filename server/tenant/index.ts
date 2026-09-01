@@ -1,6 +1,6 @@
 export { TenantRepository } from "./repository/tenant.repository";
 export { TenantService, tenantService } from "./service/tenant.service";
-export { requireTenantAdmin } from "./guards/require-tenant-admin";
+export { requireTenantAdmin } from "./guards/requireTenantAdmin";
 
 export {
   registerTenantSchema,

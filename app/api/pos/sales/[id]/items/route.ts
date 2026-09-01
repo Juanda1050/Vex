@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { requirePermissionApi } from "@/server/auth";
 import { posService } from "@/server/pos";
-import { HTTP_STATUS } from "@/server/http-status";
+import { HTTP_STATUS } from "@/server/httpStatus";
 
 const addItemSchema = z.object({
   productId: z.string().uuid(),

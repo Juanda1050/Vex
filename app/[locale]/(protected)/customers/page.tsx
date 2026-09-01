@@ -1,12 +1,12 @@
 import { getTranslations } from "next-intl/server";
 
-import { PageHeader } from "@/components/layout/page-header";
-import { getModuleIcon } from "@/lib/modules/module-icons";
-import { ModulePagination } from "@/components/modules/module-pagination";
-import { ModuleEmptyState } from "@/components/modules/module-empty-state";
-import { RowActionHint } from "@/components/modules/row-action-hint";
-import { ModuleToolbar } from "@/components/modules/module-toolbar";
-import { SortableTableHead } from "@/components/modules/sortable-table-head";
+import { PageHeader } from "@/components/layout/pageHeader";
+import { getModuleIcon } from "@/lib/modules/moduleIcons";
+import { ModulePagination } from "@/components/modules/modulePagination";
+import { ModuleEmptyState } from "@/components/modules/moduleEmptyState";
+import { RowActionHint } from "@/components/modules/rowActionHint";
+import { ModuleToolbar } from "@/components/modules/moduleToolbar";
+import { SortableTableHead } from "@/components/modules/sortableTableHead";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -17,11 +17,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrency } from "@/lib/dashboard/dashboard-formatters";
+import { formatCurrency } from "@/lib/dashboard/dashboardFormatters";
 import {
   resolveSortDirection,
   resolveSortKey,
-} from "@/lib/modules/sort-params";
+} from "@/lib/modules/sortParams";
 import { requirePermission } from "@/server/auth";
 import { customerService } from "@/server/customers/service/customer.service";
 

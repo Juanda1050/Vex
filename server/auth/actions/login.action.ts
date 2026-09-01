@@ -11,15 +11,15 @@ import {
   getFirstValidationKey,
   sanitizeNextPath,
   type AuthActionState,
-} from "./action-helpers";
+} from "./actionHelpers";
 import { loginSchema } from "../validations/login.schema";
-import { HTTP_STATUS } from "@/server/http-status";
+import { HTTP_STATUS } from "@/server/httpStatus";
 import {
   checkRateLimit,
   getRateLimitIdentifier,
   RATE_LIMIT_PRESETS,
-} from "@/lib/rate-limit";
-import { writeAuditLog } from "@/server/audit-log";
+} from "@/lib/rateLimit";
+import { writeAuditLog } from "@/server/auditLog";
 
 export type LoginState = AuthActionState;
 

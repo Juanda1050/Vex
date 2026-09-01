@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { EnhancedCheckoutForm } from "@/components/onboarding/enhanced-checkout-form";
+import { EnhancedCheckoutForm } from "@/components/onboarding/enhancedCheckoutForm";
 import { getOnboardingState } from "@/server/auth";
 import { getPlanByCode } from "@/lib/payments/plans";
 import { paymentGateway } from "@/lib/payments/gateway";

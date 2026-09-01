@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { requirePermissionApi } from "@/server/auth";
 import { posService } from "@/server/pos";
-import { HTTP_STATUS } from "@/server/http-status";
+import { HTTP_STATUS } from "@/server/httpStatus";
 
 const paymentSchema = z.object({
   method: z.nativeEnum(PosPaymentMethod),

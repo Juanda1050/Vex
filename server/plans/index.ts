@@ -4,4 +4,4 @@ export {
   requireFeature,
   enforceLimit,
   getBillingFeaturesForTenant,
-} from "./feature-flags";
+} from "./featureFlags";

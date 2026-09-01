@@ -2,7 +2,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 import type { NextConfig } from "next";
 
 // Validate environment variables early
-import "@/lib/env-validator";
+import "@/lib/envValidator";
 
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 

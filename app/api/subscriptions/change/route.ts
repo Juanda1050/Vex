@@ -7,7 +7,7 @@ import {
   getSubscriptionErrorStatus,
   mapSubscriptionErrorToKey,
   type SubscriptionApiErrorKey,
-} from "@/server/subscriptions/api/error-translator";
+} from "@/server/subscriptions/api/errorTranslator";
 
 export async function POST(request: NextRequest) {
   const translator = await getSubscriptionApiErrorTranslator(request);

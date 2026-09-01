@@ -1,5 +1,5 @@
 import { startServerTimer } from "@/lib/perf";
-import { SettingsDashboard } from "@/components/settings/settings-dashboard";
+import { SettingsDashboard } from "@/components/settings/settingsDashboard";
 import { requirePermission } from "@/server/auth";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { authService } from "@/server/auth/service/auth.service";

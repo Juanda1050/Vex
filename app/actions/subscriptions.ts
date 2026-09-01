@@ -8,12 +8,12 @@ import {
   getSubscriptionErrorTranslatorByLocale,
   mapSubscriptionErrorToKey,
   type SubscriptionApiErrorKey,
-} from "@/server/subscriptions/api/error-translator";
+} from "@/server/subscriptions/api/errorTranslator";
 import { requireBillingAccess } from "@/server/subscriptions/guards";
 import { changePlanSchema } from "@/server/subscriptions/validations/subscription.schema";
 import { revalidatePath } from "next/cache";
-import { HTTP_STATUS, type HttpStatusCode } from "@/server/http-status";
-import { writeAuditLog } from "@/server/audit-log";
+import { HTTP_STATUS, type HttpStatusCode } from "@/server/httpStatus";
+import { writeAuditLog } from "@/server/auditLog";
 
 export interface SubscriptionActionResult<T = unknown> {
   success: boolean;

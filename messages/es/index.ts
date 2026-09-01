@@ -11,7 +11,7 @@ import settings from "./settings.json";
 import subscriptions from "./subscriptions.json";
 import users from "./users.json";
 import app from "./app.json";
-import authShowcase from "./auth-showcase.json";
+import authShowcase from "./authShowcase.json";
 import onboarding from "./onboarding.json";
 import dashboard from "./dashboard.json";
 import tutorial from "./tutorial.json";

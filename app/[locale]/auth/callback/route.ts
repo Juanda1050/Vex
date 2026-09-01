@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { resolveVerifyEmailDestination } from "@/server/auth/actions/verify-email.action";
+import { resolveVerifyEmailDestination } from "@/server/auth/actions/verifyEmail.action";
 
 type RouteContext = {
   params: Promise<{ locale: string }>;

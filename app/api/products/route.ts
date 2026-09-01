@@ -14,8 +14,8 @@ import {
   getProductErrorStatus,
   mapProductErrorToKey,
   type ProductApiErrorKey,
-} from "@/server/products/api/error-translator";
-import { HTTP_STATUS } from "@/server/http-status";
+} from "@/server/products/api/errorTranslator";
+import { HTTP_STATUS } from "@/server/httpStatus";
 
 export async function GET(request: NextRequest) {
   const translator = await getProductApiErrorTranslator(request);

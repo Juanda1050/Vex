@@ -14,9 +14,9 @@ import {
   getInventoryErrorStatus,
   mapInventoryErrorToKey,
   type InventoryApiErrorKey,
-} from "@/server/inventory/api/error-translator";
-import { HTTP_STATUS } from "@/server/http-status";
-import { writeAuditLog } from "@/server/audit-log";
+} from "@/server/inventory/api/errorTranslator";
+import { HTTP_STATUS } from "@/server/httpStatus";
+import { writeAuditLog } from "@/server/auditLog";
 
 export async function GET(request: NextRequest) {
   const translator = await getInventoryApiErrorTranslator(request);

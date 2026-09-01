@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 import { requireAuthApi } from "@/server/auth";
 import { getBillingFeaturesForTenant } from "@/server/plans";
-import { HTTP_STATUS } from "@/server/http-status";
+import { HTTP_STATUS } from "@/server/httpStatus";
 
 export async function GET() {
   try {

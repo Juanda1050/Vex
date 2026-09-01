@@ -6,8 +6,8 @@ import {
   getQuoteErrorStatus,
   mapQuoteErrorToKey,
   type QuoteApiErrorKey,
-} from "@/server/quotes/api/error-translator";
-import { HTTP_STATUS } from "@/server/http-status";
+} from "@/server/quotes/api/errorTranslator";
+import { HTTP_STATUS } from "@/server/httpStatus";
 import { z } from "zod";
 
 const quoteIdSchema = z.string().uuid("invalidQuoteId");

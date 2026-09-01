@@ -9,14 +9,14 @@ import {
   getAuthErrorTranslator,
   getFirstValidationKey,
   type AuthActionState,
-} from "./action-helpers";
+} from "./actionHelpers";
 import { registerSchema } from "../validations/register.schema";
-import { HTTP_STATUS } from "@/server/http-status";
+import { HTTP_STATUS } from "@/server/httpStatus";
 import {
   checkRateLimit,
   getRateLimitIdentifier,
   RATE_LIMIT_PRESETS,
-} from "@/lib/rate-limit";
+} from "@/lib/rateLimit";
 import { headers } from "next/headers";
 
 export type RegisterState = AuthActionState;

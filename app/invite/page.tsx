@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { InviteForm } from "@/components/auth/invite-form";
+import { InviteForm } from "@/components/auth/inviteForm";
 import {
   Card,
   CardContent,

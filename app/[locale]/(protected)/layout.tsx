@@ -2,9 +2,9 @@ import { getTranslations } from "next-intl/server";
 import { permissionChecker, requireAuth } from "@/server/auth";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 
-import { AppShell } from "@/components/layout/app-shell";
-import { ThemeColorSync } from "@/components/layout/theme-color-sync";
-import type { TopNavigationEntry } from "@/components/layout/top-navigation";
+import { AppShell } from "@/components/layout/appShell";
+import { ThemeColorSync } from "@/components/layout/themeColorSync";
+import type { TopNavigationEntry } from "@/components/layout/topNavigation";
 
 export default async function ProtectedLayout({
   children,

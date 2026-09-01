@@ -6,8 +6,8 @@ import {
   getCustomerErrorStatus,
   mapCustomerErrorToKey,
   type CustomerApiErrorKey,
-} from "@/server/customers/api/error-translator";
-import { HTTP_STATUS } from "@/server/http-status";
+} from "@/server/customers/api/errorTranslator";
+import { HTTP_STATUS } from "@/server/httpStatus";
 import { z } from "zod";
 
 const customerIdSchema = z.string().uuid("invalidCustomerId");

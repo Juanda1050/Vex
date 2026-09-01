@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { PosScreen } from "@/components/pos/pos-screen";
+import { PosScreen } from "@/components/pos/posScreen";
 import { requirePermission } from "@/server/auth";
 
 export default async function PosPage() {

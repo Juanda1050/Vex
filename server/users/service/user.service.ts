@@ -1,6 +1,6 @@
 import { userRepository } from "../repository/user.repository";
 import { unstable_cache } from "next/cache";
-import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
+import { invalidateTenantOperationalCaches } from "@/server/cache/tenantCacheInvalidation";
 import type { CreateTenantUserInput, UserFilters } from "../types/user.types";
 
 export class UserService {

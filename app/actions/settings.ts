@@ -7,19 +7,19 @@ import { getTranslations } from "next-intl/server";
 import { z } from "zod";
 
 import { routing } from "@/i18n/routing";
-import { HTTP_STATUS } from "@/server/http-status";
+import { HTTP_STATUS } from "@/server/httpStatus";
 import { prisma } from "@/lib/prisma";
-import { ACCENT_COLOR_KEYS } from "@/lib/theme/accent-palettes";
+import { ACCENT_COLOR_KEYS } from "@/lib/theme/accentPalettes";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { requireAuth } from "@/server/auth";
 import { sessionManager } from "@/server/auth/session/session.manager";
-import { checkRateLimit, RATE_LIMIT_PRESETS } from "@/lib/rate-limit";
-import { writeAuditLog } from "@/server/audit-log";
+import { checkRateLimit, RATE_LIMIT_PRESETS } from "@/lib/rateLimit";
+import { writeAuditLog } from "@/server/auditLog";
 import { userService } from "@/server/users";
 import {
   buildLocalizedAbsoluteUrl,
   getAppUrl,
-} from "@/server/auth/actions/action-helpers";
+} from "@/server/auth/actions/actionHelpers";
 
 export type ActionResult = {
   success: boolean;

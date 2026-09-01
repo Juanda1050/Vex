@@ -1,13 +1,13 @@
 import { Prisma, SaleStatus } from "@prisma/client";
 import { getTranslations } from "next-intl/server";
 
-import { PageHeader } from "@/components/layout/page-header";
-import { getModuleIcon } from "@/lib/modules/module-icons";
-import { ModulePagination } from "@/components/modules/module-pagination";
-import { ModuleEmptyState } from "@/components/modules/module-empty-state";
-import { ModuleToolbar } from "@/components/modules/module-toolbar";
-import { RowActionHint } from "@/components/modules/row-action-hint";
-import { SortableTableHead } from "@/components/modules/sortable-table-head";
+import { PageHeader } from "@/components/layout/pageHeader";
+import { getModuleIcon } from "@/lib/modules/moduleIcons";
+import { ModulePagination } from "@/components/modules/modulePagination";
+import { ModuleEmptyState } from "@/components/modules/moduleEmptyState";
+import { ModuleToolbar } from "@/components/modules/moduleToolbar";
+import { RowActionHint } from "@/components/modules/rowActionHint";
+import { SortableTableHead } from "@/components/modules/sortableTableHead";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -22,11 +22,11 @@ import {
   formatCurrency,
   formatShortDate,
   getSaleStatusVariant,
-} from "@/lib/dashboard/dashboard-formatters";
+} from "@/lib/dashboard/dashboardFormatters";
 import {
   resolveSortDirection,
   resolveSortKey,
-} from "@/lib/modules/sort-params";
+} from "@/lib/modules/sortParams";
 import { prisma } from "@/lib/prisma";
 import { requirePermission } from "@/server/auth";
 import { createPaginationMeta } from "@/server/pagination";

@@ -4,7 +4,7 @@ import {
   getSubscriptionApiErrorTranslator,
   getSubscriptionErrorStatus,
   mapSubscriptionErrorToKey,
-} from "@/server/subscriptions/api/error-translator";
+} from "@/server/subscriptions/api/errorTranslator";
 
 export async function GET(request: NextRequest) {
   const translator = await getSubscriptionApiErrorTranslator(request);

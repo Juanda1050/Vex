@@ -3,9 +3,9 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 import { getOnboardingState } from "@/server/auth";
-import { AuthModulePanel } from "@/components/auth/auth-module-panel";
-import { AuthShowcasePanel } from "@/components/auth/auth-showcase-panel";
-import { RegisterForm } from "@/components/auth/register-form";
+import { AuthModulePanel } from "@/components/auth/authModulePanel";
+import { AuthShowcasePanel } from "@/components/auth/authShowcasePanel";
+import { RegisterForm } from "@/components/auth/registerForm";
 
 export default async function RegisterModulePage({
   params,

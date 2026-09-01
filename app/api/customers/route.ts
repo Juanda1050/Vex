@@ -10,8 +10,8 @@ import {
   getCustomerErrorStatus,
   mapCustomerErrorToKey,
   type CustomerApiErrorKey,
-} from "@/server/customers/api/error-translator";
-import { HTTP_STATUS } from "@/server/http-status";
+} from "@/server/customers/api/errorTranslator";
+import { HTTP_STATUS } from "@/server/httpStatus";
 
 export async function GET(request: NextRequest) {
   const translator = await getCustomerApiErrorTranslator(request);

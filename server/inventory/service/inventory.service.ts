@@ -1,6 +1,6 @@
 import { inventoryRepository } from "../repository/inventory.repository";
 import { unstable_cache } from "next/cache";
-import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
+import { invalidateTenantOperationalCaches } from "@/server/cache/tenantCacheInvalidation";
 import type {
   InventoryFilters,
   RegisterStockMovementInput,

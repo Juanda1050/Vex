@@ -20,7 +20,7 @@ export {
   validateSubscriptionLimit,
   enforceSubscriptionLimit,
   requireSubscriptionFeature,
-} from "./feature-access";
+} from "./featureAccess";
 
 export { requireBillingAccess, requirePremiumSubscription } from "./guards";
 export { changePlanSchema } from "./validations/subscription.schema";

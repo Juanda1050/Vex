@@ -10,12 +10,12 @@ import {
   getUserErrorStatus,
   mapUserErrorToKey,
   type UserApiErrorKey,
-} from "@/server/users/api/error-translator";
+} from "@/server/users/api/errorTranslator";
 import {
   enforceSubscriptionLimit,
   requireSubscriptionFeature,
 } from "@/server/subscriptions";
-import { HTTP_STATUS } from "@/server/http-status";
+import { HTTP_STATUS } from "@/server/httpStatus";
 
 export async function GET(request: NextRequest) {
   const translator = await getUserApiErrorTranslator(request);

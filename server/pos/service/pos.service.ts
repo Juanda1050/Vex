@@ -7,9 +7,9 @@ import {
 } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
-import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
+import { invalidateTenantOperationalCaches } from "@/server/cache/tenantCacheInvalidation";
 import { FEATURE_KEYS } from "@/server/plans";
-import { getBillingFeaturesForTenant } from "@/server/plans/feature-flags";
+import { getBillingFeaturesForTenant } from "@/server/plans/featureFlags";
 import type {
   CreateSaleInput,
   AddSaleItemInput,

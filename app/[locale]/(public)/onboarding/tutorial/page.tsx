@@ -3,9 +3,9 @@ import { getTranslations } from "next-intl/server";
 import { getLocale } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 
-import { TutorialStepper } from "@/components/onboarding/tutorial-stepper";
+import { TutorialStepper } from "@/components/onboarding/tutorialStepper";
 import { getOnboardingState } from "@/server/auth";
-import { invalidateAuthStateCache } from "@/server/auth/cache/auth-state-cache";
+import { invalidateAuthStateCache } from "@/server/auth/cache/authStateCache";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 
 export default async function OnboardingTutorialPage({

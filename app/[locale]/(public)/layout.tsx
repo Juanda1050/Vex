@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 
-import { PublicControls } from "@/components/layout/public-controls";
+import { PublicControls } from "@/components/layout/publicControls";
 
 export default async function PublicLayout({
   children,

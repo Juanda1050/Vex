@@ -10,8 +10,8 @@ import {
   getQuoteErrorStatus,
   mapQuoteErrorToKey,
   type QuoteApiErrorKey,
-} from "@/server/quotes/api/error-translator";
-import { HTTP_STATUS } from "@/server/http-status";
+} from "@/server/quotes/api/errorTranslator";
+import { HTTP_STATUS } from "@/server/httpStatus";
 
 export async function GET(request: NextRequest) {
   const translator = await getQuoteApiErrorTranslator(request);

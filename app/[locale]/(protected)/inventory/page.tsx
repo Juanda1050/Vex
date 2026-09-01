@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
-import { PageHeader } from "@/components/layout/page-header";
-import { getModuleIcon } from "@/lib/modules/module-icons";
-import { ModuleEmptyState } from "@/components/modules/module-empty-state";
-import { ModulePagination } from "@/components/modules/module-pagination";
-import { RowActionHint } from "@/components/modules/row-action-hint";
-import { SortableTableHead } from "@/components/modules/sortable-table-head";
+import { PageHeader } from "@/components/layout/pageHeader";
+import { getModuleIcon } from "@/lib/modules/moduleIcons";
+import { ModuleEmptyState } from "@/components/modules/moduleEmptyState";
+import { ModulePagination } from "@/components/modules/modulePagination";
+import { RowActionHint } from "@/components/modules/rowActionHint";
+import { SortableTableHead } from "@/components/modules/sortableTableHead";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -21,7 +21,7 @@ import {
 import {
   resolveSortDirection,
   resolveSortKey,
-} from "@/lib/modules/sort-params";
+} from "@/lib/modules/sortParams";
 import { cn } from "@/lib/utils";
 import { requirePermission } from "@/server/auth";
 import { inventoryService } from "@/server/inventory/service/inventory.service";

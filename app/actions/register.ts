@@ -3,10 +3,10 @@
 import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase";
 import { TenantService } from "@/server/tenant";
-import { HTTP_STATUS, type HttpStatusCode } from "@/server/http-status";
-import { getErrorTranslator } from "@/server/error-translator";
-import { checkRateLimit, RATE_LIMIT_PRESETS } from "@/lib/rate-limit";
-import { logError } from "@/lib/log-sanitizer";
+import { HTTP_STATUS, type HttpStatusCode } from "@/server/httpStatus";
+import { getErrorTranslator } from "@/server/errorTranslator";
+import { checkRateLimit, RATE_LIMIT_PRESETS } from "@/lib/rateLimit";
+import { logError } from "@/lib/logSanitizer";
 
 const tenantService = new TenantService();
 

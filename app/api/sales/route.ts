@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
 import { requirePermissionApi } from "@/server/auth";
-import { HTTP_STATUS } from "@/server/http-status";
+import { HTTP_STATUS } from "@/server/httpStatus";
 import { createPaginationMeta } from "@/server/pagination";
 
 const salesFiltersSchema = z.object({

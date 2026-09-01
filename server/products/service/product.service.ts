@@ -1,6 +1,6 @@
 import { productRepository } from "../repository/product.repository";
 import { unstable_cache } from "next/cache";
-import { invalidateTenantOperationalCaches } from "@/server/cache/tenant-cache-invalidation";
+import { invalidateTenantOperationalCaches } from "@/server/cache/tenantCacheInvalidation";
 import type {
   CreateProductInput,
   ProductFilters,

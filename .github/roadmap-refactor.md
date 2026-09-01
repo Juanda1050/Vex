@@ -476,6 +476,8 @@ vigente.
 | 2026-08-31 | Fase 2        | Lote 1.1: Guards API | requireAuthApi, requirePermissionApi JSON 401/403 | lint, typecheck, build ✅ |
 | 2026-08-31 | Fase 2        | Lote 1.2: Validación dinámica | UUID validation en [id] routes | lint, typecheck, build ✅ |
 | 2026-08-31 | Fase 2        | Lote 2: Rate limit | checkRateLimit en-memoria, RATE_LIMIT_PRESETS, integración en registerAction | lint, typecheck, build ✅ |
+| 2026-08-31 | Fase 2        | Lote 3: Log sanitization | logError/logWarn/logInfo sanitizers, integración register/promo-codes | lint, typecheck, build ✅ |
+| 2026-08-31 | Fase 2        | Riesgos conocidos | deepmerge-ts 3 altas: downgrade Prisma requiere validación (6.12.0 vs 6.19.3), aplazado a validación posterior | Documentado en roadmap |
 
 ## Definición de terminado
 

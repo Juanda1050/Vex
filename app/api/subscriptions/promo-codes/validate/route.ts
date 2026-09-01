@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { prisma } from "../../../../../lib/prisma";
+import { logError } from "@/lib/log-sanitizer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -166,7 +167,7 @@ export async function POST(request: NextRequest) {
             : null,
     });
   } catch (error) {
-    console.error("Promo code validation failed", error);
+    logError("Promo code validation failed", error);
     const detail =
       process.env.NODE_ENV === "development" && error instanceof Error
         ? error.message

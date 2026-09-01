@@ -9,6 +9,7 @@ import {
   checkRateLimit,
   RATE_LIMIT_PRESETS,
 } from "@/lib/rate-limit";
+import { logError } from "@/lib/log-sanitizer";
 
 const tenantService = new TenantService();
 
@@ -76,7 +77,10 @@ export async function registerAction(
       status: HTTP_STATUS.OK,
     };
   } catch (e) {
-    console.error(e);
+    logError("Company registration failed", e, {
+      email: "[REDACTED]",
+      companyName,
+    });
     const key = "tenantError";
     return {
       success: false,

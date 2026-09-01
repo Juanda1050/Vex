@@ -471,6 +471,11 @@ vigente.
 | Fecha      | Fase          | Lote              | Resultado      | Validación              |
 | ---------- | ------------- | ----------------- | -------------- | ----------------------- |
 | 2026-08-29 | Planificación | Auditoría inicial | Roadmap creado | Sin cambios funcionales |
+| 2026-08-31 | Fase 2        | Auditoría NPM     | npm audit fix  | 11 vulnerabilidades resueltas (3 altas en deepmerge-ts requieren downgrade de Prisma) |
+| 2026-08-31 | Fase 2        | Lote 1: Headers   | CSP + security headers en next.config.ts | lint, typecheck, build ✅ |
+| 2026-08-31 | Fase 2        | Lote 1.1: Guards API | requireAuthApi, requirePermissionApi JSON 401/403 | lint, typecheck, build ✅ |
+| 2026-08-31 | Fase 2        | Lote 1.2: Validación dinámica | UUID validation en [id] routes | lint, typecheck, build ✅ |
+| 2026-08-31 | Fase 2        | Lote 2: Rate limit | checkRateLimit en-memoria, RATE_LIMIT_PRESETS, integración en registerAction | lint, typecheck, build ✅ |
 
 ## Definición de terminado
 

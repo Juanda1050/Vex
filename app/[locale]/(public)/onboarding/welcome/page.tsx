@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { getTranslations } from "next-intl/server";
 import { getLocale } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 

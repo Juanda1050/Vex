@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   if (request.nextUrl.pathname === "/invite") {
     return NextResponse.next();
   }

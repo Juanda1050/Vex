@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import type {
@@ -192,7 +192,6 @@ export function useEnhancedCheckoutForm({
   const [promoCodeInput, setPromoCodeInput] = useState("");
   const [appliedPromoCode, setAppliedPromoCode] = useState<string | null>(null);
   const [promoDiscountPercent, setPromoDiscountPercent] = useState<number>(0);
-  const [promoDiscountAmount, setPromoDiscountAmount] = useState<number>(0);
   const [promoApplicableInterval, setPromoApplicableInterval] =
     useState<PlanInterval | null>(null);
   const [promoMessage, setPromoMessage] = useState<string | null>(null);
@@ -203,7 +202,7 @@ export function useEnhancedCheckoutForm({
     plan.prices[0]?.interval ??
     "month";
 
-  const [selectedInterval, setSelectedInterval] =
+  const [selectedInterval, setSelectedIntervalState] =
     useState<PlanInterval>(defaultInterval);
 
   const selectedPrice = useMemo(
@@ -279,9 +278,7 @@ export function useEnhancedCheckoutForm({
     : t("checkout.customPricing");
 
   const subtotalLabel = currencyFormatter.format(subtotalAmount);
-  const discountAmountLabel = currencyFormatter.format(
-    Math.max(0, promoDiscountAmount),
-  );
+  const discountAmountLabel = currencyFormatter.format(computedDiscountAmount);
 
   const totalCadence =
     selectedPrice?.interval === "year"
@@ -446,9 +443,6 @@ export function useEnhancedCheckoutForm({
       setAppliedPromoCode(payload.code ?? code.toUpperCase());
       setPromoCodeInput("");
       setPromoDiscountPercent(payload.discountPercent ?? 0);
-      const nextDiscountAmount =
-        (selectedPrice?.amount ?? 0) * ((payload.discountPercent ?? 0) / 100);
-      setPromoDiscountAmount(nextDiscountAmount);
       setPromoApplicableInterval(payload.applicableInterval ?? null);
       setPromoState("applied");
       setPromoMessage(
@@ -458,52 +452,35 @@ export function useEnhancedCheckoutForm({
       setPromoState("error");
       setPromoMessage(t("checkout.promo.errors.invalid"));
     }
-  }, [
-    appliedPromoCode,
-    promoCodeInput,
-    selectedInterval,
-    selectedPrice?.amount,
-    t,
-  ]);
+  }, [appliedPromoCode, promoCodeInput, selectedInterval, t]);
 
   const removePromoCode = useCallback(() => {
     if (!appliedPromoCode) return;
 
     setAppliedPromoCode(null);
     setPromoDiscountPercent(0);
-    setPromoDiscountAmount(0);
     setPromoApplicableInterval(null);
     setPromoState("removed");
     setPromoMessage(t("checkout.promo.removed"));
   }, [appliedPromoCode, t]);
 
-  useEffect(() => {
-    if (!appliedPromoCode || promoDiscountPercent <= 0) return;
-
-    if (
-      promoApplicableInterval &&
-      promoApplicableInterval !== selectedInterval
-    ) {
-      setAppliedPromoCode(null);
-      setPromoDiscountPercent(0);
-      setPromoDiscountAmount(0);
-      setPromoApplicableInterval(null);
-      setPromoState("error");
-      setPromoMessage(t("checkout.promo.errors.intervalNotAllowed"));
-      return;
-    }
-
-    const recalculated =
-      (selectedPrice?.amount ?? 0) * (promoDiscountPercent / 100);
-    setPromoDiscountAmount(recalculated);
-  }, [
-    appliedPromoCode,
-    promoApplicableInterval,
-    promoDiscountPercent,
-    selectedInterval,
-    selectedPrice?.amount,
-    t,
-  ]);
+  const setSelectedInterval = useCallback(
+    (interval: PlanInterval) => {
+      setSelectedIntervalState(interval);
+      if (
+        appliedPromoCode &&
+        promoApplicableInterval &&
+        promoApplicableInterval !== interval
+      ) {
+        setAppliedPromoCode(null);
+        setPromoDiscountPercent(0);
+        setPromoApplicableInterval(null);
+        setPromoState("error");
+        setPromoMessage(t("checkout.promo.errors.intervalNotAllowed"));
+      }
+    },
+    [appliedPromoCode, promoApplicableInterval, t],
+  );
 
   return {
     t,

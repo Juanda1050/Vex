@@ -7,7 +7,6 @@ import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { LoadingSubmitButton } from "@/components/ui/loading-submit-button";
 import { PLANS, type PlanDefinition } from "@/lib/payments/plans";
 
 interface CheckoutFormProps {

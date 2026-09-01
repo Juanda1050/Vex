@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { customerService, updateCustomerSchema } from "@/server/customers";
 import {
   getCustomerApiErrorTranslator,
@@ -19,7 +19,12 @@ export async function GET(
   const translator = await getCustomerApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("customers.view");
+    // Use requirePermissionApi for API routes
+    const ctxOrError = await requirePermissionApi("customers.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
 
     // Validate UUID format before using in query
@@ -61,7 +66,12 @@ export async function PATCH(
   const translator = await getCustomerApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("customers.edit");
+    // Use requirePermissionApi for API routes
+    const ctxOrError = await requirePermissionApi("customers.edit");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
     const body = await request.json();
 
@@ -110,7 +120,12 @@ export async function DELETE(
   const translator = await getCustomerApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("customers.delete");
+    // Use requirePermissionApi for API routes
+    const ctxOrError = await requirePermissionApi("customers.delete");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
     const parsedId = customerIdSchema.safeParse(id);
 

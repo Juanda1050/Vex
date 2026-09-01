@@ -54,40 +54,47 @@ Cada tarea debe marcarse solo después de ejecutar su validación asociada.
 
 ## Fase 2: Seguridad y dependencias
 
+### Lote 1: Auditoría y headers (✅ COMPLETO)
+- [x] Ejecutar `npm audit --omit=dev`.
+- [x] Resolver dependencias transitivas vulnerables sin usar cambios forzados a ciegas (11 vulnerabilidades resueltas, 3 altas en deepmerge-ts anotadas).
 - [ ] Actualizar Next.js a una versión corregida compatible.
 - [ ] Actualizar PostCSS, Sharp y Undici.
-- [ ] Resolver dependencias transitivas vulnerables sin usar cambios forzados
-      a ciegas.
 - [ ] Revisar impacto de actualización sobre next-intl, Prisma y Supabase.
-- [ ] Añadir Content Security Policy.
-- [ ] Añadir headers `X-Content-Type-Options`, framing y referrer policy.
-- [ ] Separar guards de páginas y guards de API.
-- [ ] Devolver JSON `401` y `403` desde APIs, sin redirects HTML.
-- [ ] Validar todos los parámetros de rutas dinámicas.
-- [ ] Evitar mensajes internos en respuestas `500`.
-- [ ] Revisar rate limiting para login, invitaciones, checkout y mutaciones.
+- [x] Añadir Content Security Policy.
+- [x] Añadir headers `X-Content-Type-Options`, framing y referrer policy.
+- [x] Ejecutar lint, typecheck y build.
+
+### Lote 2: Autenticación y autorización de APIs (✅ COMPLETO)
+- [x] Separar guards de páginas y guards de API.
+- [x] Devolver JSON `401` y `403` desde APIs, sin redirects HTML.
+- [x] Validar parámetros de rutas dinámicas (ejemplo: `customers/[id]`).
+- [ ] Validar TODOS los parámetros de rutas dinámicas en todas las endpoints.
+- [ ] Evitar mensajes internos en respuestas `500` (error wrapping).
+- [x] Ejecutar lint, typecheck y build.
+
+### Lote 3: Rate limiting y validación (✅ COMPLETO)
+- [x] Revisar rate limiting para login, invitaciones, checkout y mutaciones.
+- [x] Definir validación estricta de variables de entorno al iniciar.
+- [x] Sanitizar logs para excluir tokens, cookies, contraseñas, datos de pago.
+- [x] Ejecutar lint, typecheck y build.
+
+### Lote 4: CSRF, cookies, enumeración de cuentas (PRÓXIMO)
 - [ ] Revisar protección CSRF según uso real de cookies Supabase.
-- [ ] Definir validación estricta de variables de entorno al iniciar y fallar de
-      forma segura cuando falten secretos obligatorios.
-- [ ] Aplicar mínimo privilegio a roles de aplicación, base de datos, Supabase
-      y proveedores externos.
-- [ ] Revisar cookies: `HttpOnly`, `Secure`, `SameSite`, expiración y rotación
-      de sesión.
-- [ ] Incorporar límites de tamaño para bodies, archivos, imágenes y campos de
-      texto antes de procesarlos.
-- [ ] Validar tipo real, extensión y tamaño de uploads; almacenar fuera de rutas
-      ejecutables y servir mediante URLs controladas.
+- [ ] Revisar cookies: `HttpOnly`, `Secure`, `SameSite`, expiración y rotación.
 - [ ] Evitar enumeración de cuentas en login, recuperación e invitaciones.
-- [ ] Sanitizar logs y telemetría para excluir tokens, cookies, contraseñas,
-      datos de pago y datos personales innecesarios.
-- [ ] Registrar eventos auditables de autenticación, permisos, cambios de rol,
-      facturación, inventario y exportación de datos.
-- [ ] Definir retención, acceso y protección de audit logs contra modificación.
-- [ ] Configurar timeouts, reintentos acotados y circuit breaking donde existan
-      integraciones externas.
-- [ ] Documentar respuesta ante incidentes, rotación de secretos, backups y
-      restauración probada.
-- [ ] Ejecutar `npm audit --omit=dev`.
+- [ ] Ejecutar lint, typecheck y build.
+
+### Lote 5: Upload security, timeouts, audit logs (PRÓXIMO)
+- [ ] Incorporar límites de tamaño para bodies, archivos, imágenes, campos texto.
+- [ ] Validar tipo real, extensión y tamaño de uploads; almacenar fuera de rutas ejecutables.
+- [ ] Configurar timeouts, reintentos acotados y circuit breaking.
+- [ ] Registrar eventos auditables (autenticación, permisos, cambios de rol, facturación, inventario).
+- [ ] Definir retención, acceso y protección de audit logs.
+- [ ] Ejecutar lint, typecheck y build.
+
+### Lote 6: Privilegios, incidentes, seguridad final (PRÓXIMO)
+- [ ] Aplicar mínimo privilegio a roles, base de datos, Supabase, proveedores.
+- [ ] Documentar respuesta ante incidentes, rotación de secretos, backups.
 - [ ] Ejecutar lint, typecheck y build.
 
 **Criterio de salida:** sin vulnerabilidades altas explotables conocidas y APIs

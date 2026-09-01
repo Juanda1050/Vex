@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import {
   customerService,
   createCustomerSchema,
@@ -17,7 +17,13 @@ export async function GET(request: NextRequest) {
   const translator = await getCustomerApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("customers.view");
+    // Use requirePermissionApi for API routes (returns JSON 401/403, no redirects)
+    const ctxOrError = await requirePermissionApi("customers.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
+
     const parsed = customerFiltersSchema.safeParse({
       page: request.nextUrl.searchParams.get("page") ?? undefined,
       pageSize: request.nextUrl.searchParams.get("pageSize") ?? undefined,
@@ -60,7 +66,13 @@ export async function POST(request: NextRequest) {
   const translator = await getCustomerApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("customers.create");
+    // Use requirePermissionApi for API routes
+    const ctxOrError = await requirePermissionApi("customers.create");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
+
     const body = await request.json();
     const parsed = createCustomerSchema.safeParse({
       ...body,

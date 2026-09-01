@@ -22,7 +22,21 @@ export async function GET(
     const ctx = await requirePermission("customers.view");
     const { id } = await context.params;
 
-    const customer = await customerService.getCustomer(ctx.tenantId, id);
+    // Validate UUID format before using in query
+    const parsed = customerIdSchema.safeParse(id);
+    if (!parsed.success) {
+      const key: CustomerApiErrorKey = "invalidCustomerId";
+      const status = getCustomerErrorStatus(key);
+      return NextResponse.json(
+        { ok: false, errorKey: key, error: translator.fromKey(key), status },
+        { status },
+      );
+    }
+
+    const customer = await customerService.getCustomer(
+      ctx.tenantId,
+      parsed.data,
+    );
 
     return NextResponse.json({
       ok: true,

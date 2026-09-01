@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { posService } from "@/server/pos";
 import { HTTP_STATUS } from "@/server/http-status";
 
@@ -12,17 +12,24 @@ const refundSchema = z.object({
   mode: z.enum(["refund", "cancel"]).optional(),
 });
 
+const saleIdSchema = z.string().uuid();
+
 export async function POST(
   request: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const ctx = await requirePermission("sales.refund");
+    const ctxOrError = await requirePermissionApi("sales.refund");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
+    const parsedSaleId = saleIdSchema.safeParse(id);
     const body = await request.json();
     const parsed = refundSchema.safeParse(body);
 
-    if (!parsed.success) {
+    if (!parsedSaleId.success || !parsed.success) {
       return NextResponse.json(
         {
           ok: false,
@@ -34,7 +41,7 @@ export async function POST(
     }
 
     const sale = await posService.refundOrCancelSale({
-      saleId: id,
+      saleId: parsedSaleId.data,
       tenantId: ctx.tenantId,
       locationId: parsed.data.locationId,
       sessionId: parsed.data.sessionId,

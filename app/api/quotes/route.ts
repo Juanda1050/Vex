@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import {
   quoteService,
   createQuoteSchema,
@@ -17,7 +17,11 @@ export async function GET(request: NextRequest) {
   const translator = await getQuoteApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("quotes.view");
+    const ctxOrError = await requirePermissionApi("quotes.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const parsed = quoteFiltersSchema.safeParse({
       page: request.nextUrl.searchParams.get("page") ?? undefined,
       pageSize: request.nextUrl.searchParams.get("pageSize") ?? undefined,
@@ -59,7 +63,11 @@ export async function POST(request: NextRequest) {
   const translator = await getQuoteApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("quotes.create");
+    const ctxOrError = await requirePermissionApi("quotes.create");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const body = await request.json();
 
     const parsed = createQuoteSchema.safeParse({

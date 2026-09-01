@@ -67,10 +67,7 @@ const SENSITIVE_PATTERNS = [
  * @param depth Max recursion depth (default 10)
  * @returns Sanitized copy of object
  */
-export function sanitizeLog(
-  obj: unknown,
-  depth: number = 0,
-): unknown {
+export function sanitizeLog(obj: unknown, depth: number = 0): unknown {
   const MAX_DEPTH = 10;
 
   if (depth > MAX_DEPTH) {
@@ -127,8 +124,8 @@ function sanitizeString(str: string): string {
  */
 function isSensitiveKey(key: string): boolean {
   const lowerKey = key.toLowerCase();
-  return SENSITIVE_KEYS.some(
-    (sensitive) => lowerKey.includes(sensitive.toLowerCase()),
+  return SENSITIVE_KEYS.some((sensitive) =>
+    lowerKey.includes(sensitive.toLowerCase()),
   );
 }
 

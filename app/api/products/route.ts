@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import {
   productService,
   createProductSchema,
@@ -21,7 +21,11 @@ export async function GET(request: NextRequest) {
   const translator = await getProductApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("products.view");
+    const ctxOrError = await requirePermissionApi("products.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const parsed = productFiltersSchema.safeParse({
       page: request.nextUrl.searchParams.get("page") ?? undefined,
       pageSize: request.nextUrl.searchParams.get("pageSize") ?? undefined,
@@ -67,7 +71,11 @@ export async function POST(request: NextRequest) {
   const translator = await getProductApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("products.create");
+    const ctxOrError = await requirePermissionApi("products.create");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { subscription } = await requireSubscriptionFeature("productsLimit");
 
     const usedProducts = await productService.countActiveProducts(ctx.tenantId);

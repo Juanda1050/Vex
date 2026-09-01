@@ -205,6 +205,7 @@ model Tenant {
   rolePermissions  TenantRolePermission[]
   documentCounters DocumentCounter[]
   invitations      Invitation[]
+  auditLogs        AuditLog[]
 
   locations            Location[]
   productBarcodes      ProductBarcode[]
@@ -236,6 +237,24 @@ model TenantRolePermission {
   @@index([tenantId, role])
   @@index([tenantId, permission])
   @@map("tenant_role_permissions")
+}
+
+model AuditLog {
+  id           String   @id @default(uuid()) @db.Uuid
+  tenantId     String?  @db.Uuid
+  actorUserId  String?  @db.Uuid
+  action       String
+  resourceType String
+  resourceId   String?  @db.Uuid
+  metadata     Json     @default("{}")
+  createdAt    DateTime @default(now())
+
+  tenant Tenant? @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, createdAt])
+  @@index([actorUserId, createdAt])
+  @@index([action, createdAt])
+  @@map("audit_logs")
 }
 
 model DocumentCounter {

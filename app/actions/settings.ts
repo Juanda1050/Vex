@@ -13,6 +13,8 @@ import { ACCENT_COLOR_KEYS } from "@/lib/theme/accent-palettes";
 import { authRepository } from "@/server/auth/repository/auth.repository";
 import { requireAuth } from "@/server/auth";
 import { sessionManager } from "@/server/auth/session/session.manager";
+import { checkRateLimit, RATE_LIMIT_PRESETS } from "@/lib/rate-limit";
+import { writeAuditLog } from "@/server/audit-log";
 import { userService } from "@/server/users";
 import {
   buildLocalizedAbsoluteUrl,
@@ -36,15 +38,21 @@ const profileSchema = z.object({
 });
 
 const themeColorSchema = z.object({
-  themeColor: z.enum(
-    ACCENT_COLOR_KEYS as [string, ...string[]],
-  ),
+  themeColor: z.enum(ACCENT_COLOR_KEYS as [string, ...string[]]),
 });
 
 const passwordSchema = z.object({
   password: z.string().min(8),
   confirmPassword: z.string().min(8),
 });
+
+const ALLOWED_AVATAR_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+]);
+
+const MAX_AVATAR_BYTES = 5 * 1024 * 1024;
 
 const companySchema = z.object({
   name: z.string().trim().min(2).max(120),
@@ -104,7 +112,30 @@ function getDataUrlByteLength(value: string) {
 
 function isDataUrlTooLarge(value: string | null | undefined) {
   if (!value) return false;
-  return getDataUrlByteLength(value) > 5 * 1024 * 1024;
+  return getDataUrlByteLength(value) > MAX_AVATAR_BYTES;
+}
+
+function isAllowedAvatarDataUrl(value: string | null | undefined) {
+  if (!value) return true;
+
+  const match = /^data:([^;,]+);base64,([A-Za-z0-9+/=]+)$/.exec(value);
+  if (!match || !ALLOWED_AVATAR_MIME_TYPES.has(match[1])) return false;
+
+  const bytes = Buffer.from(match[2], "base64");
+  const isPng =
+    match[1] === "image/png" &&
+    bytes
+      .subarray(0, 8)
+      .equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+  const isJpeg =
+    match[1] === "image/jpeg" &&
+    bytes.subarray(0, 3).equals(Buffer.from([0xff, 0xd8, 0xff]));
+  const isWebp =
+    match[1] === "image/webp" &&
+    bytes.subarray(0, 4).toString("ascii") === "RIFF" &&
+    bytes.subarray(8, 12).toString("ascii") === "WEBP";
+
+  return isPng || isJpeg || isWebp;
 }
 
 function isElevatedRole(role: string) {
@@ -150,7 +181,10 @@ export async function updateProfileAction(
 
     let avatarDataUrl = parsed.data.avatarDataUrl ?? null;
     if (file instanceof File && file.size > 0) {
-      if (file.size > 5 * 1024 * 1024) {
+      if (
+        file.size > MAX_AVATAR_BYTES ||
+        !ALLOWED_AVATAR_MIME_TYPES.has(file.type)
+      ) {
         return {
           success: false,
           error: t("messages.avatarTooLarge"),
@@ -161,7 +195,12 @@ export async function updateProfileAction(
 
       const buffer = Buffer.from(await file.arrayBuffer());
       avatarDataUrl = `data:${file.type || "image/png"};base64,${buffer.toString("base64")}`;
-    } else if (isDataUrlTooLarge(avatarDataUrl)) {
+    }
+
+    if (
+      isDataUrlTooLarge(avatarDataUrl) ||
+      !isAllowedAvatarDataUrl(avatarDataUrl)
+    ) {
       return {
         success: false,
         error: t("messages.avatarTooLarge"),
@@ -381,6 +420,15 @@ export async function updateMemberRoleAction(
       },
     });
 
+    await writeAuditLog({
+      tenantId: ctx.tenantId,
+      actorUserId: ctx.userId,
+      action: "ROLE_UPDATED",
+      resourceType: "tenant_member",
+      resourceId: parsed.data.memberId,
+      metadata: { role: parsed.data.role },
+    });
+
     return {
       success: true,
       error: null,
@@ -398,6 +446,20 @@ export async function createInvitationAction(
   try {
     const ctx = await getCurrentUser();
     const t = await getTranslations("settings");
+
+    const rateLimit = await checkRateLimit(
+      ctx.userId,
+      "create-invitation",
+      RATE_LIMIT_PRESETS.mutation,
+    );
+    if (!rateLimit.allowed) {
+      return {
+        success: false,
+        error: t("messages.genericError"),
+        errorKey: "generic",
+        status: HTTP_STATUS.TOO_MANY_REQUESTS,
+      };
+    }
 
     if (!isElevatedRole(ctx.role)) {
       return {
@@ -543,7 +605,7 @@ export async function acceptInvitationAction(
     if (error) {
       return {
         success: false,
-        error: error.message || t("errors.invalidCredentials"),
+        error: t("errors.invalidCredentials"),
         errorKey: "generic",
         status: HTTP_STATUS.BAD_REQUEST,
       };
@@ -558,7 +620,10 @@ export async function acceptInvitationAction(
       };
     }
 
-    if (isDataUrlTooLarge(parsed.data.avatarDataUrl)) {
+    if (
+      isDataUrlTooLarge(parsed.data.avatarDataUrl) ||
+      !isAllowedAvatarDataUrl(parsed.data.avatarDataUrl)
+    ) {
       return {
         success: false,
         error: t("invite.avatarTooLarge"),

@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { getLocale } from "next-intl/server";
 import { sessionManager } from "../session/session.manager";
 import {
@@ -11,6 +12,11 @@ import {
 } from "./action-helpers";
 import { forgotPasswordSchema } from "../validations/forgot-password.schema";
 import { HTTP_STATUS } from "@/server/http-status";
+import {
+  checkRateLimit,
+  getRateLimitIdentifier,
+  RATE_LIMIT_PRESETS,
+} from "@/lib/rate-limit";
 
 export type ForgotPasswordState = AuthActionState;
 
@@ -32,6 +38,22 @@ export async function forgotPasswordAction(
       success: false,
       errorKey: key,
       status: HTTP_STATUS.BAD_REQUEST,
+    };
+  }
+
+  const requestHeaders = await headers();
+  const rateLimit = await checkRateLimit(
+    getRateLimitIdentifier(requestHeaders, parsed.data.email),
+    "forgot-password",
+    RATE_LIMIT_PRESETS.forgotPassword,
+  );
+
+  if (!rateLimit.allowed) {
+    return {
+      error: errors.generic(),
+      success: false,
+      errorKey: "generic",
+      status: HTTP_STATUS.TOO_MANY_REQUESTS,
     };
   }
 

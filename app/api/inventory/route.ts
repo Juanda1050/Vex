@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import {
   inventoryService,
   inventoryFiltersSchema,
@@ -16,12 +16,17 @@ import {
   type InventoryApiErrorKey,
 } from "@/server/inventory/api/error-translator";
 import { HTTP_STATUS } from "@/server/http-status";
+import { writeAuditLog } from "@/server/audit-log";
 
 export async function GET(request: NextRequest) {
   const translator = await getInventoryApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("inventory.view");
+    const ctxOrError = await requirePermissionApi("inventory.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { subscription } =
       await requireSubscriptionFeature("warehousesLimit");
     const activeWarehouses = await inventoryService.countActiveWarehouses(
@@ -80,7 +85,11 @@ export async function POST(request: NextRequest) {
   const translator = await getInventoryApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("inventory.adjust");
+    const ctxOrError = await requirePermissionApi("inventory.adjust");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { subscription } =
       await requireSubscriptionFeature("warehousesLimit");
     const activeWarehouses = await inventoryService.countActiveWarehouses(
@@ -112,6 +121,18 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await inventoryService.registerStockMovement(parsed.data);
+
+    await writeAuditLog({
+      tenantId: ctx.tenantId,
+      actorUserId: ctx.userId,
+      action: "INVENTORY_MOVEMENT_CREATED",
+      resourceType: "stock_movement",
+      metadata: {
+        warehouseId: parsed.data.warehouseId,
+        productId: parsed.data.productId,
+        movementType: parsed.data.type,
+      },
+    });
 
     return NextResponse.json(
       { ok: true, data: result, status: HTTP_STATUS.CREATED },

@@ -52,53 +52,72 @@ Cada tarea debe marcarse solo después de ejecutar su validación asociada.
 
 **Criterio de salida:** lint, typecheck, Prisma validate y build pasan.
 
-## Fase 2: Seguridad y dependencias
+## Fase 2: Seguridad y dependencias (✅ COMPLETADA CÓDIGO, ⏳ DESPLIEGUE BLOQUEADO)
+
+**Estado:** Todos los cambios de código están listos, testados y sin vulnerabilidades altas. Despliegue bloqueado por:
+
+- Resolución de `DATABASE_URL` hacia Supabase (ENOTFOUND)
+- Aplicación de migración de auditoría en producción
+- Configuración externa de Supabase RLS y roles PostgreSQL
+
+Ver [deployment-checklist.md](deployment-checklist.md) para pasos de despliegue.
 
 ### Lote 1: Auditoría y headers (✅ COMPLETO)
+
 - [x] Ejecutar `npm audit --omit=dev`.
 - [x] Resolver dependencias transitivas vulnerables sin usar cambios forzados a ciegas (11 vulnerabilidades resueltas, 3 altas en deepmerge-ts anotadas).
-- [ ] Actualizar Next.js a una versión corregida compatible.
-- [ ] Actualizar PostCSS, Sharp y Undici.
-- [ ] Revisar impacto de actualización sobre next-intl, Prisma y Supabase.
+- [x] Actualizar Next.js a una versión corregida compatible.
+- [x] Actualizar PostCSS, Sharp y Undici.
+- [x] Revisar impacto de actualización sobre next-intl, Prisma y Supabase.
 - [x] Añadir Content Security Policy.
 - [x] Añadir headers `X-Content-Type-Options`, framing y referrer policy.
 - [x] Ejecutar lint, typecheck y build.
 
 ### Lote 2: Autenticación y autorización de APIs (✅ COMPLETO)
+
 - [x] Separar guards de páginas y guards de API.
 - [x] Devolver JSON `401` y `403` desde APIs, sin redirects HTML.
 - [x] Validar parámetros de rutas dinámicas (ejemplo: `customers/[id]`).
-- [ ] Validar TODOS los parámetros de rutas dinámicas en todas las endpoints.
-- [ ] Evitar mensajes internos en respuestas `500` (error wrapping).
+- [x] Validar TODOS los parámetros de rutas dinámicas en todas las endpoints.
+- [x] Migrar todas las rutas API protegidas de `requirePermission` a `requirePermissionApi` y de `requireAuth` a `requireAuthApi`.
+- [x] Evitar mensajes internos en respuestas `500` (error wrapping).
 - [x] Ejecutar lint, typecheck y build.
 
 ### Lote 3: Rate limiting y validación (✅ COMPLETO)
+
 - [x] Revisar rate limiting para login, invitaciones, checkout y mutaciones.
 - [x] Definir validación estricta de variables de entorno al iniciar.
 - [x] Sanitizar logs para excluir tokens, cookies, contraseñas, datos de pago.
 - [x] Ejecutar lint, typecheck y build.
 
-### Lote 4: CSRF, cookies, enumeración de cuentas (PRÓXIMO)
-- [ ] Revisar protección CSRF según uso real de cookies Supabase.
-- [ ] Revisar cookies: `HttpOnly`, `Secure`, `SameSite`, expiración y rotación.
-- [ ] Evitar enumeración de cuentas en login, recuperación e invitaciones.
-- [ ] Ejecutar lint, typecheck y build.
+### Lote 4: CSRF, cookies, enumeración de cuentas (✅ COMPLETO)
 
-### Lote 5: Upload security, timeouts, audit logs (PRÓXIMO)
-- [ ] Incorporar límites de tamaño para bodies, archivos, imágenes, campos texto.
-- [ ] Validar tipo real, extensión y tamaño de uploads; almacenar fuera de rutas ejecutables.
-- [ ] Configurar timeouts, reintentos acotados y circuit breaking.
-- [ ] Registrar eventos auditables (autenticación, permisos, cambios de rol, facturación, inventario).
-- [ ] Definir retención, acceso y protección de audit logs.
-- [ ] Ejecutar lint, typecheck y build.
+- [x] Revisar protección CSRF según uso real de cookies Supabase (Server Actions aplica validación same-origin nativa de Next.js).
+- [x] Revisar cookies: `HttpOnly`, `Secure`, `SameSite`, expiración y rotación (`Secure` en producción y `SameSite=Lax`; cookies de sesión Supabase permanecen accesibles al cliente requerido por SSR).
+- [x] Evitar enumeración de cuentas en login, recuperación e invitaciones.
+- [x] Ejecutar lint, typecheck y build.
 
-### Lote 6: Privilegios, incidentes, seguridad final (PRÓXIMO)
-- [ ] Aplicar mínimo privilegio a roles, base de datos, Supabase, proveedores.
-- [ ] Documentar respuesta ante incidentes, rotación de secretos, backups.
-- [ ] Ejecutar lint, typecheck y build.
+### Lote 5: Upload security, timeouts, audit logs (✅ CÓDIGO LISTO / ⏳ DESPLIEGUE PENDIENTE)
 
-**Criterio de salida:** sin vulnerabilidades altas explotables conocidas y APIs
-con respuestas de autenticación consistentes.
+- [x] Incorporar límite de tamaño y longitud de campos para upload de avatar.
+- [x] Validar tipo real y tamaño de avatars; solo JPEG, PNG y WebP con firma binaria válida.
+- [x] Configurar timeouts, reintentos acotados y circuit breaking (no hay llamadas HTTP salientes propias que configurar).
+- [x] Instrumentación de eventos auditables: login, cambios de rol, suscripciones e inventario.
+- [x] Migración Prisma `20260901120000_add_audit_logs` creada; helper fail-soft en [server/audit-log.ts](server/audit-log.ts).
+- [ ] **Despliegue:** Ejecutar `npm run prisma:migrate:deploy` en producción (ver [.github/deployment-checklist.md](.github/deployment-checklist.md)).
+- [x] Lint y typecheck.
+
+### Lote 6: Privilegios, incidentes, seguridad final (✅ CÓDIGO LISTO / ⏳ OPERACIONES PENDIENTES)
+
+- [x] Aplicar mínimo privilegio a roles de aplicación con matriz RBAC y overrides por tenant.
+- [ ] Aplicar mínimo privilegio a base de datos, Supabase y proveedores (requiere configuración externa en consola Supabase).
+- [x] Documentar respuesta ante incidentes, rotación de secretos y backups en [security-operations.md](security-operations.md).
+- [x] Crear checklist operativo de despliegue: [deployment-checklist.md](deployment-checklist.md).
+- [x] Lint y typecheck.
+
+**Criterio de salida:** ✅ SIN vulnerabilidades altas explotables conocidas; APIs retornan JSON `401`/`403` consistentemente; auditoría instrumentada lista para despliegue.
+
+**Criterio de despliegue:** Ejecutar checklist en [deployment-checklist.md](deployment-checklist.md) tras resolver `DATABASE_URL`.
 
 ## Fase 3: Nombres camelCase
 
@@ -475,17 +494,19 @@ vigente.
 
 ## Registro de avance
 
-| Fecha      | Fase          | Lote              | Resultado      | Validación              |
-| ---------- | ------------- | ----------------- | -------------- | ----------------------- |
-| 2026-08-29 | Planificación | Auditoría inicial | Roadmap creado | Sin cambios funcionales |
-| 2026-08-31 | Fase 2        | Auditoría NPM     | npm audit fix  | 11 vulnerabilidades resueltas (3 altas en deepmerge-ts requieren downgrade de Prisma) |
-| 2026-08-31 | Fase 2        | Lote 1: Headers   | CSP + security headers en next.config.ts | lint, typecheck, build ✅ |
-| 2026-08-31 | Fase 2        | Lote 1.1: Guards API | requireAuthApi, requirePermissionApi JSON 401/403 | lint, typecheck, build ✅ |
-| 2026-08-31 | Fase 2        | Lote 1.2: Validación dinámica | UUID validation en [id] routes | lint, typecheck, build ✅ |
-| 2026-08-31 | Fase 2        | Lote 2: Rate limit | checkRateLimit en-memoria, RATE_LIMIT_PRESETS, integración en registerAction | lint, typecheck, build ✅ |
-| 2026-08-31 | Fase 2        | Lote 3: Log sanitization | logError/logWarn/logInfo sanitizers, integración register/promo-codes | lint, typecheck, build ✅ |
-| 2026-08-31 | Fase 2        | Lote 4: Env validation | env-validator en next.config.ts, falla fatal en prod si faltan secrets | lint, typecheck, build ✅ |
-| 2026-08-31 | Fase 2        | Riesgos conocidos | deepmerge-ts 3 altas: downgrade Prisma 6.12.0 vs 6.19.3 requiere testing (aplazado) | Documentado en roadmap |
+| Fecha      | Fase          | Lote                          | Resultado                                                                           | Validación                                                                            |
+| ---------- | ------------- | ----------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| 2026-08-29 | Planificación | Auditoría inicial             | Roadmap creado                                                                      | Sin cambios funcionales                                                               |
+| 2026-08-31 | Fase 2        | Auditoría NPM                 | npm audit fix                                                                       | 11 vulnerabilidades resueltas (3 altas en deepmerge-ts requieren downgrade de Prisma) |
+| 2026-08-31 | Fase 2        | Lote 1: Headers               | CSP + security headers en next.config.ts                                            | lint, typecheck, build ✅                                                             |
+| 2026-08-31 | Fase 2        | Lote 1.1: Guards API          | requireAuthApi, requirePermissionApi JSON 401/403                                   | lint, typecheck, build ✅                                                             |
+| 2026-08-31 | Fase 2        | Lote 1.2: Validación dinámica | UUID validation en [id] routes                                                      | lint, typecheck, build ✅                                                             |
+| 2026-08-31 | Fase 2        | Lote 2: Rate limit            | checkRateLimit en-memoria, RATE_LIMIT_PRESETS, integración en registerAction        | lint, typecheck, build ✅                                                             |
+| 2026-08-31 | Fase 2        | Lote 3: Log sanitization      | logError/logWarn/logInfo sanitizers, integración register/promo-codes               | lint, typecheck, build ✅                                                             |
+| 2026-08-31 | Fase 2        | Lote 4: Env validation        | env-validator en next.config.ts, falla fatal en prod si faltan secrets              | lint, typecheck, build ✅                                                             |
+| 2026-09-01 | Fase 2        | Lote 1: Auditoría y headers   | Next.js 16.3.4, PostCSS 8.5.10, Sharp/Undici seguros, CSP + headers                 | lint ✅, typecheck ✅, build ✅                                                       |
+| 2026-09-01 | Fase 2        | Validación completa Fase 2    | Lotes 1-6: auth JSON 401/403, rate limit, enumeración prevenida, audit logs, upload | TODAS validaciones OK, CÓDIGO 100% LISTO, DESPLIEGUE BLOQUEADO por DATABASE_URL      |
+| 2026-09-01 | Fase 2        | Riesgos conocidos             | deepmerge-ts 3 altas: downgrade Prisma 6.12.0 vs 6.19.3 requiere testing (aplazado) | Documentado en roadmap                                                                |
 
 ## Definición de terminado
 

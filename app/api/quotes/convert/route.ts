@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { quoteService, convertQuoteToSaleSchema } from "@/server/quotes";
 import {
   getQuoteApiErrorTranslator,
@@ -13,7 +13,11 @@ export async function POST(request: NextRequest) {
   const translator = await getQuoteApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("quotes.convert");
+    const ctxOrError = await requirePermissionApi("quotes.convert");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const body = await request.json();
 
     const parsed = convertQuoteToSaleSchema.safeParse({

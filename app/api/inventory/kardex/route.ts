@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { inventoryService } from "@/server/inventory";
 import {
   enforceSubscriptionLimit,
@@ -16,7 +16,11 @@ export async function GET(request: NextRequest) {
   const translator = await getInventoryApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("inventory.view");
+    const ctxOrError = await requirePermissionApi("inventory.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { subscription } =
       await requireSubscriptionFeature("warehousesLimit");
     const activeWarehouses = await inventoryService.countActiveWarehouses(

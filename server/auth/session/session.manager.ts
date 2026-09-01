@@ -21,7 +21,11 @@ async function getSupabaseClient() {
         try {
           cookiesToSet.forEach(({ name, value, options }) => {
             if (!options) {
-              cookieStore.set(name, value);
+              cookieStore.set(name, value, {
+                path: "/",
+                sameSite: "lax",
+                secure: process.env.NODE_ENV === "production",
+              });
               return;
             }
 
@@ -32,12 +36,20 @@ async function getSupabaseClient() {
                 ...options,
                 maxAge: undefined,
                 expires: undefined,
+                path: "/",
+                sameSite: "lax" as const,
+                secure: process.env.NODE_ENV === "production",
               };
               cookieStore.set(name, value, sessionCookieOptions);
               return;
             }
 
-            cookieStore.set(name, value, options);
+            cookieStore.set(name, value, {
+              ...options,
+              path: "/",
+              sameSite: "lax",
+              secure: process.env.NODE_ENV === "production",
+            });
           });
         } catch {
           // In Server Components Next.js forbids mutating cookies.

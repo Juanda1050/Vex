@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { productService, updateProductSchema } from "@/server/products";
 import {
   getProductApiErrorTranslator,
@@ -19,10 +19,27 @@ export async function GET(
   const translator = await getProductApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("products.view");
+    const ctxOrError = await requirePermissionApi("products.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
 
-    const product = await productService.getProduct(ctx.tenantId, id);
+    const parsedId = productIdSchema.safeParse(id);
+    if (!parsedId.success) {
+      const key: ProductApiErrorKey = "invalidProductId";
+      const status = getProductErrorStatus(key);
+      return NextResponse.json(
+        { ok: false, errorKey: key, error: translator.fromKey(key), status },
+        { status },
+      );
+    }
+
+    const product = await productService.getProduct(
+      ctx.tenantId,
+      parsedId.data,
+    );
 
     return NextResponse.json({
       ok: true,
@@ -47,7 +64,11 @@ export async function PATCH(
   const translator = await getProductApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("products.edit");
+    const ctxOrError = await requirePermissionApi("products.edit");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
     const body = await request.json();
 
@@ -94,7 +115,11 @@ export async function DELETE(
   const translator = await getProductApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("products.delete");
+    const ctxOrError = await requirePermissionApi("products.delete");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
     const parsedId = productIdSchema.safeParse(id);
 

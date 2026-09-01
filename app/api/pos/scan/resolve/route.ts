@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { posService } from "@/server/pos";
 import { HTTP_STATUS } from "@/server/http-status";
 
@@ -11,7 +11,11 @@ const scanSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const ctx = await requirePermission("sales.create");
+    const ctxOrError = await requirePermissionApi("sales.create");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const body = await request.json();
     const parsed = scanSchema.safeParse(body);
 

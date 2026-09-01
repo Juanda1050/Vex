@@ -1,6 +1,6 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { sessionManager } from "../session/session.manager";
@@ -14,6 +14,12 @@ import {
 } from "./action-helpers";
 import { loginSchema } from "../validations/login.schema";
 import { HTTP_STATUS } from "@/server/http-status";
+import {
+  checkRateLimit,
+  getRateLimitIdentifier,
+  RATE_LIMIT_PRESETS,
+} from "@/lib/rate-limit";
+import { writeAuditLog } from "@/server/audit-log";
 
 export type LoginState = AuthActionState;
 
@@ -40,6 +46,22 @@ export async function loginAction(
   }
 
   const { email, password } = parsed.data;
+  const requestHeaders = await headers();
+  const rateLimit = await checkRateLimit(
+    getRateLimitIdentifier(requestHeaders, email),
+    "login",
+    RATE_LIMIT_PRESETS.login,
+  );
+
+  if (!rateLimit.allowed) {
+    return {
+      error: errors.generic(),
+      success: false,
+      errorKey: "generic",
+      status: HTTP_STATUS.TOO_MANY_REQUESTS,
+    };
+  }
+
   const remember = formData.get("remember") === "true";
 
   const cookieStore = await cookies();
@@ -53,15 +75,30 @@ export async function loginAction(
     ...(remember ? { maxAge: COOKIE_OPTIONS.maxAge } : {}),
   });
 
-  const { error } = await sessionManager.signInWithPassword(email, password);
+  const { data, error } = await sessionManager.signInWithPassword(
+    email,
+    password,
+  );
 
-  if (error)
+  if (error) {
+    await writeAuditLog({
+      action: "AUTH_LOGIN_FAILED",
+      resourceType: "session",
+    });
+
     return {
       error: errors.fromKey("invalidCredentials"),
       success: false,
       errorKey: "invalidCredentials",
       status: HTTP_STATUS.UNAUTHORIZED,
     };
+  }
+
+  await writeAuditLog({
+    actorUserId: data.user?.id,
+    action: "AUTH_LOGIN_SUCCEEDED",
+    resourceType: "session",
+  });
 
   const redirectTo = formData.get("redirectTo") as string | null;
   redirect(sanitizeNextPath(redirectTo, AUTH_REDIRECTS.dashboard(locale)));

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import {
   createTenantUserSchema,
   userFiltersSchema,
@@ -21,7 +21,11 @@ export async function GET(request: NextRequest) {
   const translator = await getUserApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("users.view");
+    const ctxOrError = await requirePermissionApi("users.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     await requireSubscriptionFeature("usersLimit");
 
     const parsed = userFiltersSchema.safeParse({
@@ -63,7 +67,11 @@ export async function POST(request: NextRequest) {
   const translator = await getUserApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("users.create");
+    const ctxOrError = await requirePermissionApi("users.create");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { subscription } = await requireSubscriptionFeature("usersLimit");
 
     const activeUsers = await userService.countActiveUsers(ctx.tenantId);

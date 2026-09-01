@@ -39,6 +39,16 @@ export interface RateLimitConfig {
   keyGenerator?: (identifier: string, endpoint: string) => string;
 }
 
+export function getRateLimitIdentifier(
+  requestHeaders: Headers,
+  fallback: string,
+): string {
+  const forwardedFor = requestHeaders.get("x-forwarded-for");
+  const clientIp = forwardedFor?.split(",")[0]?.trim();
+
+  return clientIp || fallback;
+}
+
 /**
  * Check if request is within rate limit.
  *
@@ -57,8 +67,7 @@ export async function checkRateLimit(
   resetAt: Date;
 }> {
   const key =
-    config.keyGenerator?.(identifier, endpoint) ??
-    `${identifier}:${endpoint}`;
+    config.keyGenerator?.(identifier, endpoint) ?? `${identifier}:${endpoint}`;
 
   const now = Date.now();
   const windowStart = now - config.windowMs;

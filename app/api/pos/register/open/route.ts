@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { posService } from "@/server/pos";
 import { HTTP_STATUS } from "@/server/http-status";
 
@@ -14,7 +14,11 @@ const openSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const ctx = await requirePermission("sales.create");
+    const ctxOrError = await requirePermissionApi("sales.create");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const body = request.headers
       .get("content-type")
       ?.includes("application/json")
@@ -46,12 +50,11 @@ export async function POST(request: NextRequest) {
       { ok: true, data: session, status: HTTP_STATUS.CREATED },
       { status: HTTP_STATUS.CREATED },
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       {
         ok: false,
-        error:
-          error instanceof Error ? error.message : "No se pudo abrir la caja.",
+        error: "No se pudo abrir la caja.",
         status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
       },
       { status: HTTP_STATUS.INTERNAL_SERVER_ERROR },

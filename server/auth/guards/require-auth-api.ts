@@ -18,9 +18,7 @@ const ACTIVE_SUBSCRIPTION_STATUSES: ReadonlySet<SubscriptionStatus> = new Set([
  * @throws Never (returns NextResponse instead)
  * @returns TenantContext on success or NextResponse with error status
  */
-export async function requireAuthApi(): Promise<
-  TenantContext | NextResponse
-> {
+export async function requireAuthApi(): Promise<TenantContext | NextResponse> {
   const { user, error } = await sessionManager.getUser();
   if (error || !user) {
     return NextResponse.json(
@@ -53,8 +51,7 @@ export async function requireAuthApi(): Promise<
     );
   }
 
-  const currentSubscription =
-    authState.member.tenant.subscriptions[0] ?? null;
+  const currentSubscription = authState.member.tenant.subscriptions[0] ?? null;
   const hasActiveCompanySubscription = currentSubscription
     ? ACTIVE_SUBSCRIPTION_STATUSES.has(currentSubscription.status)
     : false;

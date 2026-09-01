@@ -13,6 +13,7 @@ import { requireBillingAccess } from "@/server/subscriptions/guards";
 import { changePlanSchema } from "@/server/subscriptions/validations/subscription.schema";
 import { revalidatePath } from "next/cache";
 import { HTTP_STATUS, type HttpStatusCode } from "@/server/http-status";
+import { writeAuditLog } from "@/server/audit-log";
 
 export interface SubscriptionActionResult<T = unknown> {
   success: boolean;
@@ -115,6 +116,15 @@ export async function changeSubscriptionPlanAction(
       priceId: parsed.data.priceId,
     });
 
+    await writeAuditLog({
+      tenantId: ctx.tenantId,
+      actorUserId: ctx.userId,
+      action: "SUBSCRIPTION_PLAN_CHANGED",
+      resourceType: "subscription",
+      resourceId: updated.id,
+      metadata: { planCode: updated.plan.code },
+    });
+
     revalidatePath("/");
 
     return {
@@ -146,6 +156,14 @@ export async function cancelSubscriptionAction(): Promise<SubscriptionActionResu
       ctx.tenantId,
     );
 
+    await writeAuditLog({
+      tenantId: ctx.tenantId,
+      actorUserId: ctx.userId,
+      action: "SUBSCRIPTION_CANCELED",
+      resourceType: "subscription",
+      resourceId: canceled.id,
+    });
+
     revalidatePath("/");
 
     return {
@@ -176,6 +194,14 @@ export async function reactivateSubscriptionAction(): Promise<SubscriptionAction
     const reactivated = await subscriptionService.reactivateTenantSubscription(
       ctx.tenantId,
     );
+
+    await writeAuditLog({
+      tenantId: ctx.tenantId,
+      actorUserId: ctx.userId,
+      action: "SUBSCRIPTION_REACTIVATED",
+      resourceType: "subscription",
+      resourceId: reactivated.id,
+    });
 
     revalidatePath("/");
 

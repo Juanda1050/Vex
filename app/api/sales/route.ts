@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { HTTP_STATUS } from "@/server/http-status";
 import { createPaginationMeta } from "@/server/pagination";
 
@@ -18,7 +18,11 @@ const salesFiltersSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    const ctx = await requirePermission("sales.view");
+    const ctxOrError = await requirePermissionApi("sales.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
 
     const parsed = salesFiltersSchema.safeParse({
       page: request.nextUrl.searchParams.get("page") ?? undefined,

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { quoteService } from "@/server/quotes";
 import {
   getQuoteApiErrorTranslator,
@@ -19,10 +19,24 @@ export async function GET(
   const translator = await getQuoteApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("quotes.view");
+    const ctxOrError = await requirePermissionApi("quotes.view");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
 
-    const quote = await quoteService.getQuote(ctx.tenantId, id);
+    const parsedId = quoteIdSchema.safeParse(id);
+    if (!parsedId.success) {
+      const key: QuoteApiErrorKey = "invalidQuoteId";
+      const status = getQuoteErrorStatus(key);
+      return NextResponse.json(
+        { ok: false, errorKey: key, error: translator.fromKey(key), status },
+        { status },
+      );
+    }
+
+    const quote = await quoteService.getQuote(ctx.tenantId, parsedId.data);
 
     return NextResponse.json({ ok: true, data: quote, status: HTTP_STATUS.OK });
   } catch (error) {
@@ -43,7 +57,11 @@ export async function DELETE(
   const translator = await getQuoteApiErrorTranslator(request);
 
   try {
-    const ctx = await requirePermission("quotes.edit");
+    const ctxOrError = await requirePermissionApi("quotes.edit");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
     const parsedId = quoteIdSchema.safeParse(id);
 

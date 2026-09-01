@@ -31,7 +31,11 @@ export const createClient = async (request: NextRequest) => {
 
         cookiesToSet.forEach(({ name, value, options }) => {
           if (!options) {
-            supabaseResponse.cookies.set(name, value);
+            supabaseResponse.cookies.set(name, value, {
+              path: "/",
+              sameSite: "lax",
+              secure: process.env.NODE_ENV === "production",
+            });
             return;
           }
 
@@ -42,11 +46,19 @@ export const createClient = async (request: NextRequest) => {
               ...options,
               maxAge: undefined,
               expires: undefined,
+              path: "/",
+              sameSite: "lax",
+              secure: process.env.NODE_ENV === "production",
             });
             return;
           }
 
-          supabaseResponse.cookies.set(name, value, options);
+          supabaseResponse.cookies.set(name, value, {
+            ...options,
+            path: "/",
+            sameSite: "lax",
+            secure: process.env.NODE_ENV === "production",
+          });
         });
       },
     },

@@ -5,10 +5,7 @@ import { createClient } from "@/lib/supabase";
 import { TenantService } from "@/server/tenant";
 import { HTTP_STATUS, type HttpStatusCode } from "@/server/http-status";
 import { getErrorTranslator } from "@/server/error-translator";
-import {
-  checkRateLimit,
-  RATE_LIMIT_PRESETS,
-} from "@/lib/rate-limit";
+import { checkRateLimit, RATE_LIMIT_PRESETS } from "@/lib/rate-limit";
 import { logError } from "@/lib/log-sanitizer";
 
 const tenantService = new TenantService();
@@ -34,8 +31,7 @@ export async function registerAction(
 
   // Get client IP for rate limiting (use email as fallback identifier)
   const headersList = await headers();
-  const ip =
-    headersList.get("x-forwarded-for")?.split(",")[0] || "unknown";
+  const ip = headersList.get("x-forwarded-for")?.split(",")[0] || "unknown";
   const identifier = ip !== "unknown" ? ip : email;
 
   // Check rate limit for registration
@@ -62,7 +58,7 @@ export async function registerAction(
     const key = "userNotCreated";
     return {
       success: false,
-      error: error?.message ?? errors.fromKey(key),
+      error: errors.fromKey(key),
       errorKey: key,
       status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
     };

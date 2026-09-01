@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { requirePermission } from "@/server/auth";
+import { requirePermissionApi } from "@/server/auth";
 import { posService } from "@/server/pos";
 import { HTTP_STATUS } from "@/server/http-status";
 
@@ -13,17 +13,24 @@ const addItemSchema = z.object({
   taxRate: z.coerce.number().min(0).max(100).optional(),
 });
 
+const saleIdSchema = z.string().uuid();
+
 export async function POST(
   request: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const ctx = await requirePermission("sales.create");
+    const ctxOrError = await requirePermissionApi("sales.create");
+    if (ctxOrError instanceof NextResponse) {
+      return ctxOrError;
+    }
+    const ctx = ctxOrError;
     const { id } = await context.params;
+    const parsedSaleId = saleIdSchema.safeParse(id);
     const body = await request.json();
     const parsed = addItemSchema.safeParse(body);
 
-    if (!parsed.success) {
+    if (!parsedSaleId.success || !parsed.success) {
       return NextResponse.json(
         {
           ok: false,
@@ -35,7 +42,7 @@ export async function POST(
     }
 
     const item = await posService.addSaleItem({
-      saleId: id,
+      saleId: parsedSaleId.data,
       tenantId: ctx.tenantId,
       productId: parsed.data.productId,
       quantity: parsed.data.quantity,

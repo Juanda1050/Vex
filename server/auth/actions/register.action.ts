@@ -12,6 +12,12 @@ import {
 } from "./action-helpers";
 import { registerSchema } from "../validations/register.schema";
 import { HTTP_STATUS } from "@/server/http-status";
+import {
+  checkRateLimit,
+  getRateLimitIdentifier,
+  RATE_LIMIT_PRESETS,
+} from "@/lib/rate-limit";
+import { headers } from "next/headers";
 
 export type RegisterState = AuthActionState;
 
@@ -43,6 +49,22 @@ export async function registerAction(
 
   const { orgName, email, password } = parsed.data;
 
+  const requestHeaders = await headers();
+  const rateLimit = await checkRateLimit(
+    getRateLimitIdentifier(requestHeaders, email),
+    "register",
+    RATE_LIMIT_PRESETS.register,
+  );
+
+  if (!rateLimit.allowed) {
+    return {
+      error: errors.generic(),
+      success: false,
+      errorKey: "generic",
+      status: HTTP_STATUS.TOO_MANY_REQUESTS,
+    };
+  }
+
   const appUrl = await getAppUrl();
   if (!appUrl)
     return {
@@ -65,7 +87,7 @@ export async function registerAction(
 
   if (error)
     return {
-      error: error.message ?? errors.generic(),
+      error: errors.generic(),
       success: false,
       errorKey: "generic",
       status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
